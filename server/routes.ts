@@ -7,7 +7,7 @@ import { z } from "zod";
 import { eq, and } from "drizzle-orm";
 import path from "path";
 import fs from "fs";
-import { users, insertUserSchema, insertUserProfileSchema, insertGoalSchema, budgetCalculatorSchema, insertAiConversationSchema, insertKnowledgeArticleSchema, savedAnswers } from "@shared/schema";
+import { users, insertUserSchema, insertUserProfileSchema, insertGoalSchema, budgetCalculatorSchema, insertAiConversationSchema, insertKnowledgeArticleSchema, insertNewsArticleSchema, savedAnswers } from "@shared/schema";
 import { 
   generateAIResponse, 
   calculateBudget, 
@@ -108,15 +108,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     ];
     return candidates.find((p) => fs.existsSync(p));
   };
-  app.get('/sitemap.xml', (req, res) => {
+  app.get('/sitemap.xml', async (req, res) => {
     const sitemapPath = resolvePublicFile('sitemap.xml');
     if (!sitemapPath) {
       console.error('sitemap.xml not found in dist/public or client/public');
       return res.status(500).send('Error reading sitemap');
     }
-    // Serve the sitemap with the correct XML content type
-    res.setHeader('Content-Type', 'application/xml');
-    res.sendFile(sitemapPath);
+    try {
+      let xml = fs.readFileSync(sitemapPath, 'utf-8');
+      // Inject news article URLs so new press releases and news stay indexed
+      try {
+        const articles = await storage.getNewsArticles();
+        const newsUrls = articles.map((a) => {
+          const lastmod = a.publishedAt
+            ? new Date(a.publishedAt).toISOString().split('T')[0]
+            : new Date().toISOString().split('T')[0];
+          return `  <url>\n    <loc>https://savyfunds.com/news/${a.slug}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
+        }).join('\n');
+        if (newsUrls) {
+          xml = xml.replace('</urlset>', `${newsUrls}\n</urlset>`);
+        }
+      } catch (e) {
+        console.error('Failed to inject news URLs into sitemap:', e);
+      }
+      res.setHeader('Content-Type', 'application/xml');
+      res.send(xml);
+    } catch (error) {
+      console.error('Error reading sitemap:', error);
+      res.status(500).send('Error reading sitemap');
+    }
   });
   
   app.get('/robots.txt', (req, res) => {
@@ -1068,6 +1088,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error creating knowledge article:", error);
       res.status(500).json({ message: "Failed to create article" });
+    }
+  });
+  
+  // News articles routes (public read, authenticated write)
+  const slugify = (title: string): string => {
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80);
+    return slug || `article-${Date.now()}`;
+  };
+  
+  apiRouter.get("/news", async (req, res) => {
+    try {
+      const { type } = req.query;
+      const articles = typeof type === "string" && type
+        ? await storage.getNewsArticlesByType(type)
+        : await storage.getNewsArticles();
+      res.status(200).json(articles);
+    } catch (error) {
+      console.error("Error fetching news articles:", error);
+      res.status(500).json({ message: "Failed to fetch news articles" });
+    }
+  });
+  
+  apiRouter.get("/news/:slug", async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const article = await storage.getNewsArticleBySlug(slug);
+      
+      if (!article) {
+        return res.status(404).json({ message: "News article not found" });
+      }
+      
+      // Increment view count
+      await storage.updateNewsArticleViews(article.id);
+      
+      res.status(200).json(article);
+    } catch (error) {
+      console.error("Error fetching news article:", error);
+      res.status(500).json({ message: "Failed to fetch news article" });
+    }
+  });
+  
+  // Protected route for publishing news articles (admin only)
+  apiRouter.post("/news", authenticateMiddleware, async (req, res) => {
+    try {
+      // TODO: Add admin role check here when user roles are implemented
+      
+      const body = { ...req.body };
+      if (!body.slug && body.title) {
+        body.slug = slugify(body.title);
+      }
+      
+      const result = insertNewsArticleSchema.safeParse(body);
+      if (!result.success) {
+        return res.status(400).json({ 
+          message: "Invalid news article data", 
+          errors: result.error.format() 
+        });
+      }
+      
+      // Ensure the slug is unique
+      let slug = result.data.slug;
+      let suffix = 2;
+      while (await storage.getNewsArticleBySlug(slug)) {
+        slug = `${result.data.slug}-${suffix++}`;
+      }
+      
+      const newArticle = await storage.createNewsArticle({ ...result.data, slug });
+      res.status(201).json(newArticle);
+    } catch (error) {
+      console.error("Error creating news article:", error);
+      res.status(500).json({ message: "Failed to create news article" });
     }
   });
   

@@ -6,6 +6,7 @@ import {
   userProgress, type UserProgress, type InsertUserProgress,
   aiConversations, type AiConversation, type InsertAiConversation,
   knowledgeArticles, type KnowledgeArticle, type InsertKnowledgeArticle,
+  newsArticles, type NewsArticle, type InsertNewsArticle,
   forumCategories, type ForumCategory, type InsertForumCategory,
   forumPosts, type ForumPost, type InsertForumPost,
   forumComments, type ForumComment, type InsertForumComment,
@@ -68,6 +69,13 @@ export interface IStorage {
   getKnowledgeArticle(id: number): Promise<KnowledgeArticle | undefined>;
   createKnowledgeArticle(article: InsertKnowledgeArticle): Promise<KnowledgeArticle>;
   updateKnowledgeArticleViews(id: number): Promise<KnowledgeArticle>;
+  
+  // News articles operations
+  getNewsArticles(): Promise<NewsArticle[]>;
+  getNewsArticlesByType(type: string): Promise<NewsArticle[]>;
+  getNewsArticleBySlug(slug: string): Promise<NewsArticle | undefined>;
+  createNewsArticle(article: InsertNewsArticle): Promise<NewsArticle>;
+  updateNewsArticleViews(id: number): Promise<NewsArticle>;
   
   // Forum category operations
   getForumCategories(): Promise<ForumCategory[]>;
@@ -142,6 +150,7 @@ export class MemStorage implements IStorage {
   private userProgress: Map<number, UserProgress>;
   private aiConversations: Map<number, AiConversation>;
   private knowledgeArticles: Map<number, KnowledgeArticle>;
+  private newsArticles: Map<number, NewsArticle>;
   
   // Community-related storage
   private forumCategories: Map<number, ForumCategory>;
@@ -161,6 +170,7 @@ export class MemStorage implements IStorage {
   private progressId: number;
   private conversationId: number;
   private articleId: number;
+  private newsArticleId: number;
   private categoryId: number;
   private postId: number;
   private commentId: number;
@@ -178,6 +188,7 @@ export class MemStorage implements IStorage {
     this.userProgress = new Map();
     this.aiConversations = new Map();
     this.knowledgeArticles = new Map();
+    this.newsArticles = new Map();
     
     // Initialize community-related storage
     this.forumCategories = new Map();
@@ -196,6 +207,7 @@ export class MemStorage implements IStorage {
     this.progressId = 1;
     this.conversationId = 1;
     this.articleId = 1;
+    this.newsArticleId = 1;
     this.categoryId = 1;
     this.postId = 1;
     this.commentId = 1;
@@ -529,6 +541,50 @@ export class MemStorage implements IStorage {
     };
     
     this.knowledgeArticles.set(id, updatedArticle);
+    return updatedArticle;
+  }
+  
+  // News articles operations
+  async getNewsArticles(): Promise<NewsArticle[]> {
+    return Array.from(this.newsArticles.values())
+      .sort((a, b) => +new Date(b.publishedAt || 0) - +new Date(a.publishedAt || 0));
+  }
+  
+  async getNewsArticlesByType(type: string): Promise<NewsArticle[]> {
+    return Array.from(this.newsArticles.values())
+      .filter(article => article.type === type)
+      .sort((a, b) => +new Date(b.publishedAt || 0) - +new Date(a.publishedAt || 0));
+  }
+  
+  async getNewsArticleBySlug(slug: string): Promise<NewsArticle | undefined> {
+    return Array.from(this.newsArticles.values()).find(a => a.slug === slug);
+  }
+  
+  async createNewsArticle(article: InsertNewsArticle): Promise<NewsArticle> {
+    const id = this.newsArticleId++;
+    const newArticle: NewsArticle = {
+      ...article,
+      id,
+      views: 0,
+      publishedAt: article.publishedAt || new Date(),
+      dateCreated: new Date(),
+      dateUpdated: new Date()
+    };
+    this.newsArticles.set(id, newArticle);
+    return newArticle;
+  }
+  
+  async updateNewsArticleViews(id: number): Promise<NewsArticle> {
+    const article = this.newsArticles.get(id);
+    if (!article) throw new Error(`News article with id ${id} not found`);
+    
+    const updatedArticle: NewsArticle = {
+      ...article,
+      views: (article.views || 0) + 1,
+      dateUpdated: new Date()
+    };
+    
+    this.newsArticles.set(id, updatedArticle);
     return updatedArticle;
   }
   
@@ -1906,6 +1962,63 @@ export class DatabaseStorage implements IStorage {
         dateUpdated: new Date()
       })
       .where(eq(knowledgeArticles.id, id))
+      .returning();
+    
+    return updatedArticle;
+  }
+  
+  // News articles operations
+  async getNewsArticles(): Promise<NewsArticle[]> {
+    return db
+      .select()
+      .from(newsArticles)
+      .orderBy(desc(newsArticles.publishedAt));
+  }
+  
+  async getNewsArticlesByType(type: string): Promise<NewsArticle[]> {
+    return db
+      .select()
+      .from(newsArticles)
+      .where(eq(newsArticles.type, type))
+      .orderBy(desc(newsArticles.publishedAt));
+  }
+  
+  async getNewsArticleBySlug(slug: string): Promise<NewsArticle | undefined> {
+    const [article] = await db
+      .select()
+      .from(newsArticles)
+      .where(eq(newsArticles.slug, slug));
+    
+    return article;
+  }
+  
+  async createNewsArticle(article: InsertNewsArticle): Promise<NewsArticle> {
+    const [newArticle] = await db
+      .insert(newsArticles)
+      .values({
+        ...article,
+        views: 0
+      })
+      .returning();
+    
+    return newArticle;
+  }
+  
+  async updateNewsArticleViews(id: number): Promise<NewsArticle> {
+    const [existingArticle] = await db
+      .select()
+      .from(newsArticles)
+      .where(eq(newsArticles.id, id));
+    
+    if (!existingArticle) throw new Error(`News article with id ${id} not found`);
+    
+    const [updatedArticle] = await db
+      .update(newsArticles)
+      .set({ 
+        views: (existingArticle.views || 0) + 1,
+        dateUpdated: new Date()
+      })
+      .where(eq(newsArticles.id, id))
       .returning();
     
     return updatedArticle;

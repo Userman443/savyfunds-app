@@ -16,6 +16,8 @@ import OurMission from "@/pages/OurMission";
 import Premium from "@/pages/Premium";
 import Knowledge from "@/pages/Knowledge";
 import KnowledgeArticle from "@/pages/KnowledgeArticle";
+import News from "@/pages/News";
+import NewsArticle from "@/pages/NewsArticle";
 import Profile from "@/pages/Profile";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import Terms from "@/pages/Terms";
@@ -413,6 +415,12 @@ function App() {
           </Route>
           <Route path="/knowledge/:id">
             <KnowledgeArticle />
+          </Route>
+          <Route path="/news">
+            <News />
+          </Route>
+          <Route path="/news/:slug">
+            <NewsArticle />
           </Route>
           <Route path="/profile">
             <Profile />

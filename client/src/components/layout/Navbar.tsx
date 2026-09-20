@@ -40,6 +40,7 @@ import {
   LineChart,
   LogOut,
   Menu,
+  Newspaper,
   PiggyBank,
   School,
   User,
@@ -118,6 +119,11 @@ export default function Navbar({ user: propsUser, onLogout }: NavbarProps) {
       name: "Currency",
       href: "/currency-converter",
       icon: ArrowRightLeft,
+    },
+    {
+      name: "News",
+      href: "/news",
+      icon: Newspaper,
     },
   ];
 

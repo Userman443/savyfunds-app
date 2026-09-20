@@ -237,6 +237,31 @@ export const insertKnowledgeArticleSchema = createInsertSchema(knowledgeArticles
 export type KnowledgeArticle = typeof knowledgeArticles.$inferSelect;
 export type InsertKnowledgeArticle = z.infer<typeof insertKnowledgeArticleSchema>;
 
+// News Articles (press releases, company updates, and financial news)
+export const newsArticles = pgTable("news_articles", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  excerpt: text("excerpt"),
+  content: text("content").notNull(),
+  type: text("type").notNull().default("news"),
+  tags: text("tags").array(),
+  views: integer("views").default(0),
+  publishedAt: timestamp("published_at").defaultNow(),
+  dateCreated: timestamp("date_created").defaultNow(),
+  dateUpdated: timestamp("date_updated").defaultNow(),
+});
+
+export const insertNewsArticleSchema = createInsertSchema(newsArticles).omit({
+  id: true,
+  views: true,
+  dateCreated: true,
+  dateUpdated: true,
+});
+
+export type NewsArticle = typeof newsArticles.$inferSelect;
+export type InsertNewsArticle = z.infer<typeof insertNewsArticleSchema>;
+
 // Community Forum Schema
 export const forumCategories = pgTable("forum_categories", {
   id: serial("id").primaryKey(),
