@@ -68,18 +68,10 @@ interface AiResponse {
   source: 'database' | 'ai';
 }
 
-// Routing thresholds for the hybrid database/AI assistant.
-// The database is only trusted when the top match is genuinely about the
-// question. Anything else goes to SavyFunds AI (Gemini) so users never get a
-// confident-sounding but off-topic textbook article.
+// Quality gate for the database fallback: a fallback answer is only shown when
+// the top database match is genuinely about the question. Anything weaker gets
+// the "not enough information" message instead of a wrong article.
 const DB_MIN_CONFIDENCE = 40;
-const COMPLEX_DB_MIN_CONFIDENCE = 60;
-const MIN_WORDS_FOR_AI = 5;
-
-function isComplexQuestion(query: string): boolean {
-  const words = query.trim().split(/\s+/).filter(w => w.length > 2);
-  return words.length >= MIN_WORDS_FOR_AI;
-}
 
 /**
  * Score how well the top database match actually answers the query (0-100).
@@ -144,56 +136,47 @@ export interface UserContext {
 }
 
 /**
- * Generate a response to financial questions using hybrid approach
- * 
+ * Generate a response to financial questions: AI first, database as fallback
+ *
  * Strategy:
- * - Check cache first for repeated questions
- * - Simple questions (< 5 words) with good database match → Use database (fast)
- * - Complex questions (>= 5 words) OR low confidence → Use AI (accurate)
- * 
+ * - SavyFunds AI (Gemini) answers every question first.
+ * - The pre-compiled database is the fallback when AI is unavailable, fails,
+ *   or returns an empty answer (e.g. API outage, quota exhausted, key missing).
+ * - AI responses are cached so repeated questions stay fast and cheap; database
+ *   answers are never cached.
+ *
  * @param query The user's financial question
  * @param userContext Optional user profile data for personalization
  * @returns An object containing the answer and metadata
  */
 export async function generateFinancialAiResponse(query: string, userContext?: UserContext): Promise<AiResponse> {
-  const relevantAnswers = findRelevantAnswers(query, 3);
-  const confidenceScore = calculateConfidenceScore(query, relevantAnswers);
-  const isComplex = isComplexQuestion(query);
-  
-  console.log(`Query: "${query.substring(0, 50)}..." | Words: ${query.split(/\s+/).length} | Confidence: ${confidenceScore.toFixed(1)} | Complex: ${isComplex} | DB Results: ${relevantAnswers.length}`);
-  
-  const shouldUseAI = (
-    relevantAnswers.length === 0 ||
-    confidenceScore < DB_MIN_CONFIDENCE ||
-    (isComplex && confidenceScore < COMPLEX_DB_MIN_CONFIDENCE)
-  );
-  
-  if (shouldUseAI) {
-    // Check cache first for AI queries (only cache AI responses, not database ones)
-    const queryHash = createQueryHash(query);
-    const cachedResponse = await getCachedResponse(queryHash);
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-    
-    console.log(`Using SavyFunds AI for: "${query.substring(0, 50)}..." (confidence: ${confidenceScore.toFixed(1)}, complex: ${isComplex})`);
-    
-    if (isSavyFundsAIAvailable()) {
-      try {
-        // Build context string from user profile for personalization
-        let contextStr = '';
-        if (userContext) {
-          const contextParts: string[] = [];
-          if (userContext.country) contextParts.push(`User is located in ${userContext.country}`);
-          if (userContext.age) contextParts.push(`Age group: ${userContext.age}`);
-          if (userContext.income) contextParts.push(`Annual income: approximately ${userContext.income}`);
-          if (userContext.experienceLevel) contextParts.push(`Financial experience: ${userContext.experienceLevel}`);
-          if (userContext.financialGoals?.length) contextParts.push(`Goals: ${userContext.financialGoals.join(', ')}`);
-          contextStr = contextParts.join('. ');
-        }
-        
-        const aiResponse = await askSavyFundsAI(query, contextStr || undefined);
-        
+  // Check cache first for repeated questions (only AI responses are cached)
+  const queryHash = createQueryHash(query);
+  const cachedResponse = await getCachedResponse(queryHash);
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  // Primary path: SavyFunds AI (Gemini)
+  if (isSavyFundsAIAvailable()) {
+    try {
+      // Build context string from user profile for personalization
+      let contextStr = '';
+      if (userContext) {
+        const contextParts: string[] = [];
+        if (userContext.country) contextParts.push(`User is located in ${userContext.country}`);
+        if (userContext.age) contextParts.push(`Age group: ${userContext.age}`);
+        if (userContext.income) contextParts.push(`Annual income: approximately ${userContext.income}`);
+        if (userContext.experienceLevel) contextParts.push(`Financial experience: ${userContext.experienceLevel}`);
+        if (userContext.financialGoals?.length) contextParts.push(`Goals: ${userContext.financialGoals.join(', ')}`);
+        contextStr = contextParts.join('. ');
+      }
+
+      console.log(`Using SavyFunds AI for: "${query.substring(0, 50)}..."`);
+
+      const aiResponse = await askSavyFundsAI(query, contextStr || undefined);
+
+      if (aiResponse && aiResponse.answer && aiResponse.answer.trim().length > 0) {
         const response: AiResponse = {
           answer: aiResponse.answer,
           keyPoints: aiResponse.keyPoints,
@@ -205,22 +188,30 @@ export async function generateFinancialAiResponse(query: string, userContext?: U
           }],
           source: 'ai'
         };
-        
+
         // Cache the response for future queries (only if no user context to keep cache generic)
         if (!userContext || !contextStr) {
           await cacheResponse(query, queryHash, response);
         }
-        
+
         return response;
-      } catch (error) {
-        console.error('AI response failed, falling back to database:', error);
       }
-    } else {
-      console.log("SavyFunds AI not configured, falling back to database");
+
+      console.error('AI returned an empty answer, falling back to database');
+    } catch (error) {
+      console.error('AI response failed, falling back to database:', error);
     }
+  } else {
+    console.log('SavyFunds AI not configured, falling back to database');
   }
-  
-  if (relevantAnswers.length === 0) {
+
+  // Fallback path: pre-compiled database (used when AI is down or unavailable)
+  const relevantAnswers = findRelevantAnswers(query, 3);
+  const confidenceScore = calculateConfidenceScore(query, relevantAnswers);
+
+  console.log(`Database fallback for: "${query.substring(0, 50)}..." | Confidence: ${confidenceScore.toFixed(1)} | DB Results: ${relevantAnswers.length}`);
+
+  if (relevantAnswers.length === 0 || confidenceScore < DB_MIN_CONFIDENCE) {
     return {
       answer: "I'm sorry, I don't have enough information to answer that question yet. Please try asking about specific financial topics like budgeting, saving, investing, credit scores, or debt management. You can also try rephrasing your question with more specific terms.",
       sources: [],
