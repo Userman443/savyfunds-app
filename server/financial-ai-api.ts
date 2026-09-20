@@ -68,7 +68,12 @@ interface AiResponse {
   source: 'database' | 'ai';
 }
 
-const MIN_CONFIDENCE_SCORE = 15;
+// Routing thresholds for the hybrid database/AI assistant.
+// The database is only trusted when the top match is genuinely about the
+// question. Anything else goes to SavyFunds AI (Gemini) so users never get a
+// confident-sounding but off-topic textbook article.
+const DB_MIN_CONFIDENCE = 40;
+const COMPLEX_DB_MIN_CONFIDENCE = 60;
 const MIN_WORDS_FOR_AI = 5;
 
 function isComplexQuestion(query: string): boolean {
@@ -76,45 +81,57 @@ function isComplexQuestion(query: string): boolean {
   return words.length >= MIN_WORDS_FOR_AI;
 }
 
-function calculateConfidenceScore(query: string, relevantAnswers: FinancialQuestion[]): number {
+/**
+ * Score how well the top database match actually answers the query (0-100).
+ *
+ * A keyword found in the entry's question or tags is strong evidence the entry
+ * is about the query. A keyword found only somewhere inside a long answer body
+ * is weak evidence: common finance words ("rate", "fund", "money") appear in
+ * nearly every article, so answer-body matches alone must not win.
+ */
+export function calculateConfidenceScore(query: string, relevantAnswers: FinancialQuestion[]): number {
   if (relevantAnswers.length === 0) return 0;
-  
-  const normalizedQuery = query.toLowerCase();
+
+  const normalizedQuery = query.toLowerCase().trim();
   const firstAnswer = relevantAnswers[0];
   const questionText = firstAnswer.question.toLowerCase();
   const answerText = firstAnswer.answer.toLowerCase();
   const tagText = firstAnswer.tags.join(' ').toLowerCase();
-  
-  let score = 0;
-  
+
   const stopWords = ['what', 'is', 'are', 'how', 'do', 'does', 'can', 'should', 'will', 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'about', 'into', 'i', 'my', 'me', 'we', 'our', 'you', 'your'];
-  
+
   const keywords = normalizedQuery
     .split(/\s+/)
     .filter(word => word.length > 2 && !stopWords.includes(word))
-    .map(word => word.replace(/[^\w]/g, ''));
-  
+    .map(word => word.replace(/[^\w]/g, ''))
+    .filter(word => word.length > 0);
+
   if (keywords.length === 0) {
     return 5;
   }
-  
-  const matchedKeywords = keywords.filter(keyword => 
-    questionText.includes(keyword) || tagText.includes(keyword) || answerText.includes(keyword)
-  );
-  
-  const matchRatio = matchedKeywords.length / keywords.length;
-  score += matchRatio * 20;
-  
-  if (questionText.includes(normalizedQuery)) {
-    score += 20;
-  }
-  
+
+  let strongMatches = 0; // keyword in the entry's question or tags
+  let weakMatches = 0;   // keyword only somewhere in the long answer body
+
   keywords.forEach(keyword => {
-    if (questionText.includes(keyword)) score += 3;
-    if (tagText.includes(keyword)) score += 2;
+    if (questionText.includes(keyword) || tagText.includes(keyword)) {
+      strongMatches++;
+    } else if (answerText.includes(keyword)) {
+      weakMatches++;
+    }
   });
-  
-  return score;
+
+  const strongRatio = strongMatches / keywords.length;
+  const weakRatio = weakMatches / keywords.length;
+
+  let score = strongRatio * 80 + weakRatio * 10;
+
+  // Exact-phrase bonus: the database question literally contains the user's question.
+  if (questionText.includes(normalizedQuery)) {
+    score += 10;
+  }
+
+  return Math.min(score, 100);
 }
 
 // User context for personalized responses
@@ -147,8 +164,8 @@ export async function generateFinancialAiResponse(query: string, userContext?: U
   
   const shouldUseAI = (
     relevantAnswers.length === 0 ||
-    confidenceScore < MIN_CONFIDENCE_SCORE ||
-    (isComplex && confidenceScore < 25)
+    confidenceScore < DB_MIN_CONFIDENCE ||
+    (isComplex && confidenceScore < COMPLEX_DB_MIN_CONFIDENCE)
   );
   
   if (shouldUseAI) {
