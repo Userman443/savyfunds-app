@@ -90,7 +90,16 @@ export default function News() {
       {!isLoading && !error && articles && articles.length > 0 && (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {articles.map((article) => (
-            <Card key={article.id} className="flex flex-col h-full">
+            <Card key={article.id} className="flex flex-col h-full overflow-hidden">
+              {article.imageUrl && (
+                <Link to={`/news/${article.slug}`}>
+                  <img
+                    src={article.imageUrl}
+                    alt={article.title}
+                    className="w-full h-44 object-cover"
+                  />
+                </Link>
+              )}
               <CardHeader>
                 <div className="flex justify-between items-start mb-2">
                   <Badge variant={article.type === 'press' ? 'default' : 'outline'}>

@@ -49,6 +49,10 @@ export default function NewsArticlePage() {
 
   const canonicalUrl = `https://savyfunds.com/news/${article.slug}`;
   const description = article.excerpt || article.content.slice(0, 160);
+  const rawImageUrl = article.imageUrl || '/social-preview.png';
+  const absoluteImageUrl = rawImageUrl.startsWith('http')
+    ? rawImageUrl
+    : `https://savyfunds.com${rawImageUrl}`;
   const datePublished = article.publishedAt
     ? new Date(article.publishedAt).toISOString()
     : new Date().toISOString();
@@ -70,6 +74,7 @@ export default function NewsArticlePage() {
       name: 'savyfunds',
       url: 'https://savyfunds.com',
     },
+    image: absoluteImageUrl,
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': canonicalUrl,
@@ -96,6 +101,7 @@ export default function NewsArticlePage() {
         title={article.title}
         description={description}
         canonicalUrl={canonicalUrl}
+        imageUrl={absoluteImageUrl}
         type="article"
         keywords={article.tags || []}
       />
@@ -112,7 +118,14 @@ export default function NewsArticlePage() {
         </Button>
       </div>
 
-      <Card>
+      <Card className="overflow-hidden">
+        {article.imageUrl && (
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full max-h-96 object-contain bg-white"
+          />
+        )}
         <CardHeader>
           <div className="flex justify-between items-start mb-2">
             <Badge variant={article.type === 'press' ? 'default' : 'outline'} className="mb-2">

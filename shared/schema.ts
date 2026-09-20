@@ -243,6 +243,7 @@ export const newsArticles = pgTable("news_articles", {
   slug: text("slug").notNull().unique(),
   title: text("title").notNull(),
   excerpt: text("excerpt"),
+  imageUrl: text("image_url"),
   content: text("content").notNull(),
   type: text("type").notNull().default("news"),
   tags: text("tags").array(),

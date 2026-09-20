@@ -26,6 +26,10 @@ async function migrateNewsArticles() {
       )
     `);
 
+    await db.execute(sql`
+      ALTER TABLE "news_articles" ADD COLUMN IF NOT EXISTS "image_url" text
+    `);
+
     console.log('Migration completed successfully: news_articles table ready');
   } catch (error) {
     console.error('Migration failed:', error);
