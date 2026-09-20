@@ -173,7 +173,7 @@ export default function Knowledge() {
       )}
 
       <Tabs defaultValue="all" value={activeTab} onValueChange={handleCategoryChange} className="mb-8">
-        <TabsList className="mb-4 flex flex-wrap">
+        <TabsList className="mb-4 flex h-auto flex-wrap">
           <TabsTrigger value="all">All</TabsTrigger>
           {categories.map((category) => (
             <TabsTrigger key={category} value={category}>
