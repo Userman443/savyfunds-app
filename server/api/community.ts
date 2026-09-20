@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { storage } from "../storage";
 import { db } from "../db";
+import { sql } from "drizzle-orm";
 import { isAuthenticated } from "../middleware/auth";
 import { 
   insertForumPostSchema, 
@@ -442,13 +443,13 @@ router.delete("/posts/:id/cleanup/:token", async (req, res) => {
     if (req.params.token !== "1f8c116212bb2e3b6aef676312907ce3") {
       return res.status(403).json({ message: "Forbidden" });
     }
-    await db.execute(`DELETE FROM post_reactions WHERE post_id = $1`, [postId]);
-    const commentIds = await db.execute(`SELECT id FROM forum_comments WHERE post_id = $1`, [postId]);
+    await db.execute(sql`DELETE FROM post_reactions WHERE post_id = ${postId}`);
+    const commentIds = await db.execute(sql`SELECT id FROM forum_comments WHERE post_id = ${postId}`);
     for (const row of commentIds.rows) {
-      await db.execute(`DELETE FROM comment_reactions WHERE comment_id = $1`, [row.id]);
+      await db.execute(sql`DELETE FROM comment_reactions WHERE comment_id = ${row.id}`);
     }
-    await db.execute(`DELETE FROM forum_comments WHERE post_id = $1`, [postId]);
-    await db.execute(`DELETE FROM forum_posts WHERE id = $1`, [postId]);
+    await db.execute(sql`DELETE FROM forum_comments WHERE post_id = ${postId}`);
+    await db.execute(sql`DELETE FROM forum_posts WHERE id = ${postId}`);
     return res.status(204).end();
   } catch (error) {
     console.error("Error in temporary cleanup route:", error);
