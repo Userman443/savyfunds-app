@@ -114,7 +114,7 @@ export default function NewsArticlePage() {
     );
   }
 
-  const canonicalUrl = `https://savyfunds.com/news/${article.slug}`;
+  const canonicalUrl = `https://www.savyfunds.com/news/${article.slug}`;
   const description = article.excerpt || article.content.slice(0, 160);
   const rawImageUrl = article.imageUrl || '/social-preview.png';
   const absoluteImageUrl = rawImageUrl.startsWith('http')
