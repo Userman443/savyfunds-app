@@ -75,6 +75,7 @@ export interface IStorage {
   getNewsArticlesByType(type: string): Promise<NewsArticle[]>;
   getNewsArticleBySlug(slug: string): Promise<NewsArticle | undefined>;
   createNewsArticle(article: InsertNewsArticle): Promise<NewsArticle>;
+  updateNewsArticle(id: number, data: Partial<InsertNewsArticle>): Promise<NewsArticle>;
   updateNewsArticleViews(id: number): Promise<NewsArticle>;
   
   // Forum category operations
@@ -572,6 +573,23 @@ export class MemStorage implements IStorage {
     };
     this.newsArticles.set(id, newArticle);
     return newArticle;
+  }
+  
+  async updateNewsArticle(id: number, data: Partial<InsertNewsArticle>): Promise<NewsArticle> {
+    const article = this.newsArticles.get(id);
+    if (!article) throw new Error(`News article with id ${id} not found`);
+    
+    const updatedArticle: NewsArticle = {
+      ...article,
+      ...data,
+      id,
+      views: article.views,
+      dateCreated: article.dateCreated,
+      dateUpdated: new Date()
+    };
+    
+    this.newsArticles.set(id, updatedArticle);
+    return updatedArticle;
   }
   
   async updateNewsArticleViews(id: number): Promise<NewsArticle> {
@@ -2002,6 +2020,21 @@ export class DatabaseStorage implements IStorage {
       .returning();
     
     return newArticle;
+  }
+  
+  async updateNewsArticle(id: number, data: Partial<InsertNewsArticle>): Promise<NewsArticle> {
+    const [updatedArticle] = await db
+      .update(newsArticles)
+      .set({
+        ...data,
+        dateUpdated: new Date()
+      })
+      .where(eq(newsArticles.id, id))
+      .returning();
+    
+    if (!updatedArticle) throw new Error(`News article with id ${id} not found`);
+    
+    return updatedArticle;
   }
   
   async updateNewsArticleViews(id: number): Promise<NewsArticle> {

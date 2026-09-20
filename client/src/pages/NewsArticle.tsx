@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRoute, Link } from 'wouter';
 import { Helmet } from 'react-helmet';
@@ -6,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Eye, Calendar, Tag } from 'lucide-react';
+import { ArrowLeft, Eye, Calendar, Tag, Share2, Check } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { Meta } from '@/components/SEO/Meta';
@@ -18,9 +20,74 @@ const TYPE_LABELS: Record<string, string> = {
   news: 'News',
 };
 
+// Render [label](url) links, bare URLs, and email addresses as clickable anchors.
+// Bare URLs display as their hostname so long addresses never show in plaintext.
+function renderRichText(text: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  const pushPlain = (chunk: string) => {
+    const urlPattern = /(https?:\/\/[^\s)]+|www\.[^\s)]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g;
+    let li = 0;
+    let um: RegExpExecArray | null;
+    while ((um = urlPattern.exec(chunk))) {
+      if (um.index > li) nodes.push(chunk.slice(li, um.index));
+      const token = um[0];
+      let href = token;
+      let label = token;
+      if (token.includes('@') && !/^https?:\/\//i.test(token) && !/^www\./i.test(token)) {
+        href = `mailto:${token}`;
+      } else {
+        if (!/^https?:\/\//i.test(token)) href = `https://${token}`;
+        try {
+          label = new URL(href).hostname.replace(/^www\./, '');
+        } catch {
+          label = token;
+        }
+      }
+      nodes.push(
+        <a
+          key={`u-${key++}`}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+        >
+          {label}
+        </a>
+      );
+      li = um.index + token.length;
+    }
+    if (li < chunk.length) nodes.push(chunk.slice(li));
+  };
+
+  while ((match = linkPattern.exec(text))) {
+    if (match.index > lastIndex) pushPlain(text.slice(lastIndex, match.index));
+    const href = match[2];
+    nodes.push(
+      <a
+        key={`l-${key++}`}
+        href={href}
+        target={href.startsWith('mailto:') ? undefined : '_blank'}
+        rel="noopener noreferrer"
+        className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+      >
+        {match[1]}
+      </a>
+    );
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) pushPlain(text.slice(lastIndex));
+  return nodes;
+}
+
 export default function NewsArticlePage() {
   const [match, params] = useRoute('/news/:slug');
   const slug = match ? params.slug : null;
+  const [copied, setCopied] = useState(false);
 
   const { data: article, isLoading, error } = useQuery<NewsArticle>({
     queryKey: [`/api/news/${slug}`],
@@ -81,7 +148,27 @@ export default function NewsArticlePage() {
     },
   };
 
-  // Format the article content with proper paragraphs and remove asterisks
+  const handleShare = async () => {
+    const shareData = { title: article.title, text: description, url: canonicalUrl };
+    try {
+      const nav = navigator as Navigator & { share?: (data: ShareData) => Promise<void> };
+      if (nav.share) {
+        await nav.share(shareData);
+        return;
+      }
+      throw new Error('Web Share unavailable');
+    } catch {
+      try {
+        await navigator.clipboard.writeText(canonicalUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch {
+        // clipboard unavailable; nothing to do
+      }
+    }
+  };
+
+  // Format the article content with proper paragraphs, clickable links, and list bullets
   const formattedContent = article.content
     .split('\n\n')
     .map(paragraph => {
@@ -91,7 +178,7 @@ export default function NewsArticlePage() {
     })
     .map((paragraph, index) => (
       <p key={index} className="mb-4">
-        {paragraph}
+        {renderRichText(paragraph)}
       </p>
     ));
 
@@ -131,9 +218,29 @@ export default function NewsArticlePage() {
             <Badge variant={article.type === 'press' ? 'default' : 'outline'} className="mb-2">
               {TYPE_LABELS[article.type] || 'News'}
             </Badge>
-            <div className="flex items-center text-muted-foreground text-sm">
-              <Eye className="h-4 w-4 mr-1" />
-              <span>{article.views} views</span>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleShare}
+                className="flex items-center gap-1.5"
+              >
+                {copied ? (
+                  <>
+                    <Check className="h-4 w-4" />
+                    <span>Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="h-4 w-4" />
+                    <span>Share</span>
+                  </>
+                )}
+              </Button>
+              <div className="flex items-center text-muted-foreground text-sm">
+                <Eye className="h-4 w-4 mr-1" />
+                <span>{article.views} views</span>
+              </div>
             </div>
           </div>
           <CardTitle className="text-2xl md:text-3xl">{article.title}</CardTitle>

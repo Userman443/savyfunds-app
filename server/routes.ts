@@ -1177,6 +1177,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to create news article" });
     }
   });
+
+  // Protected route for updating news articles (admin only)
+  apiRouter.put("/news/:slug", publishNewsAuth, async (req, res) => {
+    try {
+      const existing = await storage.getNewsArticleBySlug(req.params.slug);
+      if (!existing) {
+        return res.status(404).json({ message: "Article not found" });
+      }
+
+      const body = { ...req.body };
+      if (!body.slug && body.title) {
+        body.slug = slugify(body.title);
+      }
+
+      const result = insertNewsArticleSchema.partial().safeParse(body);
+      if (!result.success) {
+        return res.status(400).json({
+          message: "Invalid news article data",
+          errors: result.error.format()
+        });
+      }
+
+      // Ensure the slug stays unique if it changed
+      let slug = result.data.slug ?? existing.slug;
+      if (slug !== existing.slug) {
+        const base = slug;
+        let suffix = 2;
+        while (await storage.getNewsArticleBySlug(slug)) {
+          slug = `${base}-${suffix++}`;
+        }
+      }
+
+      const updated = await storage.updateNewsArticle(existing.id, { ...result.data, slug });
+      res.json(updated);
+    } catch (error) {
+      console.error("Error updating news article:", error);
+      res.status(500).json({ message: "Failed to update news article" });
+    }
+  });
   
   // AI Assistant
   apiRouter.get("/ai/conversations/:userId", async (req, res) => {
