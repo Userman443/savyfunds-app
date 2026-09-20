@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { storage } from "../storage";
 import { db } from "../db";
-import { sql } from "drizzle-orm";
 import { isAuthenticated } from "../middleware/auth";
 import { 
   insertForumPostSchema, 
@@ -433,30 +432,6 @@ router.patch("/posts/:id", isAuthenticated, async (req, res) => {
 });
 
 // Delete a post with direct database access
-// TEMPORARY one-time cleanup route for test posts 5 and 6 (2026-09-20). REVERT AFTER USE.
-router.delete("/posts/:id/cleanup/:token", async (req, res) => {
-  try {
-    const postId = parseInt(req.params.id);
-    if (isNaN(postId) || (postId !== 5 && postId !== 6)) {
-      return res.status(404).json({ message: "Not found" });
-    }
-    if (req.params.token !== "1f8c116212bb2e3b6aef676312907ce3") {
-      return res.status(403).json({ message: "Forbidden" });
-    }
-    await db.execute(sql`DELETE FROM post_reactions WHERE post_id = ${postId}`);
-    const commentIds = await db.execute(sql`SELECT id FROM forum_comments WHERE post_id = ${postId}`);
-    for (const row of commentIds.rows) {
-      await db.execute(sql`DELETE FROM comment_reactions WHERE comment_id = ${row.id}`);
-    }
-    await db.execute(sql`DELETE FROM forum_comments WHERE post_id = ${postId}`);
-    await db.execute(sql`DELETE FROM forum_posts WHERE id = ${postId}`);
-    return res.status(204).end();
-  } catch (error) {
-    console.error("Error in temporary cleanup route:", error);
-    res.status(500).json({ message: "Cleanup failed" });
-  }
-});
-
 router.delete("/posts/:id", isAuthenticated, async (req, res) => {
   try {
     const postId = parseInt(req.params.id);
