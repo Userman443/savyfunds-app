@@ -4,6 +4,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from "./seed";
 import { migrateEmailVerification } from "./scripts/migrate-email-verification";
+import { migrateNewsArticles } from "./scripts/migrate-news-articles";
 import path from "path";
 
 const app = express();
@@ -67,6 +68,9 @@ app.use((req, res, next) => {
 (async () => {
   // Run migration to add email verification columns
   await migrateEmailVerification();
+
+  // Ensure the news_articles table exists (News section)
+  await migrateNewsArticles();
   
   // Seed the database with initial demo data only when explicitly enabled.
   // Production starts with a clean database.
