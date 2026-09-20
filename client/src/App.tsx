@@ -350,7 +350,7 @@ function App() {
         />
       )}
       
-      <main id="main-content" tabIndex={-1} className="outline-none pt-4 pb-16">
+      <main id="main-content" tabIndex={-1} className="outline-none pt-20 md:pt-24 lg:pt-28 pb-16">
         <Switch>
           <Route path="/auth">
             <AuthPage />
