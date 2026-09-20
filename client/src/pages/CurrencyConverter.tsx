@@ -27,12 +27,18 @@ export default function CurrencyConverter() {
   });
 
   const { data: rates, isLoading: isLoadingRates, refetch } = useQuery<CurrencyRates>({
-    queryKey: ["/api/currency/rates", fromCurrency],
+    queryKey: [`/api/currency/rates?base=${fromCurrency}`],
     staleTime: 5 * 60 * 1000,
   });
 
-  const convertedAmount = rates?.rates[toCurrency] 
-    ? (parseFloat(amount) * rates.rates[toCurrency]).toFixed(4)
+  // Frankfurter omits the base currency from its rates map, so the
+  // base currency always converts at a rate of 1.
+  const getRate = (code: string): number | undefined =>
+    rates ? (code === rates.base ? 1 : rates.rates[code]) : undefined;
+
+  const convertedRate = getRate(toCurrency);
+  const convertedAmount = convertedRate !== undefined && !isNaN(parseFloat(amount))
+    ? (parseFloat(amount) * convertedRate).toFixed(4)
     : "0";
 
   const handleSwap = () => {
@@ -152,7 +158,7 @@ export default function CurrencyConverter() {
                     </div>
                     {rates && (
                       <div className="text-xs text-neutral-400 mt-2">
-                        1 {fromCurrency} = {rates.rates[toCurrency]?.toFixed(6)} {toCurrency}
+                        1 {fromCurrency} = {getRate(toCurrency)?.toFixed(6)} {toCurrency}
                       </div>
                     )}
                   </>
@@ -263,9 +269,9 @@ export default function CurrencyConverter() {
                     >
                       <div className="font-semibold">{code}</div>
                       <div className="text-sm text-neutral-500 truncate">{name}</div>
-                      {rates?.rates[code] && fromCurrency !== code && (
+                      {getRate(code) !== undefined && fromCurrency !== code && (
                         <div className="text-xs text-primary mt-1">
-                          1 {fromCurrency} = {rates.rates[code].toFixed(4)} {code}
+                          1 {fromCurrency} = {getRate(code)?.toFixed(4)} {code}
                         </div>
                       )}
                     </div>
