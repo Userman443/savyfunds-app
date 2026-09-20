@@ -27,7 +27,6 @@ import FinancialAssistant from "@/pages/FinancialAssistant";
 import VerifyEmail from "@/pages/VerifyEmail";
 import ResendVerification from "@/pages/ResendVerification";
 import CurrencyConverter from "@/pages/CurrencyConverter";
-import { ConstructionBanner } from "@/components/ConstructionBanner";
 import RemoveWatermark from "@/components/RemoveWatermark";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -350,11 +349,6 @@ function App() {
           onLogout={handleLogout}
         />
       )}
-      
-      {/* Construction Banner appears on all pages */}
-      <div className="pt-16">
-        <ConstructionBanner />
-      </div>
       
       <main id="main-content" tabIndex={-1} className="outline-none pt-4 pb-16">
         <Switch>
