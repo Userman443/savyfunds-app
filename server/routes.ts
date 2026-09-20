@@ -98,30 +98,35 @@ declare module 'express-session' {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Explicitly serve sitemap.xml and robots.txt files
+  // Explicitly serve sitemap.xml and robots.txt files.
+  // In the production Docker image the built frontend lives in dist/public;
+  // in local dev the source files live in client/public.
+  const resolvePublicFile = (filename: string): string | undefined => {
+    const candidates = [
+      path.resolve(process.cwd(), 'dist/public', filename),
+      path.resolve(process.cwd(), 'client/public', filename),
+    ];
+    return candidates.find((p) => fs.existsSync(p));
+  };
   app.get('/sitemap.xml', (req, res) => {
-    const sitemapPath = path.resolve(process.cwd(), 'client/public/sitemap.xml');
+    const sitemapPath = resolvePublicFile('sitemap.xml');
+    if (!sitemapPath) {
+      console.error('sitemap.xml not found in dist/public or client/public');
+      return res.status(500).send('Error reading sitemap');
+    }
     // Serve the sitemap with the correct XML content type
-    fs.readFile(sitemapPath, 'utf8', (err, data) => {
-      if (err) {
-        console.error('Error reading sitemap.xml file:', err);
-        return res.status(500).send('Error reading sitemap');
-      }
-      res.setHeader('Content-Type', 'application/xml');
-      res.send(data);
-    });
+    res.setHeader('Content-Type', 'application/xml');
+    res.sendFile(sitemapPath);
   });
   
   app.get('/robots.txt', (req, res) => {
-    const robotsPath = path.resolve(process.cwd(), 'client/public/robots.txt');
-    fs.readFile(robotsPath, 'utf8', (err, data) => {
-      if (err) {
-        console.error('Error reading robots.txt file:', err);
-        return res.status(500).send('Error reading robots.txt');
-      }
-      res.setHeader('Content-Type', 'text/plain');
-      res.send(data);
-    });
+    const robotsPath = resolvePublicFile('robots.txt');
+    if (!robotsPath) {
+      console.error('robots.txt not found in dist/public or client/public');
+      return res.status(500).send('Error reading robots.txt');
+    }
+    res.setHeader('Content-Type', 'text/plain');
+    res.sendFile(robotsPath);
   });
   // Set up session middleware
   app.use(session(sessionConfig));
