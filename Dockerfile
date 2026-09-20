@@ -13,8 +13,11 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json drizzle.config.ts ./
 COPY migrations ./migrations
 COPY public ./public
-RUN npm ci
+# --include=dev: drizzle-kit (a devDependency) is needed at container startup to run DB migrations.
+# (NODE_ENV=production must not be set before this step, or npm skips devDependencies.)
+RUN npm ci --include=dev
 COPY --from=builder /app/dist ./dist
+ENV NODE_ENV=production
 EXPOSE 5000
 # Apply DB migrations, then start the app (API + static frontend on one port)
 CMD ["sh", "-c", "npx drizzle-kit migrate && node dist/index.js"]
