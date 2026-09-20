@@ -174,7 +174,7 @@ export default function Navbar({ user: propsUser, onLogout }: NavbarProps) {
               }
             }}
           >
-            <span className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-primary">
+            <span className="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-primary">
               savyfunds<span className="align-super text-sm md:text-base">™</span>
             </span>
           </Link>
