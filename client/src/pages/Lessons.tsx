@@ -186,7 +186,7 @@ export default function Lessons() {
                   </div>
                   <Separator />
                   <div>
-                    <h3 className="font-medium mb-1">SavyFunds YouTube Channel</h3>
+                    <h3 className="font-medium mb-1">savyfunds YouTube Channel</h3>
                     <p className="text-sm text-muted-foreground">Watch our educational videos on financial literacy and wealth building</p>
                     <a 
                       href="http://www.youtube.com/@SavyfundsInc" 

@@ -13,7 +13,7 @@ const OurMission = () => {
         <CardContent className="pt-6 px-6 py-8">
           <div className="prose max-w-none">
             <p className="text-lg mb-6">
-              At <span className="font-bold text-primary">SavyFunds™</span>, we're all about one thing: empowering young people to take charge of their financial future. Launched in 2025, our mission is to break down the money maze making saving, budgeting, and investing simple, approachable, and even a little fun for the next generation.
+              At <span className="font-bold text-primary">savyfunds™</span>, we're all about one thing: empowering young people to take charge of their financial future. Launched in 2025, our mission is to break down the money maze making saving, budgeting, and investing simple, approachable, and even a little fun for the next generation.
             </p>
             
             <p className="text-lg mb-6">
@@ -21,7 +21,7 @@ const OurMission = () => {
             </p>
             
             <p className="text-lg">
-              Looking ahead, we're not stopping at the basics. Our goal? To open up the world of wealth-building like the stock market to young minds everywhere. <span className="font-bold text-primary">SavyFunds™</span> is more than an app it's a movement to make money your strength, not your stress.
+              Looking ahead, we're not stopping at the basics. Our goal? To open up the world of wealth-building like the stock market to young minds everywhere. <span className="font-bold text-primary">Savyfunds™</span> is more than an app it's a movement to make money your strength, not your stress.
             </p>
           </div>
         </CardContent>

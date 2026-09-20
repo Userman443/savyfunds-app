@@ -384,7 +384,7 @@ const Budget = () => {
               Premium Feature
             </DialogTitle>
             <DialogDescription>
-              This feature is only available to premium SavyFunds members.
+              This feature is only available to premium savyfunds members.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">

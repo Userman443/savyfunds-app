@@ -42,7 +42,7 @@ export function DataInsightsOptIn({ className }: DataInsightsOptInProps) {
       toast({
         title: optedIn ? "Data sharing enabled" : "Data sharing disabled",
         description: optedIn 
-          ? "Thank you for helping improve SavyFunds™!" 
+          ? "Thank you for helping improve savyfunds™!" 
           : "Your preference has been saved",
       });
       
@@ -94,7 +94,7 @@ export function DataInsightsOptIn({ className }: DataInsightsOptInProps) {
         <div className="flex items-start">
           <BarChart2 className="h-5 w-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" />
           <div>
-            <h3 className="font-medium text-neutral-800">Help improve SavyFunds™</h3>
+            <h3 className="font-medium text-neutral-800">Help improve savyfunds™</h3>
             <p className="text-sm text-neutral-600 mt-1 mb-3">
               Share anonymized usage data to help us enhance the platform for everyone. 
               No personal financial information will be shared.

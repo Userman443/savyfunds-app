@@ -22,7 +22,7 @@ export function Disclaimer({ className, compact = false }: DisclaimerProps) {
         <div>
           <p className="font-medium">Disclaimer</p>
           <p className={compact ? "mt-0.5" : "mt-1"}>
-            SavyFunds is not a financial adviser or a lawyer. The information provided is for educational purposes only.
+            Savyfunds is not a financial adviser or a lawyer. The information provided is for educational purposes only.
             Please consult with qualified financial or legal professionals regarding your specific circumstances.
           </p>
         </div>
@@ -34,7 +34,7 @@ export function Disclaimer({ className, compact = false }: DisclaimerProps) {
 export function DisclaimerMinimal({ className }: { className?: string }) {
   return (
     <p className={cn("text-xs text-neutral-500 italic", className)}>
-      Disclaimer: SavyFunds is not a financial adviser or a lawyer. Please consult with qualified professionals regarding your specific circumstances.
+      Disclaimer: savyfunds is not a financial adviser or a lawyer. Please consult with qualified professionals regarding your specific circumstances.
     </p>
   );
 }

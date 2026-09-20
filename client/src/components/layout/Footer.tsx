@@ -109,7 +109,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-sm text-primary hover:underline"
                   >
-                    SavyFunds YouTube Channel
+                    savyfunds YouTube Channel
                     <ArrowRight className="ml-1 h-3 w-3" />
                   </a>
                 </li>

@@ -437,8 +437,8 @@ function App() {
             <ResendVerification />
           </Route>
           <Route path="/">
-            {/* Always show the dashboard directly for homepage requests */}
-            <Redirect to="/dashboard" />
+            {/* Marketing landing page for visitors; logged-in users go straight to the app */}
+            {currentUser ? <Redirect to="/dashboard" /> : <LandingPage />}
           </Route>
           <Route component={NotFound} />
         </Switch>
@@ -448,7 +448,6 @@ function App() {
       {location !== "/dashboard" && 
        location !== "/profile" && 
        location !== "/auth" &&
-       !(location === '/' && !currentUser) &&
        !location.includes("/module/") && 
        !location.includes("/knowledge/") && (
         <Footer />

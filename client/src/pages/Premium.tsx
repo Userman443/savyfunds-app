@@ -103,7 +103,7 @@ const Premium = () => {
                 </div>
                 <h2 className="text-2xl font-bold mb-2 text-primary-800">You're a Premium Member!</h2>
                 <p className="text-neutral-600 max-w-lg mb-6">
-                  Thank you for supporting SavyFunds™. You now have access to all premium features including the stock playground, advanced calculators, premium challenges, and an ad-free experience.
+                  Thank you for supporting savyfunds™. You now have access to all premium features including the stock playground, advanced calculators, premium challenges, and an ad-free experience.
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
                   <Button 

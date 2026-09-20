@@ -13,7 +13,7 @@ const AboutUs = () => {
         <CardContent className="pt-6">
           <div className="prose max-w-none">
             <p className="text-lg mb-4">
-              <span className="font-bold text-primary">SavyFunds™</span> is a comprehensive financial literacy platform founded in 2024 by <span className="font-semibold text-primary">Osagie Michael Momoh</span> to bridge the critical gap in financial education for young adults worldwide. Our mission-driven team combines expertise in financial education, technology, and youth development to create accessible, engaging learning experiences.
+              <span className="font-bold text-primary">Savyfunds™</span> is a comprehensive financial literacy platform founded in 2024 by <span className="font-semibold text-primary">Osagie Michael Momoh</span> to bridge the critical gap in financial education for young adults worldwide. Our mission-driven team combines expertise in financial education, technology, and youth development to create accessible, engaging learning experiences.
             </p>
             <p className="text-base text-neutral-700">
               Recognizing that traditional financial education often fails to connect with younger generations, we've developed an innovative platform that transforms complex financial concepts into digestible, actionable knowledge through AI-powered personalization and interactive tools.
@@ -28,7 +28,7 @@ const AboutUs = () => {
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-2">Why We Exist</h2>
             <p className="text-neutral-700">
-              Growing up, money felt like a maze budgets, savings, investing, all that jazz. Schools skipped it, and most apps were either snooze-worthy or way too complex. So, we built <span className="font-bold text-primary">SavyFunds™</span>: a spot where teens and young adults can master their finances, no fancy degree needed. We're turning "money stress" into "money confidence."
+              Growing up, money felt like a maze budgets, savings, investing, all that jazz. Schools skipped it, and most apps were either snooze-worthy or way too complex. So, we built <span className="font-bold text-primary">savyfunds™</span>: a spot where teens and young adults can master their finances, no fancy degree needed. We're turning "money stress" into "money confidence."
             </p>
           </CardContent>
         </Card>
@@ -77,7 +77,7 @@ const AboutUs = () => {
                   
                   <div className="space-y-3 text-neutral-700">
                     <p className="leading-relaxed">
-                      Osagie founded SavyFunds after a personal revelation: discovering he was losing thousands of dollars annually through poor financial decisions. His in-depth research uncovered a troubling global pattern—millions of people worldwide were experiencing the same silent wealth erosion due to lack of accessible financial education.
+                      Osagie founded savyfunds after a personal revelation: discovering he was losing thousands of dollars annually through poor financial decisions. His in-depth research uncovered a troubling global pattern—millions of people worldwide were experiencing the same silent wealth erosion due to lack of accessible financial education.
                     </p>
                     
                     <p className="leading-relaxed">
@@ -133,11 +133,7 @@ const AboutUs = () => {
           <div className="h-2 bg-primary"></div>
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-2">Platform Statistics & Growth</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div className="bg-slate-50 p-3 rounded-lg">
-                <div className="text-2xl font-bold text-primary">660,600+</div>
-                <div className="text-xs text-neutral-600">Active Users</div>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
               <div className="bg-slate-50 p-3 rounded-lg">
                 <div className="text-2xl font-bold text-primary">1000+</div>
                 <div className="text-xs text-neutral-600">Questions Answered</div>

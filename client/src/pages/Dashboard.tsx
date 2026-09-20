@@ -189,7 +189,7 @@ const Dashboard = () => {
         <main className="container mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 page-transition">
           <div className="mb-6">
             <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
-              Welcome to SavyFunds
+              Welcome to savyfunds
             </h1>
             <p className="text-muted-foreground">
               Get instant answers to your financial questions - no account required.
@@ -203,7 +203,7 @@ const Dashboard = () => {
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="font-semibold text-emerald-900">What's your financial literacy level?</h2>
                   <p className="text-sm text-emerald-700 mt-0.5">
-                    Take our free 8-question quiz and get a personalised experience — no account needed.
+                    Take our free 8-question quiz and get a personalized experience — no account needed.
                   </p>
                 </div>
                 <Button asChild variant="default" className="shrink-0 bg-emerald-700 hover:bg-emerald-800">

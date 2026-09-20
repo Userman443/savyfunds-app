@@ -43,7 +43,6 @@ import {
   PiggyBank,
   School,
   User,
-  Users,
   X,
   ArrowRightLeft,
 } from "lucide-react";
@@ -109,11 +108,6 @@ export default function Navbar({ user: propsUser, onLogout }: NavbarProps) {
       name: "Budget",
       href: "/budget",
       icon: PiggyBank,
-    },
-    {
-      name: "Community",
-      href: "/community",
-      icon: Users,
     },
     {
       name: "AI Assistant",

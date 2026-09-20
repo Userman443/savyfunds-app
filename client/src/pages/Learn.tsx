@@ -161,7 +161,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Budgeting 101: How to Create Your First Budget",
     description: "A step-by-step guide to creating and maintaining your first budget, including free templates and tools to make the process easier.",
     url: "https://www.nerdwallet.com/article/finance/how-to-budget",
-    imageUrl: "https://i.imgur.com/mTJDYBF.jpg",
+    imageUrl: "/images/learn/budgeting-beginners.webp",
     category: "budgeting",
     level: "beginner",
     duration: "10 min read",
@@ -172,7 +172,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Why You Need an Emergency Fund and How to Build One",
     description: "Learn why emergency funds are essential for financial security and practical steps to build yours, even with limited income.",
     url: "https://www.investopedia.com/articles/personal-finance/040915/how-much-cash-should-i-keep-bank.asp",
-    imageUrl: "https://i.imgur.com/N3GLJTK.jpg",
+    imageUrl: "/images/learn/emergency-fund-basics.webp",
     category: "saving",
     level: "beginner",
     duration: "8 min read",
@@ -183,7 +183,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Understanding and Improving Your Credit Score",
     description: "Discover what makes up your credit score, how to check it for free, and simple steps to improve it over time.",
     url: "https://www.consumerfinance.gov/about-us/blog/credit-score-myths-might-be-holding-you-back-improving-your-credit/",
-    imageUrl: "https://i.imgur.com/QdrUbPh.jpg",
+    imageUrl: "/images/learn/credit-score-basics.webp",
     category: "credit",
     level: "beginner",
     duration: "12 min read",
@@ -196,7 +196,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Strategic Approaches to Paying Off Debt",
     description: "Compare different debt repayment strategies including the debt snowball, debt avalanche, and debt consolidation to find what works best for your situation.",
     url: "https://www.ramseysolutions.com/debt/debt-snowball-vs-debt-avalanche",
-    imageUrl: "https://i.imgur.com/WQbGGrX.jpg",
+    imageUrl: "/images/learn/debt-repayment-strategies.webp",
     category: "debt",
     level: "intermediate",
     duration: "15 min read",
@@ -207,7 +207,7 @@ const financialArticles: FinancialArticle[] = [
     title: "ETF Investing: Building a Diversified Portfolio",
     description: "Learn how to use ETFs to build a low-cost, diversified investment portfolio that matches your financial goals and risk tolerance.",
     url: "https://www.morningstar.com/etfs/fundamentals-investing-etfs",
-    imageUrl: "https://i.imgur.com/FEyKESw.jpg",
+    imageUrl: "/images/learn/investing-etf-fundamentals.webp",
     category: "investing",
     level: "intermediate",
     duration: "18 min read",
@@ -218,7 +218,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Maximizing Tax Efficiency in Your Investment Strategy",
     description: "Strategies to minimize tax impact on your investments through asset location, tax-loss harvesting, and optimal use of retirement accounts.",
     url: "https://www.schwab.com/learn/story/tax-efficient-investing-why-its-important",
-    imageUrl: "https://i.imgur.com/6gFvFe2.jpg",
+    imageUrl: "/images/learn/tax-efficient-investing.webp",
     category: "investing",
     level: "intermediate",
     duration: "14 min read",
@@ -231,7 +231,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Real Estate Investment Strategies for Wealth Building",
     description: "Explore different approaches to real estate investing, from rental properties to REITs, with analysis of potential returns and risks.",
     url: "https://www.biggerpockets.com/blog/2015/12/04/real-estate-vs-stocks-performance-comparison",
-    imageUrl: "https://i.imgur.com/yNtIWqs.jpg",
+    imageUrl: "/images/learn/real-estate-investment.webp",
     category: "investing",
     level: "advanced",
     duration: "20 min read",
@@ -242,7 +242,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Sustainable Retirement Income Strategies",
     description: "Advanced techniques for creating reliable retirement income streams, including withdrawal strategies, Social Security optimization, and tax planning.",
     url: "https://www.kitces.com/blog/the-problem-with-fireing-at-4-and-the-need-for-flexible-spending-rules/",
-    imageUrl: "https://i.imgur.com/aA94Gnr.jpg",
+    imageUrl: "/images/learn/retirement-income-strategies.webp",
     category: "retirement",
     level: "advanced",
     duration: "25 min read",
@@ -253,7 +253,7 @@ const financialArticles: FinancialArticle[] = [
     title: "Beyond the Basics: Advanced Asset Allocation Strategies",
     description: "Understand factor investing, alternative assets, and risk parity approaches to optimize your portfolio beyond traditional asset allocation.",
     url: "https://www.portfoliovisualizer.com/articles/asset-allocation-in-theory-and-practice",
-    imageUrl: "https://i.imgur.com/LswGS5t.jpg",
+    imageUrl: "/images/learn/advanced-asset-allocation.webp",
     category: "investing",
     level: "advanced",
     duration: "22 min read",
@@ -836,7 +836,7 @@ const Learn = () => {
                 </div>
                 <Separator />
                 <div>
-                  <h3 className="font-medium mb-1">SavyFunds YouTube Channel</h3>
+                  <h3 className="font-medium mb-1">savyfunds YouTube Channel</h3>
                   <p className="text-sm text-muted-foreground">Watch our educational videos on financial literacy and wealth building</p>
                   <a 
                     href="http://www.youtube.com/@SavyfundsInc" 
