@@ -848,6 +848,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
     next();
   };
+
+  // Publishing auth for news: accepts a logged-in admin session OR the
+  // NEWS_API_TOKEN bearer token, so automated publishing (scripts, cron)
+  // works without an interactive login. Set NEWS_API_TOKEN in the host env.
+  const publishNewsAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const token = process.env.NEWS_API_TOKEN;
+    const authHeader = req.headers.authorization;
+    if (token && authHeader === `Bearer ${token}`) {
+      return next();
+    }
+    return authenticateMiddleware(req, res, next);
+  };
   
   // Location and currency routes
   apiRouter.get("/user/location", async (req, res) => {
@@ -1134,7 +1146,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Protected route for publishing news articles (admin only)
-  apiRouter.post("/news", authenticateMiddleware, async (req, res) => {
+  apiRouter.post("/news", publishNewsAuth, async (req, res) => {
     try {
       // TODO: Add admin role check here when user roles are implemented
       
