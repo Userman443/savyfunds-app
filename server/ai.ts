@@ -1,10 +1,10 @@
 /**
  * SavyFunds AI orchestration layer.
  *
- * All AI features run on Google Gemini (free tier) via ./lib/savyfunds-ai.
- * No OpenAI or Anthropic clients are constructed here: those SDKs throw at
- * import time when their API keys are absent, which crashed the server on
- * startup. Every function degrades gracefully when the Gemini key is unset.
+ * All AI features run on OpenRouter free-tier models via ./lib/savyfunds-ai.
+ * The @google/generative-ai SDK is no longer used: Google's project-level
+ * 403 blocked every call. Every function degrades gracefully when the
+ * OpenRouter key is unset.
  */
 import { askSavyFundsAI, isSavyFundsAIAvailable } from "./lib/savyfunds-ai";
 

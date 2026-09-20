@@ -1,14 +1,10 @@
 /**
  * SavyFunds AI Service
  *
- * Uses Google's Gemini API (free tier key from Google AI Studio) for
- * intelligent financial responses. No paid AI subscription required.
- * The AI provider branding is hidden - responses appear as "SavyFunds AI".
+ * Uses OpenRouter's free-tier models (no paid subscription required) for
+ * intelligent financial responses. The AI provider branding is hidden -
+ * responses appear as "SavyFunds AI".
  */
-
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
 
 export interface SavyFundsAIResponse {
   answer: string;
@@ -17,11 +13,17 @@ export interface SavyFundsAIResponse {
   relatedTopics?: string[];
 }
 
+const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+
+// Free OpenRouter model (no billing required). Verified live 2026-09-20.
+// Override with the OPENROUTER_MODEL environment variable if needed.
+const DEFAULT_MODEL = "qwen/qwen3.8-27b:free";
+
 const SYSTEM_PROMPT = `You are SavyFunds AI, a friendly and knowledgeable financial literacy assistant. Your role is to help young adults (18-35) understand personal finance in simple, practical terms.
 
 IMPORTANT GUIDELINES:
 - You are SavyFunds AI, a financial education assistant
-- NEVER mention Google, Gemini, OpenAI, GPT, ChatGPT, or any AI company names
+- NEVER mention OpenRouter, Qwen, Google, Gemini, OpenAI, GPT, ChatGPT, or any AI company names
 - NEVER say "As an AI" - instead say "As your financial assistant"
 - Explain concepts clearly without jargon
 - Give practical, actionable advice
@@ -60,22 +62,48 @@ export async function askSavyFundsAI(
   question: string,
   context?: string
 ): Promise<SavyFundsAIResponse> {
-  try {
-    const model = genAI.getGenerativeModel({
-      // gemini-2.5-flash was retired by Google (404 for new API keys);
-      // gemini-3.6-flash is the current free-tier flash model.
-      model: "gemini-3.6-flash",
-      generationConfig: { responseMimeType: "application/json" },
-    });
+  const apiKey = process.env.OPENROUTER_API_KEY || "";
+  if (!apiKey) {
+    throw new Error("OpenRouter API key not configured");
+  }
+  const model = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
 
+  try {
     const userMessage = context
       ? `Context: ${context}\n\nQuestion: ${question}`
       : question;
 
-    const result = await model.generateContent(
-      `${SYSTEM_PROMPT}\n\n---\n\n${userMessage}`
-    );
-    const content = result.response.text();
+    const res = await fetch(OPENROUTER_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://www.savyfunds.com",
+        "X-Title": "SavyFunds",
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: userMessage },
+        ],
+        response_format: { type: "json_object" },
+        temperature: 0.7,
+        max_tokens: 1200,
+      }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "");
+      throw new Error(
+        `OpenRouter request failed (${res.status}): ${errText.slice(0, 200)}`
+      );
+    }
+
+    const data = (await res.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+    const content = data.choices?.[0]?.message?.content;
     if (!content) {
       throw new Error("No response from AI service");
     }
@@ -103,5 +131,5 @@ export async function askSavyFundsAI(
 }
 
 export function isSavyFundsAIAvailable(): boolean {
-  return !!process.env.GOOGLE_AI_API_KEY;
+  return !!process.env.OPENROUTER_API_KEY;
 }

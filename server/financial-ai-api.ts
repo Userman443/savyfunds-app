@@ -139,7 +139,7 @@ export interface UserContext {
  * Generate a response to financial questions: AI first, database as fallback
  *
  * Strategy:
- * - SavyFunds AI (Gemini) answers every question first.
+ * - SavyFunds AI (OpenRouter free tier) answers every question first.
  * - The pre-compiled database is the fallback when AI is unavailable, fails,
  *   or returns an empty answer (e.g. API outage, quota exhausted, key missing).
  * - AI responses are cached so repeated questions stay fast and cheap; database
@@ -157,7 +157,7 @@ export async function generateFinancialAiResponse(query: string, userContext?: U
     return cachedResponse;
   }
 
-  // Primary path: SavyFunds AI (Gemini)
+  // Primary path: SavyFunds AI (OpenRouter)
   if (isSavyFundsAIAvailable()) {
     try {
       // Build context string from user profile for personalization
