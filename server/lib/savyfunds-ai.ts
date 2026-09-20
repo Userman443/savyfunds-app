@@ -62,7 +62,9 @@ export async function askSavyFundsAI(
 ): Promise<SavyFundsAIResponse> {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      // gemini-2.5-flash was retired by Google (404 for new API keys);
+      // gemini-3.6-flash is the current free-tier flash model.
+      model: "gemini-3.6-flash",
       generationConfig: { responseMimeType: "application/json" },
     });
 
