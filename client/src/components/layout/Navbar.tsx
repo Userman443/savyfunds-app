@@ -168,7 +168,18 @@ export default function Navbar({ user: propsUser, onLogout }: NavbarProps) {
       <div className="w-full max-w-7xl mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2"
+            onClick={(e) => {
+              // If already on the dashboard, scroll back to the top so the
+              // logo tap always visibly responds instead of appearing dead.
+              if (location === "/dashboard") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+          >
             <span className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-primary">
               savyfunds<span className="align-super text-xs md:text-sm">™</span>
             </span>
