@@ -1,0 +1,1004 @@
+import React, { useState } from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import HelpButton from "@/components/ui/help-button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { Search, MessageSquare, ThumbsUp, Share2, Award, Users, Lightbulb, TrendingUp, Trophy, Send, X } from "lucide-react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { queryClient } from "@/lib/queryClient";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
+const Community = () => {
+  // Fetch current user
+  const { data: user } = useQuery({
+    queryKey: ["/api/auth/me"],
+  });
+  
+  // Fetch forum categories
+  const { data: categoriesData, isLoading: loadingCategories } = useQuery({
+    queryKey: ["/api/community/categories"],
+  });
+  
+  // Fetch forum posts
+  const { data: postsData, isLoading: loadingPosts } = useQuery({
+    queryKey: ["/api/community/posts"],
+  });
+  
+  // Format posts data for display
+  const discussions = React.useMemo(() => {
+    if (!postsData) return [];
+    
+    return postsData.map((post: any) => {
+      // Format relative time (simple implementation)
+      const getRelativeTime = (date: string) => {
+        const now = new Date();
+        const postDate = new Date(date);
+        const diffTime = Math.abs(now.getTime() - postDate.getTime());
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return "today";
+        if (diffDays === 1) return "yesterday";
+        if (diffDays < 7) return `${diffDays} days ago`;
+        if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+        return `${Math.floor(diffDays / 30)} months ago`;
+      };
+      
+      return {
+        id: post.id,
+        title: post.title,
+        author: post.displayName || "Anonymous User", // Will be replaced with actual user data
+        authorLevel: post.level || 1,
+        authorAvatar: null,
+        date: getRelativeTime(post.createdAt),
+        content: post.content,
+        likes: post.likeCount || 0,
+        replies: post.commentCount || 0,
+        tags: post.tags || []
+      };
+    });
+  }, [postsData]);
+  
+  // Mock success stories
+  const successStories = [
+    {
+      id: 1,
+      title: "How I paid off $15,000 in student loans in 18 months",
+      author: "Jason M.",
+      authorLevel: 6,
+      authorAvatar: null,
+      date: "2 weeks ago",
+      excerpt: "When I graduated, I was determined to get rid of my debt as quickly as possible. Here's the exact strategy I used to become debt-free in just 18 months...",
+      likes: 213,
+      comments: 56,
+      tags: ["Debt Payoff", "Success Story"]
+    },
+    {
+      id: 2,
+      title: "From zero to $10k emergency fund in one year",
+      author: "Elena R.",
+      authorLevel: 5,
+      authorAvatar: null,
+      date: "1 month ago",
+      excerpt: "I never thought I could save so much while working a part-time job and attending school. The key was automating my savings and finding creative ways to cut expenses...",
+      likes: 184,
+      comments: 42,
+      tags: ["Emergency Fund", "Saving", "Success Story"]
+    }
+  ];
+  
+  // Mock expert advice
+  const expertAdvice = [
+    {
+      id: 1,
+      title: "The 50/30/20 Rule: A Simple Budgeting Framework",
+      author: "Dr. Maya Peterson",
+      role: "Financial Education Specialist",
+      authorAvatar: null,
+      date: "3 days ago",
+      excerpt: "One of the simplest and most effective budgeting frameworks is the 50/30/20 rule. Let me explain how it works and why it's so powerful for young adults...",
+      likes: 152,
+      comments: 37
+    },
+    {
+      id: 2,
+      title: "Investment Basics: Start Small, Think Long-Term",
+      author: "Robert Chen, CFA",
+      role: "Investment Advisor",
+      authorAvatar: null,
+      date: "1 week ago",
+      excerpt: "Many young people think they need thousands of dollars to start investing. That's a myth. Here's how you can begin building wealth with just a few dollars...",
+      likes: 183,
+      comments: 45
+    }
+  ];
+  
+  // States for UI interactions
+  const [newComment, setNewComment] = useState("");
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [showPartnerModal, setShowPartnerModal] = useState(false);
+  const [showDiscussionModal, setShowDiscussionModal] = useState(false);
+  const [selectedChallenge, setSelectedChallenge] = useState<number | null>(null);
+  const { toast } = useToast();
+  
+  // Form state for new discussion
+  const [newDiscussion, setNewDiscussion] = useState({
+    title: "",
+    content: "",
+    categoryId: 1, // Default to first category
+    tags: [] as string[]
+  });
+  
+  // Create post mutation
+  const createPostMutation = useMutation({
+    mutationFn: async (post: any) => {
+      const res = await fetch('/api/community/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(post),
+      });
+      if (!res.ok) throw new Error('Failed to create post');
+      return res.json();
+    },
+    onSuccess: () => {
+      // Invalidate and refetch posts
+      queryClient.invalidateQueries({ queryKey: ["/api/community/posts"] });
+      toast({
+        title: "Discussion created!",
+        description: "Your discussion has been posted to the community.",
+      });
+      setShowDiscussionModal(false);
+      // Reset form
+      setNewDiscussion({
+        title: "",
+        content: "",
+        categoryId: 1,
+        tags: []
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error creating discussion",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Handle discussion submission
+  const handleSubmitDiscussion = () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to create a discussion.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!newDiscussion.title || !newDiscussion.content) {
+      toast({
+        title: "Missing information",
+        description: "Please provide a title and content for your discussion.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    createPostMutation.mutate({
+      title: newDiscussion.title,
+      content: newDiscussion.content,
+      userId: user.id,
+      categoryId: newDiscussion.categoryId,
+      tags: newDiscussion.tags.length > 0 ? newDiscussion.tags : null,
+      type: "discussion"
+    });
+  };
+  
+  // Mock challenges
+  const challenges = [
+    {
+      id: 1,
+      title: "30-Day No Eating Out Challenge",
+      participants: 1247,
+      completionRate: 68,
+      difficulty: "Medium",
+      description: "Skip restaurants and takeout for 30 days. Cook at home and see how much you can save!",
+      prizePool: "$250",
+      endDate: "May 15, 2025",
+      leaderboard: [
+        { name: "Maria G.", points: 850, rank: 1 },
+        { name: "Kevin T.", points: 780, rank: 2 },
+        { name: "Jamie L.", points: 715, rank: 3 },
+        { name: "David R.", points: 690, rank: 4 },
+        { name: "Sofia K.", points: 655, rank: 5 }
+      ],
+      comments: [
+        { author: "Jamie L.", text: "I'm saving so much money already! Great challenge.", time: "2 days ago" },
+        { author: "David R.", text: "Anyone have good meal prep tips to share?", time: "1 day ago" }
+      ]
+    },
+    {
+      id: 2,
+      title: "Save $500 in 60 Days",
+      participants: 3582,
+      completionRate: 52,
+      difficulty: "Hard",
+      description: "Challenge yourself to save $500 in just two months through budget cuts and extra income.",
+      prizePool: "$500",
+      endDate: "June 1, 2025",
+      leaderboard: [
+        { name: "Tyler M.", points: 920, rank: 1 },
+        { name: "Nina S.", points: 895, rank: 2 },
+        { name: "Carlos P.", points: 840, rank: 3 },
+        { name: "Layla G.", points: 810, rank: 4 },
+        { name: "Jordan K.", points: 785, rank: 5 }
+      ],
+      comments: [
+        { author: "Nina S.", text: "I've been doing side gigs on weekends to reach my goal faster!", time: "3 days ago" },
+        { author: "Jordan K.", text: "This is really pushing my discipline, but I'm learning a lot.", time: "12 hours ago" }
+      ]
+    },
+    {
+      id: 3,
+      title: "7-Day Expense Tracking",
+      participants: 5241,
+      completionRate: 87,
+      difficulty: "Easy",
+      description: "Track every single expense for one week to become aware of your spending patterns.",
+      prizePool: "$100",
+      endDate: "April 30, 2025",
+      leaderboard: [
+        { name: "Samantha P.", points: 500, rank: 1 },
+        { name: "Ethan W.", points: 485, rank: 2 },
+        { name: "Olivia R.", points: 470, rank: 3 },
+        { name: "Aiden L.", points: 455, rank: 4 },
+        { name: "Emma S.", points: 440, rank: 5 }
+      ],
+      comments: [
+        { author: "Ethan W.", text: "I had no idea I was spending so much on subscription services!", time: "1 day ago" },
+        { author: "Emma S.", text: "Using the SavyFunds app made tracking so easy.", time: "3 hours ago" }
+      ]
+    },
+    {
+      id: 4,
+      title: "Peer-to-Peer Money Challenge: Coffee Budget Swap",
+      participants: 1873,
+      completionRate: 74,
+      difficulty: "Medium",
+      description: "Challenge a friend to swap coffee budgets for 2 weeks. Learn how different habits affect your spending!",
+      prizePool: "$200",
+      endDate: "May 8, 2025",
+      leaderboard: [
+        { name: "Ryan & Jessica", points: 780, rank: 1 },
+        { name: "Mike & Sarah", points: 730, rank: 2 },
+        { name: "Dani & Taylor", points: 695, rank: 3 },
+        { name: "Chris & Jamie", points: 660, rank: 4 },
+        { name: "Alex & Morgan", points: 635, rank: 5 }
+      ],
+      comments: [
+        { author: "Sarah B.", text: "My partner spends $25/week on fancy coffee! I had no idea how different our habits were.", time: "2 days ago" },
+        { author: "Mike L.", text: "We're both saving money by making each other accountable. Love this challenge format!", time: "5 hours ago" }
+      ]
+    }
+  ];
+
+  return (
+    <>
+      <Navbar />
+      
+      <main className="container mx-auto px-4 md:px-6 py-6 page-transition">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-2">savyfunds Community</h1>
+          <p className="text-neutral-600">Learn together, share experiences, and grow your financial knowledge</p>
+        </div>
+        
+        <div className="mb-6 flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500" />
+            <Input placeholder="Search discussions, stories, and advice..." className="pl-9" />
+          </div>
+          <Button onClick={() => setShowDiscussionModal(true)}>
+            <MessageSquare className="h-4 w-4 mr-2" />
+            Start a Discussion
+          </Button>
+        </div>
+        
+        <Tabs defaultValue="discussions">
+          <TabsList className="mb-6 w-full grid grid-cols-2 sm:grid-cols-4 gap-1">
+            <TabsTrigger value="discussions" className="text-xs sm:text-sm">
+              <MessageSquare className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Discussions</span>
+              <span className="xs:hidden">Discuss</span>
+            </TabsTrigger>
+            <TabsTrigger value="success-stories" className="text-xs sm:text-sm">
+              <Award className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Success Stories</span>
+              <span className="xs:hidden">Success</span>
+            </TabsTrigger>
+            <TabsTrigger value="expert-advice" className="text-xs sm:text-sm">
+              <Lightbulb className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Expert Advice</span>
+              <span className="xs:hidden">Advice</span>
+            </TabsTrigger>
+            <TabsTrigger value="challenges" className="text-xs sm:text-sm">
+              <TrendingUp className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Challenges</span>
+              <span className="xs:hidden">Goals</span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="discussions" className="space-y-6">
+            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-3 xs:gap-0">
+              <h2 className="text-lg sm:text-xl font-semibold">Recent Discussions</h2>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="text-xs">Recent</Button>
+                <Button variant="outline" size="sm" className="text-xs">Popular</Button>
+                <Button variant="outline" size="sm" className="text-xs">My Topics</Button>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              {loadingPosts ? (
+                // Loading skeleton for posts
+                Array.from({ length: 3 }).map((_, index) => (
+                  <Card key={index} className="hover:border-primary-200 transition-colors">
+                    <CardContent className="p-6">
+                      <div className="flex gap-4">
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                        <div className="flex-1 space-y-2">
+                          <Skeleton className="h-5 w-3/4" />
+                          <Skeleton className="h-4 w-1/2" />
+                          <Skeleton className="h-16 w-full mt-2" />
+                          <div className="flex gap-2 mt-2">
+                            <Skeleton className="h-6 w-16" />
+                            <Skeleton className="h-6 w-16" />
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : discussions && discussions.length > 0 ? (
+                discussions.map((discussion: any) => (
+                  <Card key={discussion.id} className="hover:border-primary-200 transition-colors">
+                    <CardContent className="p-6">
+                      <div className="flex gap-4">
+                        <Avatar className="h-10 w-10">
+                          {discussion.authorAvatar && (
+                            <AvatarImage src={discussion.authorAvatar} alt={discussion.author} />
+                          )}
+                          <AvatarFallback className="bg-primary-100 text-primary-700">
+                            {discussion.author.split(' ').map((n: string) => n[0]).join('')}
+                          </AvatarFallback>
+                        </Avatar>
+                      
+                      <div className="flex-1">
+                        <div className="flex justify-between">
+                          <div>
+                            <h3 className="font-semibold text-lg">{discussion.title}</h3>
+                            <div className="flex items-center text-sm text-neutral-500 mt-1">
+                              <span>{discussion.author}</span>
+                              <span className="mx-2">•</span>
+                              <Badge variant="outline" className="font-normal bg-primary-50">
+                                Level {discussion.authorLevel}
+                              </Badge>
+                              <span className="mx-2">•</span>
+                              <span>{discussion.date}</span>
+                            </div>
+                          </div>
+                          <div className="flex gap-3 text-neutral-500">
+                            <div className="flex items-center">
+                              <ThumbsUp className="h-4 w-4 mr-1" />
+                              <span className="text-sm">{discussion.likes}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <MessageSquare className="h-4 w-4 mr-1" />
+                              <span className="text-sm">{discussion.replies}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <p className="mt-3 text-neutral-700">{discussion.content}</p>
+                        
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {discussion.tags.map((tag) => (
+                            <Badge key={tag} variant="secondary" className="font-normal">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        
+                        <div className="mt-4 flex justify-between">
+                          <Button variant="outline" size="sm">Read More</Button>
+                          <div className="flex gap-2">
+                            <Button variant="ghost" size="sm">
+                              <ThumbsUp className="h-4 w-4 mr-2" />
+                              Like
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Reply
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Share2 className="h-4 w-4 mr-2" />
+                              Share
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="flex justify-center">
+              <Button variant="outline">Load More Discussions</Button>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="success-stories" className="space-y-6">
+            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-3 xs:gap-0">
+              <h2 className="text-lg sm:text-xl font-semibold">Success Stories</h2>
+              <Button variant="outline" size="sm" className="text-xs">
+                Share Your Story
+              </Button>
+            </div>
+            
+            <div className="space-y-6">
+              {successStories.map((story) => (
+                <Card key={story.id} className="hover:border-secondary-200 transition-colors">
+                  <CardContent className="p-6">
+                    <div className="flex gap-4">
+                      <Avatar className="h-10 w-10">
+                        {story.authorAvatar && (
+                          <AvatarImage src={story.authorAvatar} alt={story.author} />
+                        )}
+                        <AvatarFallback className="bg-secondary-100 text-secondary-700">
+                          {story.author.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      <div className="flex-1">
+                        <div className="flex justify-between">
+                          <div>
+                            <h3 className="font-semibold text-lg">{story.title}</h3>
+                            <div className="flex items-center text-sm text-neutral-500 mt-1">
+                              <span>{story.author}</span>
+                              <span className="mx-2">•</span>
+                              <Badge variant="outline" className="font-normal bg-secondary-50 text-secondary-700">
+                                Level {story.authorLevel}
+                              </Badge>
+                              <span className="mx-2">•</span>
+                              <span>{story.date}</span>
+                            </div>
+                          </div>
+                          <div className="flex gap-3 text-neutral-500">
+                            <div className="flex items-center">
+                              <ThumbsUp className="h-4 w-4 mr-1" />
+                              <span className="text-sm">{story.likes}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <MessageSquare className="h-4 w-4 mr-1" />
+                              <span className="text-sm">{story.comments}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <p className="mt-3 text-neutral-700">{story.excerpt}</p>
+                        
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {story.tags.map((tag) => (
+                            <Badge key={tag} variant="secondary" className="font-normal bg-secondary-100 text-secondary-700 hover:bg-secondary-200">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        
+                        <div className="mt-4 flex justify-between">
+                          <Button variant="outline" size="sm">Read Full Story</Button>
+                          <div className="flex gap-2">
+                            <Button variant="ghost" size="sm">
+                              <ThumbsUp className="h-4 w-4 mr-2" />
+                              Like
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Comment
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Share2 className="h-4 w-4 mr-2" />
+                              Share
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="flex justify-center">
+              <Button variant="outline">View More Success Stories</Button>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="expert-advice" className="space-y-6">
+            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-3 xs:gap-0">
+              <h2 className="text-lg sm:text-xl font-semibold">Expert Financial Advice</h2>
+              <Button variant="outline" size="sm" className="text-xs">
+                All Topics
+              </Button>
+            </div>
+            
+            <div className="space-y-6">
+              {expertAdvice.map((advice) => (
+                <Card key={advice.id} className="hover:border-accent-200 transition-colors">
+                  <CardContent className="p-6">
+                    <div className="flex gap-4">
+                      <Avatar className="h-10 w-10">
+                        {advice.authorAvatar && (
+                          <AvatarImage src={advice.authorAvatar} alt={advice.author} />
+                        )}
+                        <AvatarFallback className="bg-accent-100 text-accent-700">
+                          {advice.author.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      <div className="flex-1">
+                        <div className="flex justify-between">
+                          <div>
+                            <h3 className="font-semibold text-lg">{advice.title}</h3>
+                            <div className="flex items-center text-sm text-neutral-500 mt-1">
+                              <span>{advice.author}</span>
+                              <span className="mx-2">•</span>
+                              <Badge variant="outline" className="font-normal bg-accent-50 text-accent-700">
+                                {advice.role}
+                              </Badge>
+                              <span className="mx-2">•</span>
+                              <span>{advice.date}</span>
+                            </div>
+                          </div>
+                          <div className="flex gap-3 text-neutral-500">
+                            <div className="flex items-center">
+                              <ThumbsUp className="h-4 w-4 mr-1" />
+                              <span className="text-sm">{advice.likes}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <MessageSquare className="h-4 w-4 mr-1" />
+                              <span className="text-sm">{advice.comments}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <p className="mt-3 text-neutral-700">{advice.excerpt}</p>
+                        
+                        <div className="mt-4 flex justify-between">
+                          <Button variant="outline" size="sm">Read Full Article</Button>
+                          <div className="flex gap-2">
+                            <Button variant="ghost" size="sm">
+                              <ThumbsUp className="h-4 w-4 mr-2" />
+                              Like
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Comment
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Share2 className="h-4 w-4 mr-2" />
+                              Share
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="flex justify-center">
+              <Button variant="outline">View More Expert Advice</Button>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="challenges" className="space-y-6">
+            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-3 xs:gap-0 mb-2">
+              <h2 className="text-lg sm:text-xl font-semibold">Financial Challenges</h2>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="text-xs">Active</Button>
+                <Button variant="outline" size="sm" className="text-xs">Upcoming</Button>
+                <Button variant="outline" size="sm" className="text-xs">Completed</Button>
+              </div>
+            </div>
+            
+            {/* Highlight Peer-to-Peer challenges section */}
+            <Card className="bg-gradient-to-r from-[#f1ffe7] to-[#e3f5ff] border-[#2C6E49] border-2">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl text-[#2C6E49]">NEW: Peer-to-Peer Money Challenges</CardTitle>
+                <CardDescription>
+                  Partner up with a friend to learn, save, and win together! Compare spending habits and hold each other accountable.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Why try peer challenges?</h4>
+                    <ul className="list-disc pl-5 space-y-1 text-sm">
+                      <li>Learn from each other's spending habits</li>
+                      <li>Increase accountability and motivation</li>
+                      <li>Double your chances to win prizes</li>
+                      <li>Make financial learning social and fun</li>
+                    </ul>
+                  </div>
+                  <div className="flex items-center justify-center sm:justify-end">
+                    <Button 
+                      className="bg-[#2C6E49] hover:bg-[#235539]"
+                      onClick={() => setShowPartnerModal(true)}
+                    >
+                      <Users className="h-4 w-4 mr-2" />
+                      Find a Challenge Partner
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {challenges.map((challenge) => (
+                <Card key={challenge.id} className="hover:shadow-md transition-shadow">
+                  <CardHeader className="pb-2">
+                    <CardTitle>{challenge.title}</CardTitle>
+                    <CardDescription className="flex justify-between items-center">
+                      <Badge className={`
+                        ${challenge.difficulty === "Easy" ? "bg-secondary-100 text-secondary-700" : 
+                          challenge.difficulty === "Medium" ? "bg-primary-100 text-primary-700" : 
+                          "bg-accent-100 text-accent-700"}
+                      `}>
+                        {challenge.difficulty}
+                      </Badge>
+                      <span className="text-sm">Ends: {challenge.endDate}</span>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-neutral-600 mb-4">
+                      {challenge.description}
+                    </p>
+                    
+                    <div className="space-y-3">
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span>Completion Rate</span>
+                          <span>{challenge.completionRate}%</span>
+                        </div>
+                        <div className="w-full bg-neutral-200 rounded-full h-2">
+                          <div 
+                            className="bg-primary-500 h-2 rounded-full" 
+                            style={{ width: `${challenge.completionRate}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-sm text-neutral-600">
+                        <div className="flex items-center">
+                          <Users className="h-4 w-4 mr-2" />
+                          {challenge.participants.toLocaleString()} participants
+                        </div>
+                        <div className="flex items-center">
+                          <Trophy className="h-4 w-4 mr-2 text-yellow-500" />
+                          Prize: {challenge.prizePool}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Tabs defaultValue="details" className="mt-4">
+                      <TabsList className="grid w-full grid-cols-3 gap-1">
+                        <TabsTrigger value="details" className="text-xs sm:text-sm">
+                          Details
+                        </TabsTrigger>
+                        <TabsTrigger value="leaderboard" className="text-xs sm:text-sm">
+                          <span className="hidden xs:inline">Leaderboard</span>
+                          <span className="xs:hidden">Leaders</span>
+                        </TabsTrigger>
+                        <TabsTrigger value="comments" className="text-xs sm:text-sm">
+                          <span className="hidden xs:inline">Comments</span>
+                          <span className="xs:hidden">Chat</span>
+                        </TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="details" className="pt-4">
+                        <div className="space-y-4">
+                          <div>
+                            <h4 className="font-medium text-sm mb-1">How to participate:</h4>
+                            <ol className="list-decimal pl-5 text-sm">
+                              <li>Join the challenge</li>
+                              <li>Complete daily tasks in the SavyFunds app</li>
+                              <li>Track your progress and earn points</li>
+                              <li>Share your insights with the community</li>
+                            </ol>
+                          </div>
+                          <Button 
+                            className="w-full"
+                            onClick={() => {
+                              setSelectedChallenge(challenge.id);
+                              setShowJoinModal(true);
+                            }}
+                          >Join Challenge</Button>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="leaderboard" className="pt-4">
+                        <div className="space-y-3">
+                          <h4 className="font-medium text-sm">Top Performers</h4>
+                          {challenge.leaderboard.map((entry, index) => (
+                            <div key={index} className="flex items-center justify-between border-b pb-2 last:border-0">
+                              <div className="flex items-center">
+                                <span className={`w-5 h-5 rounded-full flex items-center justify-center mr-2 text-xs
+                                  ${index === 0 ? "bg-yellow-100 text-yellow-700" : 
+                                    index === 1 ? "bg-neutral-200 text-neutral-700" : 
+                                    index === 2 ? "bg-amber-100 text-amber-700" : "bg-neutral-100 text-neutral-700"
+                                  }`}>
+                                  {entry.rank}
+                                </span>
+                                <span>{entry.name}</span>
+                              </div>
+                              <span className="font-medium">{entry.points} pts</span>
+                            </div>
+                          ))}
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="comments" className="pt-4">
+                        <div className="space-y-3">
+                          {challenge.comments.map((comment, index) => (
+                            <div key={index} className="border-b pb-3 last:border-0">
+                              <div className="flex justify-between items-center mb-1">
+                                <span className="font-medium text-sm">{comment.author}</span>
+                                <span className="text-xs text-neutral-500">{comment.time}</span>
+                              </div>
+                              <p className="text-sm">{comment.text}</p>
+                            </div>
+                          ))}
+                          <div className="pt-2 flex gap-2">
+                            <Input 
+                              placeholder="Add your comment..." 
+                              value={newComment}
+                              onChange={(e) => setNewComment(e.target.value)}
+                              className="text-sm"
+                            />
+                            <Button size="sm" onClick={() => {
+                              if (newComment.trim()) {
+                                toast({
+                                  title: "Comment Added",
+                                  description: "Your comment was posted successfully."
+                                });
+                                setNewComment("");
+                              }
+                            }}>
+                              <Send className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-6">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="mb-4 md:mb-0">
+                  <h3 className="text-lg font-semibold mb-2">Create Your Own Challenge</h3>
+                  <p className="text-neutral-600 max-w-lg">
+                    Have a great idea for a financial challenge? Create your own and invite the community to join!
+                  </p>
+                </div>
+                <Button>
+                  Create Challenge
+                </Button>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </main>
+      
+      <Footer />
+      <HelpButton />
+
+      {/* Join Challenge Modal */}
+      <Dialog open={showJoinModal} onOpenChange={setShowJoinModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Join Financial Challenge</DialogTitle>
+            <DialogDescription>
+              {selectedChallenge && challenges.find(c => c.id === selectedChallenge)?.title}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <p className="text-sm text-neutral-600">
+              By joining this challenge, you'll be able to:
+            </p>
+            <ul className="list-disc pl-5 space-y-1 text-sm">
+              <li>Track your progress toward the challenge goal</li>
+              <li>Earn points and climb the leaderboard</li>
+              <li>Share insights with other participants</li>
+              <li>Qualify for the prize pool of {selectedChallenge && challenges.find(c => c.id === selectedChallenge)?.prizePool}</li>
+            </ul>
+            <div className="space-y-2">
+              <Label htmlFor="notifications" className="text-sm font-medium">Notifications</Label>
+              <div className="flex items-center space-x-2">
+                <input type="checkbox" id="notifications" defaultChecked />
+                <Label htmlFor="notifications" className="text-sm">Enable reminder notifications for this challenge</Label>
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="flex justify-between sm:justify-between">
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button type="button" onClick={() => {
+              toast({
+                title: "Challenge Joined!",
+                description: "You've successfully joined the challenge. Good luck!",
+              });
+              setShowJoinModal(false);
+            }}>
+              Join Challenge
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Find Partner Modal */}
+      <Dialog open={showPartnerModal} onOpenChange={setShowPartnerModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Find a Challenge Partner</DialogTitle>
+            <DialogDescription>
+              Partner up with a friend to achieve your financial goals together.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="partner-email">Invite by Email</Label>
+              <Input id="partner-email" placeholder="friend@example.com" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="message">Personal Message (Optional)</Label>
+              <Textarea id="message" placeholder="Hey! Want to team up for a financial challenge?" className="min-h-20" />
+            </div>
+            <div className="bg-primary-50 rounded-md p-3">
+              <h4 className="font-medium text-sm mb-1">Or find a partner in the community</h4>
+              <p className="text-sm text-neutral-600">Connect with other SavyFunds users looking for challenge partners.</p>
+              <Button variant="link" className="px-0 text-[#2C6E49] font-medium">
+                Browse Community Partners
+              </Button>
+            </div>
+          </div>
+          <DialogFooter className="flex justify-between sm:justify-between">
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button type="button" onClick={() => {
+              toast({
+                title: "Invitation Sent!",
+                description: "We'll notify you when your friend accepts the invitation.",
+              });
+              setShowPartnerModal(false);
+            }}>
+              Send Invitation
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Start Discussion Modal */}
+      <Dialog open={showDiscussionModal} onOpenChange={setShowDiscussionModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Start a New Discussion</DialogTitle>
+            <DialogDescription>
+              Share your questions, insights, or experiences with the community.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="discussion-title">Title</Label>
+              <Input 
+                id="discussion-title" 
+                placeholder="What's your discussion about?"
+                value={newDiscussion.title}
+                onChange={(e) => setNewDiscussion({
+                  ...newDiscussion,
+                  title: e.target.value
+                })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="discussion-content">Content</Label>
+              <Textarea 
+                id="discussion-content" 
+                placeholder="Describe your topic in detail..." 
+                className="min-h-32"
+                value={newDiscussion.content}
+                onChange={(e) => setNewDiscussion({
+                  ...newDiscussion,
+                  content: e.target.value
+                })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="discussion-tags">Tags</Label>
+              <Input 
+                id="discussion-tags" 
+                placeholder="Saving, Investing, Debt, etc. (separated by commas)"
+                onChange={(e) => setNewDiscussion({
+                  ...newDiscussion,
+                  tags: e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag)
+                })}
+              />
+            </div>
+            {loadingCategories ? (
+              <div className="mt-2">Loading categories...</div>
+            ) : categoriesData && categoriesData.length > 0 ? (
+              <div className="space-y-2">
+                <Label htmlFor="discussion-category">Category</Label>
+                <select
+                  id="discussion-category"
+                  className="w-full p-2 border rounded-md"
+                  value={newDiscussion.categoryId}
+                  onChange={(e) => setNewDiscussion({
+                    ...newDiscussion,
+                    categoryId: parseInt(e.target.value)
+                  })}
+                >
+                  {categoriesData.map((category: any) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : null}
+          </div>
+          <DialogFooter className="flex justify-between sm:justify-between">
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button 
+              type="button" 
+              onClick={handleSubmitDiscussion}
+              disabled={createPostMutation.isPending || !newDiscussion.title || !newDiscussion.content}
+            >
+              {createPostMutation.isPending ? 'Posting...' : 'Post Discussion'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
+
+export default Community;

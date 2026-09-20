@@ -1,0 +1,6 @@
+Contact: mailto:security@savyfunds.com
+Contact: mailto:partnerships@savyfunds.com
+Expires: 2026-06-23T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://savyfunds.com/.well-known/security.txt
+Policy: https://savyfunds.com/privacy-policy

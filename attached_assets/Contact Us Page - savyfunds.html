@@ -1,0 +1,129 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Savyfunds</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #2c7873;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .contact-info {
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+        .contact-info a {
+            color: #2c7873;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .social-links {
+            margin: 15px 0;
+        }
+        .social-links a {
+            margin: 0 10px;
+            color: #2c7873;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #2c7873;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .cta-button:hover {
+            background-color: #1e5a54;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Get in Touch with Savyfunds</h1>
+        <p>We’re on a mission to make financial literacy a universal right for young adults worldwide. Whether you’re a user seeking to master financial concepts or a potential partner ready to empower the next generation, we’d love to hear from you.</p>
+        <div class="contact-info">
+            <p>Email: <a href="mailto:partnerships@savyfunds.com">partnerships@savyfunds.com</a></p>
+            <p>Phone: [Your Phone Number] (Mon-Fri, 9 AM-5 PM CDT)</p>
+            <p>Connect with us: 
+                <span class="social-links">
+                    <a href="https://instagram.com/savyfunds" target="_blank">Instagram: savyfunds</a> | 
+                    <a href="https://x.com/savyfundsinc" target="_blank">X: savyfundsinc</a>
+                </span>
+            </p>
+        </div>
+        <p>Help us keep financial education free and accessible. Partner with us to pioneer a generation with financial literacy in this AI and digital age.</p>
+        <a href="mailto:partnerships@savyfunds.com?subject=Partner%20with%20Savyfunds%20to%20Support%20Financial%20Literacy" class="cta-button">Join Our Mission</a>
+    </div>
+</body>
+</html>

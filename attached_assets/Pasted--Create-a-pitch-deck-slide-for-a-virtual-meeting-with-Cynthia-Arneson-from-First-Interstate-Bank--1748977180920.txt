@@ -1,0 +1,59 @@
+# Create a pitch deck slide for a virtual meeting with Cynthia Arneson from First Interstate Bank.
+# The slide should be titled "Savyfunds Partnership Opportunity" and include:
+# - A header with the title in bold, 24pt font, centered.
+# - A subheader "Empowering Financial Literacy with First Interstate Bank" in italic, 18pt font, centered.
+# - A section with a brief intro: "Savyfunds, a fintech startup, partners with community-focused banks to empower young adults with free financial education tools, aligning with First Interstate Bank’s mission to support community growth in Billings, MT."
+# - A data visualization (bar chart or pie chart) showing:
+#   - 26% of young adults lack essential financial knowledge.
+#   - 70% face financial anxiety.
+#   - Potential to reach millions of underserved youths across the globe with support.
+# - Bullet points under "Benefits for First Interstate Bank":
+#   - Brand visibility on a top-ranked platform.
+#   - Community growth programs highlighting local impact.
+#   - A steady flow of committed, community-focused consumers.
+#   - A dynamic CSR story for digital-era leadership.
+# - A section titled "Where Your Support Goes" with bullet points:
+#   - Marketing and advertising to expand reach.
+#   - Engineering to enhance platform functionality.
+#   - Site updates for improved user experience.
+#   - Community outreach to engage underserved youths.
+#   - Content development for educational resources.
+#   - Operational scaling to support global growth.
+# - A section titled "Our Trusted Partners" below "Where Your Support Goes", listing the names:
+#   - Visa
+#   - American Express
+#   - Mastercard
+# - Use a clean design that aligns with the Savyfunds app color scheme (replace placeholders with your app's primary color [e.g., #HEX1] and secondary color [e.g., #HEX2] for text, background, and chart elements), with legible fonts (e.g., Arial or Helvetica), and a footer with "Contact: Michael Momoh, partnerships@savyfunds.com, +1 (650) 207-1804".
+# - Output the slide as an HTML file or a Python-generated image that can be saved and displayed.
+
+# If using Python with matplotlib:
+import matplotlib.pyplot as plt
+
+# Data for visualization
+categories = ['Lack Financial Knowledge', 'Face Financial Anxiety', 'Global Reach Potential']
+values = [26, 70, 100]  # 100 as a placeholder for "millions" in the chart
+
+plt.figure(figsize=(10, 6))
+plt.bar(categories, values, color='[PRIMARY_COLOR]')  # Replace [PRIMARY_COLOR] with your app's hex code
+plt.title('Impact of Financial Literacy Initiative', fontsize=16, pad=15, color='[SECONDARY_COLOR]')  # Replace [SECONDARY_COLOR]
+plt.ylabel('Percentage or Reach (in millions)', fontsize=12, color='[SECONDARY_COLOR]')
+plt.ylim(0, 120)
+for i, v in enumerate(values):
+    plt.text(i, v + 2, str(v) if i < 2 else 'Millions', ha='center', fontsize=10, color='[SECONDARY_COLOR]')
+plt.savefig('pitch_slide.png')
+print("Slide image saved as 'pitch_slide.png'")
+
+# If using HTML/CSS/JS:
+"""
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; background-color: #FFFFFF; margin: 0; padding: 20px; }
+    .slide { text-align: center; max-width: 800px; margin: auto; background-color: [PRIMARY_COLOR]; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h1 { font-size: 24pt; font-weight: bold; color: [SECONDARY_COLOR]; }
+    h2 { font-size: 18pt; font-style: italic; color: [SECONDARY_COLOR]; }
+    h3 { font-size: 16pt; color: [SECONDARY_COLOR]; }
+    p { font-size: 14pt; color: [SECONDARY_COLOR]; }
+    ul { list-style-type: none; font-size: 14pt; color: [SECONDARY_COLOR]; text-align: left; margin-left: 200px; }
+    .footer { font-size: 10pt; color:

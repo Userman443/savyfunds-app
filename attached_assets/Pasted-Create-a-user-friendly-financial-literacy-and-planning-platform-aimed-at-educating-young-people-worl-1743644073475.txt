@@ -1,0 +1,10 @@
+Create a user-friendly financial literacy and planning platform aimed at educating young people worldwide, especially in regions with internet access. The platform should integrate AI-driven reasoning to provide a highly personalized user experience, tailoring financial education and tools based on user age, experience level, and financial goals. The system should be designed to adapt dynamically to each user’s needs, ensuring that the content and features evolve with their understanding of financial concepts.
+
+The platform should offer a calming, fluid, and intuitive experience, using a minimalistic design with soft, soothing colors such as pastel blues, greens, and purples. Smooth animations should guide the user without overwhelming them, and the interface should be easy to navigate with readable fonts and clear icons. The design should prioritize accessibility, ensuring users of varying income levels and connectivity can interact with it smoothly.
+
+Incorporate interactive elements like quizzes, budgeting calculators, and goal-setting tools, with AI-driven suggestions that evolve based on the user’s inputs. AI should analyze user responses and adapt the content in real-time, ensuring each session is relevant and helps the user build their financial literacy step by step. The platform should avoid overwhelming the user while providing helpful, actionable insights.
+
+Utilize visual storytelling, infographics, and animations to explain complex financial concepts in an easy-to-understand format. AI should enhance this by personalizing the content based on factors like user’s age, location, learning style, and financial situation, while considering cognitive load and avoiding excessive information. Include an AI-powered help feature that provides contextual guidance and answers, ensuring users always feel supported.
+
+The platform must be mobile-responsive, optimized for different internet speeds, and scalable to accommodate users across various income levels. Ensure the system is inclusive, offering a wide range of financial education tools for users from teenagers in high-income areas to young adults in emerging markets."
+

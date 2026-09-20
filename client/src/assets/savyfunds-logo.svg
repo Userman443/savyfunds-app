@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="300" height="80" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main text "savyfunds" with SavyFunds brand color -->
+  <text 
+    x="10" 
+    y="55" 
+    font-family="Poppins, sans-serif" 
+    font-size="50" 
+    font-weight="600" 
+    fill="#2C6E49" 
+    letter-spacing="-1">
+    savyfunds
+  </text>
+  
+  <!-- Trademark symbol -->
+  <text 
+    x="280" 
+    y="25" 
+    font-family="Poppins, sans-serif" 
+    font-size="16" 
+    font-weight="500" 
+    fill="#2C6E49">
+    ™
+  </text>
+</svg>

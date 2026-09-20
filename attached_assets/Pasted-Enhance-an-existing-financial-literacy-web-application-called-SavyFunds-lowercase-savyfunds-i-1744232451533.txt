@@ -1,0 +1,27 @@
+Enhance an existing financial literacy web application called 'SavyFunds™' (lowercase 'savyfunds™' in branding), launched on April 6, 2025, targeting teens and young adults globally. The app is built with React, Tailwind CSS, Wouter for routing, and TanStack Query for data fetching—hosted on Replit with a GoDaddy domain. It includes App.tsx (routing), Dashboard.tsx (core components), Navbar.tsx (navigation), and AIAssistant.tsx (using /public/financial_concepts.txt for static Q&A). Add monetization features to generate revenue while keeping the app accessible, integrating seamlessly with the existing structure:
+
+Freemium Model:
+Split features into free and premium tiers:
+Free: AIAssistant (current .txt-based), basic budgeting in FinancialTools, Learn quests.
+Premium ($2.99/month or $24.99/year): Unlock StockPlayground.tsx (virtual stock trading with 3 demo stocks: 'TechCo $50', 'GreenInc $30', 'FoodLtd $20'), advanced tools (e.g., compound interest calculator in Goals.tsx), and premium challenges in Community.tsx.
+Add a PremiumTeaser.tsx component: 'Unlock stocks & more—go premium!' with a mock Stripe checkout button (alerts 'Subscribed!' for now).
+Check user status in Dashboard.tsx via mock /api/auth/me (add isPremium: true/false).
+Affiliate Partnerships:
+Update /public/financial_concepts.txt—add affiliate links to 5 concepts (e.g., 'What’s a Roth IRA? | ... Start with '), tracking clicks via /api/affiliate/click.
+Display clickable links in AIAssistant.tsx—style as underlined #2C6E49 text.
+In-App Ads:
+Add a non-intrusive ad banner in Dashboard.tsx below components: 'Ad: Start investing with Robinhood—free stock awaits!'—mock static text for now.
+Premium users skip ads (hide if isPremium: true).
+Style: bg-[#A3BFFA], text-[#4B5563], full-width, 10% opacity fade-in.
+Sponsored Content:
+In Learn.tsx, add a sponsored quest: 'Budgeting 101—Sponsored by Chime: Bank smarter!'—mock content in a card (bg-[#F9FAFB], #2C6E49 'Sponsored' tag).
+Track views via /api/sponsor/view.
+Data Insights (Opt-In):
+In UserWelcome.tsx, add a checkbox: 'Share anonymized data for rewards?'—stores opt-in locally (state) and mocks /api/user/insights (e.g., { avgSavings: 15 }).
+Show a 'Thanks for helping!' message if checked.
+Existing Structure:
+
+Routes in App.tsx: / (signup), /dashboard, /learn, /budget, /goals, /community, /about, /mission—add /premium for subscription page.
+Navbar.tsx: Add 'Premium' link (<NavLink href="/premium">Premium</NavLink>).
+Dashboard.tsx: Order: UserWelcome, PersonalizedPath, FinancialTools, EducationalContent, AIAssistant, new StockPlayground (premium-only), ad banner.
+Auth via /api/auth/me—update to include isPremium.

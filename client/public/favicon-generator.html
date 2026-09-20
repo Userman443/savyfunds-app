@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favicon Generator</title>
+  <style>
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1 {
+      color: #2C6E49;
+      text-align: center;
+    }
+    .instructions {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .button {
+      background-color: #2C6E49;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .button:hover {
+      background-color: #235c3b;
+    }
+    canvas {
+      max-width: 100%;
+      display: block;
+      margin: 20px auto;
+      border: 1px solid #ddd;
+    }
+    #download-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .download-item {
+      background-color: #f1f5f2;
+      padding: 10px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .download-item a {
+      color: #2C6E49;
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+    .favicon-preview {
+      width: 64px;
+      height: 64px;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 20px;
+      font-family: monospace;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>savyfunds Favicon Generator</h1>
+  
+  <div class="instructions">
+    <h2>Instructions</h2>
+    <p>This tool will generate all necessary favicon files for savyfunds to ensure compatibility with all browsers, especially Microsoft Edge and IE.</p>
+    <ol>
+      <li>Upload your SVG favicon (your current favicon-3d-v2.svg)</li>
+      <li>Click "Generate Favicons" to create all necessary formats</li>
+      <li>Download each file and replace the existing ones in your project</li>
+      <li>HTML code for your website is already updated</li>
+    </ol>
+  </div>
+  
+  <div>
+    <input type="file" id="svg-input" accept=".svg">
+    <button id="generate-btn" class="button">Generate Favicons</button>
+  </div>
+  
+  <canvas id="canvas" width="512" height="512"></canvas>
+  
+  <div id="download-container">
+    <!-- Downloads will appear here -->
+  </div>
+  
+  <div>
+    <h3>Implementation in your website:</h3>
+    <p>The required HTML code has already been added to your index.html file.</p>
+  </div>
+  
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const svgInput = document.getElementById('svg-input');
+    const generateBtn = document.getElementById('generate-btn');
+    const downloadContainer = document.getElementById('download-container');
+    
+    // Sizes for different favicon formats
+    const sizes = [
+      { name: 'favicon.ico', size: 32, type: 'image/x-icon' },
+      { name: 'favicon-16x16.png', size: 16, type: 'image/png' },
+      { name: 'favicon-32x32.png', size: 32, type: 'image/png' },
+      { name: 'favicon.png', size: 48, type: 'image/png' },
+      { name: 'apple-touch-icon.png', size: 180, type: 'image/png' },
+      { name: 'apple-touch-icon-180x180.png', size: 180, type: 'image/png' },
+      { name: 'android-chrome-192x192.png', size: 192, type: 'image/png' },
+      { name: 'mstile-70x70.png', size: 70, type: 'image/png' },
+      { name: 'mstile-144x144.png', size: 144, type: 'image/png' },
+      { name: 'mstile-150x150.png', size: 150, type: 'image/png' },
+      { name: 'mstile-310x310.png', size: 310, type: 'image/png' },
+      { name: 'mstile-310x150.png', size: '310x150', type: 'image/png' }
+    ];
+    
+    generateBtn.addEventListener('click', generateFavicons);
+    
+    function generateFavicons() {
+      if (!svgInput.files || svgInput.files.length === 0) {
+        alert('Please select an SVG file first.');
+        return;
+      }
+      
+      const file = svgInput.files[0];
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        const svgData = e.target.result;
+        
+        // Create an image from SVG
+        const img = new Image();
+        img.onload = function() {
+          // Clear previous downloads
+          downloadContainer.innerHTML = '';
+          
+          // Draw original SVG on canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
+          // Generate all favicon sizes
+          sizes.forEach(({ name, size, type }) => {
+            generateFaviconDownload(name, size, type);
+          });
+        };
+        
+        // Load SVG as a data URL
+        img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+      };
+      
+      reader.readAsText(file);
+    }
+    
+    function generateFaviconDownload(name, size, type) {
+      // Create a temporary canvas for the resized image
+      const tempCanvas = document.createElement('canvas');
+      let width, height;
+      
+      // Handle special case for wide tile
+      if (typeof size === 'string' && size.includes('x')) {
+        const dimensions = size.split('x');
+        width = parseInt(dimensions[0]);
+        height = parseInt(dimensions[1]);
+      } else {
+        width = height = size;
+      }
+      
+      tempCanvas.width = width;
+      tempCanvas.height = height;
+      const tempCtx = tempCanvas.getContext('2d');
+      
+      // Draw the resized image
+      tempCtx.drawImage(canvas, 0, 0, width, height);
+      
+      // Create a download item
+      const downloadItem = document.createElement('div');
+      downloadItem.className = 'download-item';
+      
+      // Create preview
+      const preview = document.createElement('div');
+      preview.className = 'favicon-preview';
+      const previewImg = document.createElement('img');
+      previewImg.src = tempCanvas.toDataURL(type === 'image/x-icon' ? 'image/png' : type);
+      previewImg.style.width = '32px';
+      previewImg.style.height = '32px';
+      preview.appendChild(previewImg);
+      
+      // Create download link
+      const link = document.createElement('a');
+      link.download = name;
+      link.href = tempCanvas.toDataURL(type === 'image/x-icon' ? 'image/png' : type);
+      link.textContent = `${name} (${width}x${height})`;
+      
+      downloadItem.appendChild(preview);
+      downloadItem.appendChild(link);
+      downloadContainer.appendChild(downloadItem);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+User-agent: *
+Allow: /
+Allow: /auth
+Allow: /knowledge
+Allow: /premium
+Allow: /about
+Allow: /mission
+Allow: /privacy-policy
+Allow: /terms
+Allow: /contact
+Allow: /learn
+Allow: /community
+Allow: /onboarding
+Allow: /financial-assistant
+Allow: /currency-converter
+Allow: /social-preview.png
+Allow: /og-image.png
+Allow: /favicon.ico
+Allow: /favicon-16x16.png
+Allow: /favicon-32x32.png
+Allow: /favicon-3d-v2.svg
+Allow: /apple-touch-icon.png
+Allow: /site.webmanifest
+Allow: /browserconfig.xml
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /budget
+Disallow: /goals
+Disallow: /profile
+Disallow: /verify-email
+Disallow: /resend-verification
+Disallow: /*pitch*
+Disallow: /*download*
+
+# Google — main crawler and image/news variants
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: Googlebot-Image
+Allow: /social-preview.png
+Allow: /og-image.png
+Allow: /favicon.ico
+Allow: /favicon-32x32.png
+Allow: /favicon-3d-v2.svg
+Allow: /apple-touch-icon.png
+
+User-agent: GoogleOther
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Microsoft / Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: adidxbot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: MicrosoftPreview
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Anthropic / Claude
+User-agent: Claude-Web
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# xAI / Grok
+User-agent: Grok
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: GrokBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Meta AI
+User-agent: FacebookBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Apple
+User-agent: Applebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Mistral
+User-agent: Mistral
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Common dataset crawlers used for AI training
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: DataForSeoBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Yahoo
+User-agent: Slurp
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+Sitemap: https://savyfunds.com/sitemap.xml

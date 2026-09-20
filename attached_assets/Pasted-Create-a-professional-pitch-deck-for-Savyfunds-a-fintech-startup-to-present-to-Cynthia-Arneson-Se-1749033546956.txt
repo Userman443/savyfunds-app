@@ -1,0 +1,55 @@
+Create a professional pitch deck for Savyfunds, a fintech startup, to present to Cynthia Arneson, Senior Vice President of Community Engagement at First Interstate Bank, on June 10, 2025, at 1:00 PM MT. The deck should consist of 8 standalone slides, each with a clear focus, and be designed for easy transfer to PowerPoint for editing. Use the following structure and content, ensuring all text is concise and visually supported:
+
+1. **Title Slide**
+   - Title: "Savyfunds: Empowering Financial Literacy for Underserved Youths"
+   - Details: Include "Michael Momoh, Founder" and "June 10, 2025"
+   - Visual: Center the Savyfunds logo (use a placeholder for now, to be replaced with the actual logo)
+
+2. **The Problem**
+   - Content: "26% of U.S. young adults lack essential financial knowledge, and 70% face financial anxiety. Globally, up to 60% in developing regions struggle."
+   - Details: Highlight the impact of this gap
+   - Visual: Include a bar chart comparing 26% (U.S.) and 60% (global) financial literacy gaps
+
+3. **The Opportunity**
+   - Content: "Opportunity to Impact Millions"
+   - Details: Suggest potential to reach underserved youths, especially in First Interstate regions
+   - Visual: Add a placeholder for a map or photo of diverse communities
+
+4. **Our Solution**
+   - Content: "Savyfunds offers free AI-driven financial education, budgeting tools, and a peer network."
+   - Details: Emphasize mission alignment with community goals
+   - Visual: Include a placeholder for a screenshot mockup or icon set representing features
+
+5. **Why Savyfunds?**
+   - Content: "Top-ranked platform, partnerships with Visa, American Express, and Mastercard."
+   - Details: Showcase credibility and scalability
+   - Visual: Display placeholders for Visa, American Express, and Mastercard logos side by side
+
+6. **What’s in It for First Interstate?**
+   - Content: "Brand visibility, community growth programs, dedicated consumers, dynamic Corporate Social Responsibility (CSR) story."
+   - Details: Tailor benefits to their community focus, include a placeholder for the First Interstate logo
+   - Visual: Add a pie chart to distribute the four benefits equally
+
+7. **The Ask**
+   - Content: "Your support will enhance hiring skilled engineers, boosting marketing and advertising efforts, expanding our platform, strengthening community outreach, and developing robust content. We invite First Interstate to suggest how you can contribute to this vision."
+   - Details: Keep the request open-ended, focusing on resource needs
+   - Visual: Include a progress circle (doughnut chart) to show allocation across the five areas
+
+8. **Closing Slide**
+   - Content: "Together, we can be the Khan Academy of financial education. Questions?"
+   - Details: Include the Savyfunds logo
+   - Visual: Add a placeholder for an inspirational image of diverse youths learning
+
+**Design Requirements:**
+- Use Savyfunds' app theme for colors (avoid hardcoding specific colors, let the theme dictate the palette).
+- Ensure each slide is a separate, editable section that can be copied into PowerPoint.
+- Include three visualizers: a bar chart (Slide 2), a pie chart (Slide 6), and a doughnut chart (Slide 7), with data provided in the content sections.
+- Provide placeholders for all logos (Savyfunds, First Interstate, Visa, American Express, Mastercard) and images (map/photo, mockup/icon set, inspirational image), to be replaced manually.
+- Avoid merging all content into one slide; each slide should be distinct with its own title and content block.
+
+**Output:**
+- Generate the pitch deck as an HTML file with CSS and JavaScript (using Chart.js for visualizers), structured as separate divs for each slide.
+- Include comments in the code to guide where logos and images should be inserted in PowerPoint.
+- Ensure the design is clean, professional, and adaptable to PowerPoint editing.
+
+Please execute this promptly to support the presentation preparation.

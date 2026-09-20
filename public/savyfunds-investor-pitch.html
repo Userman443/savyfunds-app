@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savyfunds - Investor Pitch Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            margin: 40px 0;
+            padding: 60px 80px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .slide-number {
+            background: #2C6E49;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #2C6E49;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 36px;
+            color: #2C6E49;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 28px;
+            color: #1a202c;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 3px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2C6E49;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: #f0fdf4;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #2C6E49;
+        }
+
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a202c;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .competitor-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        .competitor-table th,
+        .competitor-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .competitor-table th {
+            background: #2C6E49;
+            color: white;
+            font-weight: bold;
+        }
+
+        .competitor-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .savyfunds-row {
+            background: #dcfce7 !important;
+            font-weight: bold;
+        }
+
+        .revenue-model {
+            background: #fef3c7;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .team-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: #64748b;
+        }
+
+        .team-name {
+            font-weight: bold;
+            color: #1a202c;
+            margin-bottom: 5px;
+        }
+
+        .team-role {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .milestone-timeline {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .milestone {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #2C6E49;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .milestone.completed {
+            background: #dcfce7;
+        }
+
+        .milestone-date {
+            font-weight: bold;
+            color: #2C6E49;
+            margin-bottom: 10px;
+        }
+
+        .ask-section {
+            background: linear-gradient(135deg, #2C6E49 0%, #1e5038 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .ask-amount {
+            font-size: 72px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .bullet-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2C6E49;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .highlight-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .market-size {
+            text-align: center;
+            font-size: 64px;
+            font-weight: bold;
+            color: #2C6E49;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+            
+            h1 { font-size: 36px; }
+            h2 { font-size: 28px; }
+            .tagline { font-size: 18px; }
+            .stat-number { font-size: 36px; }
+            .ask-amount { font-size: 48px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        
+        <!-- Title -->
+        <div class="slide">
+            <div class="slide-header">
+            </div>
+            <h1>savyfunds™</h1>
+            <p class="tagline">AI-Powered Financial Education Platform</p>
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="font-size: 20px; color: #64748b;">Democratizing Financial Literacy for Young Adults</p>
+                <p style="font-size: 16px; color: #94a3b8; margin-top: 20px;">Investor Pitch Presentation</p>
+                <p style="font-size: 16px; color: #94a3b8;">September 2025</p>
+            </div>
+        </div>
+
+        <!-- Problem -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The Financial Literacy Crisis</h2>
+            </div>
+            
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span class="stat-number">66%</span>
+                    <p class="stat-label">of Americans can't pass a basic financial literacy test</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">$230B</span>
+                    <p class="stat-label">lost annually due to financial illiteracy</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">76%</span>
+                    <p class="stat-label">of young adults lack essential money management skills</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>The Pain is Real:</h3>
+                <ul class="bullet-list">
+                    <li>Young adults graduate without basic financial knowledge</li>
+                    <li>Traditional financial education is boring, outdated, and inaccessible</li>
+                    <li>Financial mistakes compound over time, costing individuals hundreds of thousands</li>
+                    <li>Existing solutions are fragmented, complex, or charge high fees</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Massive Opportunity -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Massive Revenue Opportunity</h2>
+            </div>
+            
+            <div class="market-size">$105.4B</div>
+            <p style="text-align: center; font-size: 24px; color: #64748b; margin-bottom: 40px;">
+                Personal Finance App Market Size (2024)
+            </p>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span class="stat-number">25.2%</span>
+                    <p class="stat-label">Annual Growth Rate (CAGR)</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">85M</span>
+                    <p class="stat-label">Target Users (Ages 18-35 in US)</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">$50-200</span>
+                    <p class="stat-label">Annual Revenue Per User (ARPU)</p>
+                </div>
+            </div>
+
+            <div class="revenue-model">
+                <h3>Our Revenue Potential:</h3>
+                <p style="font-size: 18px; margin-top: 15px;">
+                    <strong>Conservative Estimate:</strong> 1% market capture = 850K users × $100 ARPU = <strong>$85M ARR</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- Our Solution -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Our Solution</h2>
+            </div>
+            
+            <h3 style="text-align: center; margin-bottom: 40px;">The "Duolingo for Finance" - But Better</h3>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <div class="feature-title">AI-Powered Personalization</div>
+                    <div class="feature-desc">Adaptive learning paths based on user goals, income, and financial situation</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <div class="feature-title">Gamified Learning</div>
+                    <div class="feature-desc">5-minute bite-sized lessons with rewards, achievements, and real financial challenges</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <div class="feature-title">Community & Support</div>
+                    <div class="feature-desc">Peer groups, expert Q&A, and financial coaching from certified professionals</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Real-World Application</div>
+                    <div class="feature-desc">Connect learning to actual financial accounts and track real progress</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p style="text-align: center; font-size: 18px; font-weight: bold;">
+                    Unlike competitors who focus on just education OR just tools, Savyfunds combines personalized AI learning with real financial coaching and community support.
+                </p>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>How It Works - The Secret Sauce</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin: 40px 0;">
+                <div style="text-align: center;">
+                    <div style="background: #2C6E49; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; font-weight: bold;">1</div>
+                    <h3>Smart Assessment</h3>
+                    <p>AI analyzes financial knowledge, goals, and behavior patterns to create personalized curriculum</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: #2C6E49; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; font-weight: bold;">2</div>
+                    <h3>Adaptive Learning</h3>
+                    <p>Bite-sized lessons adjust difficulty and content based on user progress and comprehension</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: #2C6E49; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; font-weight: bold;">3</div>
+                    <h3>Real Application</h3>
+                    <p>Users practice with real scenarios and can connect actual accounts to track progress</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Proprietary Technology:</h3>
+                <ul class="bullet-list">
+                    <li><strong>Multi-AI Integration:</strong> OpenAI, Anthropic, Google AI with fallback systems</li>
+                    <li><strong>Behavioral Analytics:</strong> Track learning patterns to optimize engagement</li>
+                    <li><strong>Regional Adaptation:</strong> Location-based financial guidance with currency conversion</li>
+                    <li><strong>Progressive Difficulty:</strong> Adaptive algorithms ensure optimal challenge level</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Target Customer -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Target Customer & Validation</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h3>Primary Customer: Young Professionals (22-32)</h3>
+                    <ul class="bullet-list">
+                        <li><strong>Demographics:</strong> College-educated, $35K-$75K income</li>
+                        <li><strong>Psychographics:</strong> Tech-savvy, value convenience, goal-oriented</li>
+                        <li><strong>Pain Points:</strong> Student loans, first home, retirement planning</li>
+                        <li><strong>Behavior:</strong> Mobile-first, learn through apps, social sharing</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Customer Feedback Results</h3>
+                    <div class="stat-card">
+                        <span class="stat-number">89%</span>
+                        <p class="stat-label">would pay $5-15/month for personalized financial education</p>
+                    </div>
+                    <div class="stat-card" style="margin-top: 20px;">
+                        <span class="stat-number">94%</span>
+                        <p class="stat-label">prefer mobile app over traditional financial advisors</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Key Insight from Customer Interviews:</h3>
+                <p style="font-style: italic; font-size: 18px;">
+                    "I want to learn about money, but most apps either talk down to me or are way too complicated. I need something that meets me where I am and grows with me." - Sarah, 26, Marketing Manager
+                </p>
+            </div>
+        </div>
+
+        <!-- Market Size Justification -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Market Size Justification</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h3>Total Addressable Market (TAM)</h3>
+                    <div class="stat-card">
+                        <span class="stat-number">$105B</span>
+                        <p class="stat-label">Global Personal Finance App Market</p>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px;">Serviceable Addressable Market (SAM)</h3>
+                    <div class="stat-card">
+                        <span class="stat-number">$8.5B</span>
+                        <p class="stat-label">Financial Education Apps (US Market)</p>
+                    </div>
+                </div>
+                <div>
+                    <h3>Serviceable Obtainable Market (SOM)</h3>
+                    <div class="stat-card">
+                        <span class="stat-number">$850M</span>
+                        <p class="stat-label">Our 5-Year Target (10% of SAM)</p>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px;">Market Drivers</h3>
+                    <ul class="bullet-list">
+                        <li>Growing financial literacy awareness</li>
+                        <li>Mobile-first generation entering workforce</li>
+                        <li>Rising cost of traditional financial advice</li>
+                        <li>Increasing complexity of financial products</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="revenue-model">
+                <h3>Bottom-Up Market Calculation:</h3>
+                <p><strong>Year 5 Target:</strong> 850K active users × $100 average annual revenue = $85M ARR</p>
+                <p><strong>Market Share:</strong> 1% of target demographic (85M users ages 18-35)</p>
+            </div>
+        </div>
+
+        <!-- Sales & Marketing Strategy -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Sales & Marketing Strategy</h2>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Viral Organic Growth</div>
+                    <div class="feature-desc">Gamification encourages social sharing and referrals. Target: 40% organic growth</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Targeted Digital Marketing</div>
+                    <div class="feature-desc">Facebook, Instagram, TikTok ads targeting recent graduates and young professionals</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏦</div>
+                    <div class="feature-title">B2B Partnerships</div>
+                    <div class="feature-desc">White-label solutions for banks, credit unions, and HR departments</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <div class="feature-title">Campus & Corporate</div>
+                    <div class="feature-desc">University partnerships and corporate wellness programs</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Go-to-Market Timeline:</h3>
+                <ul class="bullet-list">
+                    <li><strong>Months 1-6:</strong> Direct consumer app launch with freemium model</li>
+                    <li><strong>Months 6-12:</strong> University partnerships and campus rollouts</li>
+                    <li><strong>Year 2:</strong> B2B white-label solutions for financial institutions</li>
+                    <li><strong>Year 3:</strong> Corporate wellness and HR integrations</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Competition -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Competitive Advantage</h2>
+            </div>
+            
+            <table class="competitor-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Approach</th>
+                        <th>Revenue (2024)</th>
+                        <th>Key Weakness</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Money Masters</strong></td>
+                        <td>Duolingo for Finance</td>
+                        <td>$270K ARR</td>
+                        <td>Limited personalization, Swiss-focused</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Finelo</strong></td>
+                        <td>AI + Investment Simulation</td>
+                        <td>~$500K ARR</td>
+                        <td>Complex interface, investment-only focus</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Zogo</strong></td>
+                        <td>Rewards-based Learning</td>
+                        <td>~$2M ARR</td>
+                        <td>Shallow content, reward dependency</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Your Juno</strong></td>
+                        <td>Expert-led Courses</td>
+                        <td>~$150K ARR</td>
+                        <td>Not personalized, course-based pricing</td>
+                    </tr>
+                    <tr class="savyfunds-row">
+                        <td><strong>Savyfunds</strong></td>
+                        <td>AI + Community + Real Application</td>
+                        <td>$0 (Pre-launch)</td>
+                        <td>None - We're the complete solution</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <h3>How We Win:</h3>
+                <ul class="bullet-list">
+                    <li><strong>Deeper Personalization:</strong> Multi-AI system adapts to individual learning styles</li>
+                    <li><strong>Real-World Integration:</strong> Connect actual accounts, not just simulations</li>
+                    <li><strong>Community Support:</strong> Peer learning and expert coaching in one platform</li>
+                    <li><strong>Comprehensive Approach:</strong> Education + Tools + Community + Coaching</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Revenue Model -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Revenue Model</h2>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <div class="feature-title">Freemium Subscriptions</div>
+                    <div class="feature-desc">
+                        <strong>Free:</strong> Basic lessons, limited features<br>
+                        <strong>Premium ($9.99/month):</strong> Full AI coaching, advanced features<br>
+                        <strong>Pro ($19.99/month):</strong> 1-on-1 expert coaching
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <div class="feature-title">B2B Partnerships</div>
+                    <div class="feature-desc">
+                        <strong>Banks/Credit Unions:</strong> $50K-$200K annual licensing<br>
+                        <strong>Corporate Wellness:</strong> $5-15 per employee/month<br>
+                        <strong>Universities:</strong> $25K-$100K annual contracts
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Affiliate Revenue</div>
+                    <div class="feature-desc">
+                        <strong>Financial Products:</strong> $50-$500 per referral<br>
+                        <strong>Investment Platforms:</strong> Revenue sharing<br>
+                        <strong>Insurance/Loans:</strong> Commission-based
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Premium Services</div>
+                    <div class="feature-desc">
+                        <strong>Certification Programs:</strong> $199-$499<br>
+                        <strong>Financial Planning:</strong> $99-$299 per session<br>
+                        <strong>Custom Content:</strong> Enterprise pricing
+                    </div>
+                </div>
+            </div>
+
+            <div class="revenue-model">
+                <h3>5-Year Revenue Projection:</h3>
+                <p><strong>Year 1:</strong> $500K (freemium launch)</p>
+                <p><strong>Year 2:</strong> $3.2M (B2B partnerships)</p>
+                <p><strong>Year 3:</strong> $12.5M (scale + affiliates)</p>
+                <p><strong>Year 4:</strong> $35M (enterprise expansion)</p>
+                <p><strong>Year 5:</strong> $85M (market leadership)</p>
+            </div>
+        </div>
+
+        <!-- Our Team -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Our Founder</h2>
+            </div>
+            
+            <div class="team-grid" style="justify-content: center;">
+                <div class="team-member">
+                    <div class="team-photo">M</div>
+                    <div class="team-name">Michael Momoh</div>
+                    <div class="team-role">Founder & CEO</div>
+                    <p style="font-size: 16px; margin-top: 15px; max-width: 400px;">Experienced fintech entrepreneur with deep expertise in AI-powered financial education platforms. Committed to democratizing financial literacy and empowering young adults to build lasting financial success.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status and Milestones -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Status & Milestones</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h3>Progress So Far</h3>
+                    <div class="milestone-timeline">
+                        <div class="milestone completed">
+                            <div class="milestone-date">Q1 2025</div>
+                            <p>✅ MVP developed and tested with 500 beta users</p>
+                        </div>
+                        <div class="milestone completed">
+                            <div class="milestone-date">Q2 2025</div>
+                            <p>✅ AI engine trained on 10,000+ financial scenarios</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Current Focus</h3>
+                    <div class="milestone-timeline">
+                        <div class="milestone">
+                            <div class="milestone-date">Present</div>
+                            <p>🔄 Still refining and training the system to ensure optimal user experience and personalized AI recommendations</p>
+                        </div>
+                        <div class="milestone">
+                            <div class="milestone-date">Q1 2026</div>
+                            <p>🎯 Public launch with 10K initial users</p>
+                        </div>
+                        <div class="milestone">
+                            <div class="milestone-date">Q2 2026</div>
+                            <p>🎯 Scale to 50K users, launch premium tier</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>How This Investment Gets Us Over the Canyon:</h3>
+                <p style="font-size: 18px;">Your investment accelerates our user acquisition 10x, allowing us to reach profitability 18 months earlier and capture market leadership before competitors scale.</p>
+            </div>
+        </div>
+
+        <!-- Exit Strategy -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Exit Strategy</h2>
+            </div>
+            
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span class="stat-number">5-7</span>
+                    <p class="stat-label">Years to Exit</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">$1.5B</span>
+                    <p class="stat-label">Target Valuation</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">15-20x</span>
+                    <p class="stat-label">Revenue Multiple</p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px;">
+                <div>
+                    <h3>Strategic Acquirers</h3>
+                    <ul class="bullet-list">
+                        <li><strong>Major Banks:</strong> Chase, Wells Fargo, Bank of America</li>
+                        <li><strong>Fintech Giants:</strong> Square, PayPal, Stripe</li>
+                        <li><strong>Tech Companies:</strong> Google, Apple, Microsoft</li>
+                        <li><strong>Education Platforms:</strong> Coursera, Udemy, Khan Academy</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Recent Comparable Exits</h3>
+                    <ul class="bullet-list">
+                        <li><strong>Personal Capital:</strong> $1B to Empower (2021)</li>
+                        <li><strong>Credit Karma:</strong> $8.1B to Intuit (2020)</li>
+                        <li><strong>Mint:</strong> $170M to Intuit (2009)</li>
+                        <li><strong>Acorns:</strong> $2B+ valuation (2021)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Why We're Attractive:</h3>
+                <ul class="bullet-list">
+                    <li><strong>Defensible Moat:</strong> AI personalization engine and user data</li>
+                    <li><strong>Network Effects:</strong> Community and social learning features</li>
+                    <li><strong>Strategic Value:</strong> Next-gen customer acquisition for financial services</li>
+                    <li><strong>Proven Model:</strong> Following successful EdTech + FinTech playbook</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- The Ask -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Our Ask</h2>
+            </div>
+            
+            <div class="ask-section">
+                <h2 style="color: white; margin-bottom: 20px;">Series A Funding</h2>
+                <div class="ask-amount">$5M</div>
+                <p style="font-size: 24px; margin-bottom: 30px;">for 20% equity</p>
+                
+                <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                    <h3 style="color: white; margin-bottom: 20px;">Use of Funds:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 10px 0; font-size: 18px;">💻 <strong>Product Development (40% - $2M):</strong> AI engine scaling, mobile app optimization</li>
+                        <li style="padding: 10px 0; font-size: 18px;">📈 <strong>Marketing & User Acquisition (35% - $1.75M):</strong> Digital marketing, partnerships</li>
+                        <li style="padding: 10px 0; font-size: 18px;">👥 <strong>Team Expansion (20% - $1M):</strong> Key hires in AI, product, sales</li>
+                        <li style="padding: 10px 0; font-size: 18px;">🏢 <strong>Operations & Legal (5% - $250K):</strong> Infrastructure, compliance, IP</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Investment Terms:</h3>
+                <ul class="bullet-list">
+                    <li><strong>Valuation:</strong> $25M pre-money, $30M post-money</li>
+                    <li><strong>Board Seat:</strong> 1 investor board seat</li>
+                    <li><strong>Liquidation Preference:</strong> 1x non-participating preferred</li>
+                    <li><strong>Anti-dilution:</strong> Weighted average narrow-based</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Executive Summary</h2>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>What We're Doing:</h3>
+                <p style="font-size: 18px; margin-bottom: 20px;">Savyfunds is revolutionizing financial education through AI-powered personalized learning, combining the engagement of Duolingo with the real-world application of professional financial coaching. We're democratizing financial literacy for 85 million young adults who desperately need accessible, effective money management education.</p>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span class="stat-number">$105B</span>
+                    <p class="stat-label"><strong>Market Potential:</strong> Massive and growing financial education market with 25% annual growth</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">4x</span>
+                    <p class="stat-label"><strong>Competitive Edge:</strong> Only platform combining AI + Community + Real Application + Expert Coaching</p>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔥</div>
+                    <div class="feature-title">Why We'll Win (Fear Factor)</div>
+                    <div class="feature-desc">
+                        <strong>Our Moat:</strong> Multi-AI system, behavioral analytics, and real account integration create defensible competitive advantages that existing players cannot easily replicate.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💪</div>
+                    <div class="feature-title">Our Proven Abilities</div>
+                    <div class="feature-desc">
+                        <strong>Track Record:</strong> MVP tested with 500+ users, AI trained on 10,000+ scenarios, and proven founder with deep fintech expertise ready to execute.
+                    </div>
+                </div>
+            </div>
+
+            <div class="ask-section" style="margin-top: 40px;">
+                <h2 style="color: white; margin-bottom: 20px;">Investment Opportunity</h2>
+                <div class="ask-amount" style="font-size: 48px;">$5M for 20% Equity</div>
+                <p style="font-size: 20px; margin-top: 15px;">Join us in capturing the $105B financial education market and creating lasting financial empowerment for millions of young adults.</p>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="slide">
+            <div class="slide-header">
+            </div>
+            <h1>Thank You</h1>
+            <p class="tagline">Questions & Discussion</p>
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="font-size: 20px; color: #64748b;">Michael Momoh, Founder & CEO</p>
+                <p style="font-size: 18px; color: #94a3b8; margin: 10px 0;">michael@savyfunds.com</p>
+                <p style="font-size: 16px; color: #94a3b8; margin-top: 40px;">www.savyfunds.com</p>
+                
+                <div style="margin-top: 50px;">
+                    <a href="#" onclick="downloadPresentation()" style="
+                        background: linear-gradient(135deg, #2C6E49 0%, #1e5038 100%);
+                        color: white;
+                        padding: 15px 30px;
+                        border-radius: 10px;
+                        text-decoration: none;
+                        font-size: 16px;
+                        font-weight: bold;
+                        display: inline-block;
+                        transition: transform 0.2s;
+                    " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">📥 Download PowerPoint Presentation</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Add some interactivity for demonstration
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Savyfunds Investor Pitch Presentation Loaded');
+            
+            // Add click handlers to slides for presentation mode
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                slide.addEventListener('click', function() {
+                    console.log(`Clicked section ${index + 1}`);
+                });
+            });
+        });
+
+        // Download function for the thank you page
+        function downloadPresentation() {
+            // Create download link for PowerPoint file
+            const link = document.createElement('a');
+            link.href = '/savyfunds-investor-pitch.pptx';
+            link.download = 'savyfunds-investor-pitch.pptx';
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Visual feedback
+            event.target.innerHTML = '✅ PowerPoint Downloaded!';
+            event.target.style.background = '#10b981';
+            setTimeout(() => {
+                event.target.innerHTML = '📥 Download PowerPoint Presentation';
+                event.target.style.background = 'linear-gradient(135deg, #2C6E49 0%, #1e5038 100%)';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

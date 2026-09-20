@@ -1,0 +1,362 @@
+{
+  "concepts": [
+    {
+      "name": "Savings Account",
+      "explanation": "A bank account where you deposit money to earn interest over time, while still having access to your funds.",
+      "examples": [
+        "Setting aside $100 each month in a savings account for emergencies",
+        "Keeping vacation funds in a high-yield savings account"
+      ],
+      "tips": [
+        "Compare interest rates across different banks to maximize returns",
+        "Look for accounts with no or low minimum balance requirements",
+        "Online banks often offer higher interest rates than traditional brick-and-mortar banks"
+      ],
+      "furtherReading": [
+        "Your Money or Your Life by Vicki Robin",
+        "Consumer Financial Protection Bureau's guide to savings accounts"
+      ]
+    },
+    {
+      "name": "Checking Account",
+      "explanation": "A bank account used for everyday transactions that gives you easy access to your money through debit cards, checks, and digital payments.",
+      "examples": [
+        "Using your checking account to pay monthly bills",
+        "Setting up direct deposit for your paycheck"
+      ],
+      "tips": [
+        "Look for accounts with no monthly maintenance fees",
+        "Maintain a minimum balance to avoid fees",
+        "Monitor your transactions regularly to prevent overdrafts"
+      ],
+      "furtherReading": [
+        "Bankrate's guide to checking accounts",
+        "NerdWallet's 'How to Choose a Checking Account'"
+      ]
+    },
+    {
+      "name": "Interest",
+      "explanation": "Money paid to you for letting a bank or financial institution use your funds, or money you pay for borrowing funds. Usually expressed as an annual percentage rate (APR).",
+      "examples": [
+        "Earning 2% annual interest on a savings account",
+        "Paying 15% interest on a credit card balance"
+      ],
+      "tips": [
+        "Compound interest (interest on interest) significantly grows savings over time",
+        "Higher interest rates on debt mean paying more over time",
+        "Always pay high-interest debt first when trying to get out of debt"
+      ],
+      "furtherReading": [
+        "The Compound Effect by Darren Hardy",
+        "Khan Academy's lessons on compound interest"
+      ]
+    },
+    {
+      "name": "Credit Score",
+      "explanation": "A numerical representation (typically 300-850) of your creditworthiness based on your credit history, used by lenders to determine loan eligibility and interest rates.",
+      "examples": [
+        "Having a credit score of 750 may qualify you for the best loan terms",
+        "Late payments can lower your credit score by 50-100 points"
+      ],
+      "tips": [
+        "Pay all bills on time",
+        "Keep credit card balances low relative to your credit limits",
+        "Don't apply for too many new credit accounts in a short period"
+      ],
+      "furtherReading": [
+        "myFICO.com's 'What's in my FICO Scores?'",
+        "Annual Credit Report website for free credit reports"
+      ]
+    },
+    {
+      "name": "Credit Card",
+      "explanation": "A payment card issued by a financial institution that lets you borrow funds to make purchases with the agreement that you'll repay the money, often with interest.",
+      "examples": [
+        "Using a credit card for online shopping with fraud protection",
+        "Earning cash back or travel rewards on everyday purchases"
+      ],
+      "tips": [
+        "Pay your balance in full each month to avoid interest charges",
+        "Choose a card with rewards that match your spending habits",
+        "Understand the card's terms, especially the interest rate and fees"
+      ],
+      "furtherReading": [
+        "How to Get Out of Debt, Stay Out of Debt and Live Prosperously by Jerrold Mundis",
+        "Consumer Financial Protection Bureau's credit card guides"
+      ]
+    },
+    {
+      "name": "Mortgage",
+      "explanation": "A specific type of loan used to purchase real estate where the property serves as collateral.",
+      "examples": [
+        "A 30-year fixed-rate mortgage to buy a home",
+        "A 15-year mortgage with higher monthly payments but less total interest"
+      ],
+      "tips": [
+        "A down payment of 20% or more helps avoid private mortgage insurance (PMI)",
+        "Consider your total housing costs, not just the mortgage payment",
+        "Shop different lenders to compare rates and closing costs"
+      ],
+      "furtherReading": [
+        "Consumer Financial Protection Bureau's 'Owning a Home' resources",
+        "Mortgages For Dummies by Eric Tyson and Ray Brown"
+      ]
+    },
+    {
+      "name": "Stock",
+      "explanation": "A share of ownership in a company that may provide returns through price appreciation and dividends.",
+      "examples": [
+        "Owning shares of Apple gives you partial ownership of the company",
+        "Receiving quarterly dividend payments from stock investments"
+      ],
+      "tips": [
+        "Invest for the long term to weather market volatility",
+        "Consider your risk tolerance when investing in individual stocks",
+        "Diversify your stock holdings across different companies and sectors"
+      ],
+      "furtherReading": [
+        "The Little Book of Common Sense Investing by John C. Bogle",
+        "Investopedia's guide to stock investing"
+      ]
+    },
+    {
+      "name": "Bond",
+      "explanation": "A debt security where you lend money to an entity (government or corporation) that borrows the funds for a defined period at a fixed or variable interest rate.",
+      "examples": [
+        "Purchasing a 10-year Treasury bond from the U.S. government",
+        "Investing in corporate bonds that pay higher interest than government bonds"
+      ],
+      "tips": [
+        "Bonds generally have lower risk and lower returns compared to stocks",
+        "Longer-term bonds typically offer higher interest rates but more sensitivity to interest rate changes",
+        "Consider your investment timeframe when choosing bond maturities"
+      ],
+      "furtherReading": [
+        "The Bond Book by Annette Thau",
+        "Fidelity's guide to bond investing"
+      ]
+    },
+    {
+      "name": "Mutual Fund",
+      "explanation": "An investment vehicle that pools money from many investors to purchase a diversified portfolio of stocks, bonds, or other securities.",
+      "examples": [
+        "Investing in an S&P 500 index fund that tracks the performance of 500 large U.S. companies",
+        "Using a balanced mutual fund that contains both stocks and bonds"
+      ],
+      "tips": [
+        "Pay attention to expense ratios, as lower fees mean more money stays invested",
+        "Index funds offer broad market exposure with low costs",
+        "Review a fund's performance history but remember past performance doesn't guarantee future results"
+      ],
+      "furtherReading": [
+        "The Bogleheads' Guide to Investing by Taylor Larimore",
+        "Morningstar's mutual fund research"
+      ]
+    },
+    {
+      "name": "Exchange-Traded Fund (ETF)",
+      "explanation": "Similar to a mutual fund but trades like a stock on an exchange, typically tracking an index, sector, commodity, or asset.",
+      "examples": [
+        "Using an ETF to invest in the entire U.S. stock market at once",
+        "Investing in a gold ETF instead of buying physical gold"
+      ],
+      "tips": [
+        "ETFs often have lower expense ratios than similar mutual funds",
+        "ETFs can be more tax-efficient than mutual funds",
+        "Consider trading costs if you plan to invest regularly in small amounts"
+      ],
+      "furtherReading": [
+        "A Random Walk Down Wall Street by Burton G. Malkiel",
+        "ETF.com's educational resources"
+      ]
+    },
+    {
+      "name": "401(k) Plan",
+      "explanation": "An employer-sponsored retirement savings plan that allows employees to contribute a portion of their wages to individual accounts, often with a company match.",
+      "examples": [
+        "Contributing 10% of your salary to a 401(k) with a 5% employer match",
+        "Using automatic enrollment to start saving for retirement immediately"
+      ],
+      "tips": [
+        "At minimum, contribute enough to get the full employer match (it's free money)",
+        "Take advantage of Roth 401(k) options if available and suitable for your situation",
+        "Understand the vesting schedule for employer contributions"
+      ],
+      "furtherReading": [
+        "Retire Before Mom and Dad by Rob Berger",
+        "Department of Labor's guide to 401(k) plans"
+      ]
+    },
+    {
+      "name": "Dollar-Cost Averaging",
+      "explanation": "An investment strategy of purchasing a fixed dollar amount of a particular investment regularly, regardless of the share price, to reduce the impact of volatility.",
+      "examples": [
+        "Investing $500 monthly in an index fund regardless of market conditions",
+        "Using automatic contributions to a retirement account from every paycheck"
+      ],
+      "tips": [
+        "Helps avoid the pitfalls of market timing",
+        "Creates a disciplined approach to investing",
+        "Works best during volatile markets and over long time periods"
+      ],
+      "furtherReading": [
+        "The Intelligent Investor by Benjamin Graham",
+        "Vanguard's guide to dollar-cost averaging"
+      ]
+    },
+    {
+      "name": "Budget",
+      "explanation": "A plan for how to spend and save your money, typically organized by income, expenses, and financial goals.",
+      "examples": [
+        "Creating a monthly budget that allocates money for needs, wants, and savings",
+        "Using the 50/30/20 budget (50% needs, 30% wants, 20% savings)"
+      ],
+      "tips": [
+        "Track your spending to understand where your money goes",
+        "Use budgeting apps to automate the process",
+        "Review and adjust your budget regularly"
+      ],
+      "furtherReading": [
+        "You Need a Budget by Jesse Mecham",
+        "The Consumer Financial Protection Bureau's budgeting worksheets"
+      ]
+    },
+    {
+      "name": "Emergency Fund",
+      "explanation": "Money set aside for unexpected expenses or financial hardships like medical bills, car repairs, or job loss.",
+      "examples": [
+        "Saving 3-6 months of living expenses in a high-yield savings account",
+        "Using an emergency fund instead of credit cards for unexpected car repairs"
+      ],
+      "tips": [
+        "Start small with a goal of $1,000, then build to 3-6 months of expenses",
+        "Keep your emergency fund in an easily accessible account",
+        "Replenish the fund after using it"
+      ],
+      "furtherReading": [
+        "The Financial Diet by Chelsea Fagan",
+        "Bankrate's emergency fund calculator"
+      ]
+    },
+    {
+      "name": "Inflation",
+      "explanation": "The general increase in prices and fall in the purchasing power of money over time, typically measured as an annual percentage.",
+      "examples": [
+        "If inflation is 3%, a $100 item will cost $103 next year",
+        "Needing to increase your retirement savings to account for future inflation"
+      ],
+      "tips": [
+        "Invest your money to outpace inflation (historically, stocks have beaten inflation)",
+        "Consider inflation when setting savings goals for long-term objectives",
+        "Look for investments specifically designed to hedge against inflation, like TIPS (Treasury Inflation-Protected Securities)"
+      ],
+      "furtherReading": [
+        "Bureau of Labor Statistics' Consumer Price Index information",
+        "Inflation-Protected Investing guides"
+      ]
+    },
+    {
+      "name": "Diversification",
+      "explanation": "A risk management strategy that mixes a variety of investments within a portfolio to reduce the exposure to any single asset or risk.",
+      "examples": [
+        "Investing in stocks, bonds, real estate, and other asset classes",
+        "Holding investments across different countries, sectors, and company sizes"
+      ],
+      "tips": [
+        "Diversification can't eliminate all risk, but it can reduce it",
+        "Consider correlation between investments when diversifying",
+        "Revisit and rebalance your diversified portfolio regularly"
+      ],
+      "furtherReading": [
+        "The Intelligent Asset Allocator by William Bernstein",
+        "Vanguard's principles for investing success"
+      ]
+    },
+    {
+      "name": "FIRE (Financial Independence, Retire Early)",
+      "explanation": "A lifestyle movement focused on extreme savings and investment to allow for early retirement and financial freedom, typically by saving 50-70% of income.",
+      "examples": [
+        "Retiring at 40 by living frugally and investing aggressively during working years",
+        "Achieving 'Barista FIRE' where investments cover most expenses, but you work part-time for benefits or fulfillment"
+      ],
+      "tips": [
+        "Focus on both increasing income and decreasing expenses",
+        "Consider the psychological aspects of early retirement",
+        "Build flexibility into your plan to account for market fluctuations"
+      ],
+      "furtherReading": [
+        "Your Money or Your Life by Vicki Robin",
+        "Playing with FIRE by Scott Rieckens",
+        "Mr. Money Mustache blog"
+      ]
+    },
+    {
+      "name": "Opportunity Cost",
+      "explanation": "The loss of potential gain from other alternatives when one alternative is chosen, a fundamental concept in economic decision-making.",
+      "examples": [
+        "The opportunity cost of keeping money in a low-yield savings account is the higher return you might have earned in investments",
+        "The opportunity cost of buying a new car is what else you could have done with that money"
+      ],
+      "tips": [
+        "Consider opportunity costs when making major financial decisions",
+        "Balance short-term desires against long-term financial goals",
+        "Remember that time is often your most valuable resource with the highest opportunity cost"
+      ],
+      "furtherReading": [
+        "Thinking, Fast and Slow by Daniel Kahneman",
+        "Khan Academy's lessons on opportunity cost"
+      ]
+    },
+    {
+      "name": "Social Security (United States)",
+      "explanation": "A federal program providing retirement, disability, and survivor benefits funded primarily through payroll taxes.",
+      "examples": [
+        "Receiving monthly retirement benefits starting at age 62 (reduced) or full retirement age (currently 66-67)",
+        "Disability benefits for those unable to work due to a medical condition"
+      ],
+      "tips": [
+        "Check your Social Security statement annually for accuracy",
+        "Consider delaying benefits until age 70 to maximize monthly payments",
+        "Understand how working while receiving benefits might affect your payments"
+      ],
+      "furtherReading": [
+        "Social Security Administration's retirement benefits guide",
+        "Social Security For Dummies by Jonathan Peterson"
+      ]
+    },
+    {
+      "name": "National Insurance (United Kingdom)",
+      "explanation": "A system of taxes and contributions that fund various state benefits including the National Health Service, state pension, and unemployment benefits.",
+      "examples": [
+        "Class 1 National Insurance contributions deducted from employee wages",
+        "Self-employed individuals paying Class 2 and Class 4 contributions"
+      ],
+      "tips": [
+        "Check your National Insurance record to ensure you'll qualify for full state pension",
+        "Understand the different classes of National Insurance and which apply to you",
+        "Consider voluntary contributions if you have gaps in your record"
+      ],
+      "furtherReading": [
+        "UK Government's guide to National Insurance",
+        "Money Advice Service's pension and retirement resources"
+      ]
+    },
+    {
+      "name": "Superannuation (Australia)",
+      "explanation": "A compulsory retirement savings program where employers contribute a percentage of an employee's earnings to a fund that the employee can access in retirement.",
+      "examples": [
+        "Employer contributing 10.5% of salary to your superannuation fund",
+        "Making additional voluntary contributions to boost retirement savings"
+      ],
+      "tips": [
+        "Consolidate multiple superannuation accounts to reduce fees",
+        "Consider your investment options within your superannuation fund",
+        "Understand the preservation age for accessing your superannuation"
+      ],
+      "furtherReading": [
+        "Australian Taxation Office's superannuation information",
+        "MoneySmart's superannuation and retirement planning guides"
+      ]
+    }
+  ]
+}

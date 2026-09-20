@@ -1,0 +1,26 @@
+Enhance an existing financial literacy web application called 'SavyFunds™' (lowercase 'savyfunds™' in branding), launched on April 6, 2025, targeting teens and young adults globally. The app is built with React, Tailwind CSS, Wouter for routing, and TanStack Query for data fetching—hosted on Replit with a GoDaddy domain. It already includes a dashboard (Dashboard.tsx), navigation (Navbar.tsx), routing (App.tsx), and features like gamified quests in Learn.tsx. Add the following standout features to elevate its youth-empowering, AI-driven, and future-focused identity:
+
+Peer-to-Peer Money Challenges:
+Create a new Community.tsx component with a 'Challenges' section—users can start a challenge (e.g., 'Save $20 in 7 days') and invite friends via a 'Send Invite' button (mock action: alert 'Invite sent!').
+Include a leaderboard showing the top 5 savers (mock data via /api/community/leaderboard, e.g., { username: 'Alex', saved: 25 }).
+Style with Deep Teal (#2C6E49) buttons, off-white (#F9FAFB) background, and Avenir Next Medium font—mobile-friendly with Tailwind (e.g., flex flex-col md:flex-row).
+Add route /community in App.tsx and link in Navbar.tsx under existing nav items.
+AI-Powered Money Coach:
+Upgrade the existing AIAssistant.tsx to fetch user budget data (mock /api/user/budget, e.g., { income: 150, expenses: 80 }) and deliver tailored tips (e.g., 'Income > $100? Save 20%!' or 'Tight budget? Try $5 this week!').
+Add a text input for users to ask simple questions (e.g., 'How do I save?' → mock response: 'Start with 10% of your income!')—store input locally, display answer below.
+Design as a card (bg-[#F9FAFB], text-[#4B5563], #2C6E49 header), integrated into Dashboard.tsx naturally alongside UserWelcome, FinancialTools, etc.
+Stock Market Playground:
+Add a 'Stock Playground' section to Goals.tsx with a virtual portfolio starting at $1,000 (local state).
+Include 3 demo stocks (e.g., 'TechCo $50', 'GreenInc $30', 'FoodLtd $20')—users can 'buy' or 'sell' via buttons, updating the portfolio value dynamically.
+Add a clickable 'Stocks 101' mini-lesson (e.g., 'Buy low, sell high—grow your money over time!') in a popup styled with pastel blue (#A3BFFA) buttons and #2C6E49 text.
+Ensure it fits Dashboard.tsx flow—use Tailwind for responsiveness (e.g., grid grid-cols-1 md:grid-cols-2).
+Mood-Based Money Tips:
+Enhance UserWelcome.tsx (already showing username, level, etc.) with a 'How you feeling?' prompt—two buttons: 'Stressed' and 'Chill' (styled in #A3BFFA).
+Based on click, show a tip below (e.g., 'Stressed? Save $1 today for a win!' or 'Chill? Set a $10 goal!')—store mood in local state, update dynamically.
+Blend into existing welcome layout (bg-[#F9FAFB], text-[#4B5563], #2C6E49 accents)—keep it casual and youth-friendly.
+Integration:
+
+Routing: Update App.tsx to include /community alongside existing routes (/, /dashboard, /learn, etc.).
+Navigation: Add 'Community' to Navbar.tsx nav links (e.g., <NavLink href="/community" current={location}>Community</NavLink>).
+Dashboard: Ensure AIAssistant, Goals, and UserWelcome updates flow naturally in Dashboard.tsx—maintain order: UserWelcome, PersonalizedPath, FinancialTools, EducationalContent, AIAssistant, Goals.
+Auth: Use existing /api/auth/me for user data—logout in Navbar.tsx stays, redirecting to /signup.

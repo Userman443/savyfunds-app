@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded square background with deep teal -->
+  <rect width="32" height="32" rx="4" fill="#2C6E49"/>
+  
+  <!-- 3D-style lowercase 's' in Poppins-inspired style -->
+  <!-- Main shape -->
+  <path d="M21 11.5C21 8.85 18.9 7 16 7H14C11.1 7 9 8.85 9 11.5C9 14.15 11.1 16 14 16H16.9C19.8 16 21.9 17.85 21.9 20.5C21.9 23.15 19.8 25 16.9 25H14.4C11.5 25 9.4 23.15 9.4 20.5" 
+        stroke="white" 
+        stroke-width="3.2" 
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+        
+  <!-- 3D highlight -->
+  <path d="M20 12C20 9.5 18 8 15.5 8H14C11.9 8 10.2 9.2 10 11" 
+        stroke="#A3EADD" 
+        stroke-width="1.2" 
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity="0.8"/>
+        
+  <!-- 3D shadow -->
+  <path d="M21 20C21 22.5 19 24 16.5 24H14.5C12.4 24 10.7 22.8 10.5 21" 
+        stroke="#134029" 
+        stroke-width="1.2" 
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity="0.6"/>
+</svg>

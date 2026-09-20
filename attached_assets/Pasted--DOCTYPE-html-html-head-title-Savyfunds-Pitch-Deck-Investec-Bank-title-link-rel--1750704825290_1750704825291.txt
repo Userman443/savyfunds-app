@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Savyfunds Pitch Deck - Investec Bank</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css">
+  <style>
+    .reveal h1 { color: #2E7D32; font-size: 2.5em; }
+    .reveal p { font-size: 1.2em; }
+    .reveal ul { list-style-type: disc; margin-left: 20px; }
+    .logo { max-height: 100px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <!-- Slide 1: Title -->
+      <section>
+        <h1>Savyfunds & Investec Bank Partnership</h1>
+        <h3>Empowering Youth Financial Literacy</h3>
+        <img src="https://via.placeholder.com/150x50.png?text=Savyfunds+Logo" alt="Savyfunds Logo" class="logo">
+        <p>Michael Momoh, Founder | June 23, 2025</p>
+      </section>
+
+      <!-- Slide 2: The Problem -->
+      <section>
+        <h1>The Financial Literacy Crisis</h1>
+        <ul>
+          <li>Over 60% of young adults lack essential financial knowledge</li>
+          <li>90% experience financial anxiety</li>
+          <li>Underserved youths in London face growing challenges</li>
+        </ul>
+      </section>
+
+      <!-- Slide 3: Savyfunds Solution -->
+      <section>
+        <h1>Savyfunds' Impact</h1>
+        <ul>
+          <li>Free AI-driven tools & education</li>
+          <li>Budgeting companions & peer network</li>
+          <li>75% boost in financial confidence (pilot data)</li>
+          <li>Top-ranked platform for financial empowerment</li>
+        </ul>
+      </section>
+
+      <!-- Slide 4: Local Opportunity -->
+      <section>
+        <h1>Empowering London Communities</h1>
+        <ul>
+          <li>Pilot with local schools or youth groups</li>
+          <li>Reach 10,000+ London youths in 6 months</li>
+          <li>Enhance existing partner programs</li>
+          <li>50% increase in engagement potential</li>
+        </ul>
+      </section>
+
+      <!-- Slide 5: Partnership Benefits -->
+      <section>
+        <h1>Why Partner with Savyfunds?</h1>
+        <ul>
+          <li>Embed our tools into your education pillar</li>
+          <li>Boost CSR narrative with measurable impact</li>
+          <li>40% brand visibility among young adults</li>
+          <li>Hybrid sponsorship model for collaboration</li>
+        </ul>
+      </section>
+
+      <!-- Slide 6: Call to Action -->
+      <section>
+        <h1>Let’s Collaborate!</h1>
+        <p>Next Steps: Launch a 3-month pilot in London</p>
+        <p>Contact: partnerships@savyfunds.com | +1 (650) 207-1804</p>
+        <p>Together, we can uplift millions!</p>
+      </section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({ width: 1280, height: 720 });
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer components {
+  .light-theme-input {
+    @apply bg-white text-neutral-900;
+    color-scheme: light;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    /* Deep Teal #2C6E49 */
+    --primary: 146 42% 30%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 146 42% 25%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --accent: 146 42% 35%;
+    --accent-foreground: 210 40% 98%;
+    
+    --muted: 146 20% 96.1%;
+    --muted-foreground: 146 16.3% 46.9%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 146 20% 91.4%;
+    --input: 146 20% 91.4%;
+    --ring: 146 42% 30%;
+    
+    --radius: 0.5rem;
+  }
+  
+  /* Dark mode has been removed */
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
+  body {
+    @apply font-['Poppins'] antialiased bg-background text-foreground transition-colors duration-300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .brand-text {
+    @apply font-['Poppins'] font-semibold;
+  }
+}
+
+@layer components {
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  .progress-bar {
+    @apply bg-gradient-to-r from-[#4F9D69] to-[#2C6E49];
+  }
+
+  /* Logo text styling */
+  .savyfunds-logo {
+    @apply font-['Poppins'] font-semibold text-4xl md:text-5xl text-[#2C6E49] tracking-tight;
+  }
+  
+  .savyfunds-logo-large {
+    @apply font-['Poppins'] font-semibold text-5xl md:text-6xl text-[#2C6E49] tracking-tight;
+  }
+  
+  /* Trademark symbol styling */
+  .savyfunds-logo .tm-symbol,
+  .savyfunds-logo-large .tm-symbol {
+    @apply text-sm md:text-base align-top;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.page-transition {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Hide Replit watermark */
+a[href*="https://replit.com/"] {
+  display: none !important;
+}
+
+/* Hide any Replit watermark containers */
+iframe[src*="https://replit.com/"],
+div[class*="replit"],
+[class*="replit-watermark"],
+[id*="replit"],
+[class*="watermark"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+}

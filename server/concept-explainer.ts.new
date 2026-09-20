@@ -1,0 +1,172 @@
+import { explainFinancialConcept as AnthropicExplainConcept } from './lib/anthropic-fixed';
+import { explainFinancialConcept as OpenAIExplainConcept } from './lib/openai';
+import { explainFinancialConcept as GrokExplainConcept } from './lib/xai';
+
+// Define type for explainFinancialConcept return value
+export type ExplainConceptResult = {
+  explanation: string;
+  examples: string[];
+  tips: string[];
+  furtherReading: string[];
+};
+
+/**
+ * Explains a financial concept, trying xAI Grok first, then OpenAI, then Anthropic, then fallback to predefined responses
+ * @param concept The financial concept to explain
+ * @param experienceLevel The user's financial experience level
+ * @returns A formatted explanation string
+ */
+export async function explainConcept(concept: string, experienceLevel: string): Promise<string> {
+  // First, try xAI Grok
+  try {
+    console.log(`Explaining concept "${concept}" with xAI Grok...`);
+    const result = await GrokExplainConcept(concept, experienceLevel);
+    console.log("Successfully generated explanation with xAI Grok");
+    return `${result.explanation}\n\nExamples:\n${result.examples.join('\n')}\n\nTips:\n${result.tips.join('\n')}\n\nFurther Reading:\n${result.furtherReading.join('\n')}`;
+  } catch (grokError) {
+    console.error("Error explaining concept with xAI Grok:", grokError);
+    
+    // If Grok fails, try OpenAI
+    try {
+      console.log(`Explaining concept "${concept}" with OpenAI (fallback 1)...`);
+      const result = await OpenAIExplainConcept(concept, experienceLevel);
+      console.log("Successfully generated explanation with OpenAI");
+      return result;
+    } catch (openaiError) {
+      console.error("Error explaining concept with OpenAI:", openaiError);
+      
+      // If OpenAI fails, try Anthropic
+      try {
+        console.log(`Explaining concept "${concept}" with Anthropic (fallback 2)...`);
+        const result = await AnthropicExplainConcept(concept, experienceLevel);
+        console.log("Successfully generated explanation with Anthropic");
+        return `${result.explanation}\n\nExamples:\n${result.examples.join('\n')}\n\nTips:\n${result.tips.join('\n')}\n\nFurther Reading:\n${result.furtherReading.join('\n')}`;
+      } catch (claudeError) {
+        console.error("Error with Anthropic explanation, falling back to predefined responses:", claudeError);
+        
+        // If all AI providers fail, use predefined responses
+        return getPreDefinedExplanation(concept);
+      }
+    }
+  }
+}
+
+/**
+ * Returns a predefined explanation for common financial concepts
+ * @param concept The financial concept to explain
+ * @returns A formatted explanation string
+ */
+function getPreDefinedExplanation(concept: string): string {
+  // Fallback responses for common financial concepts
+  const responses: Record<string, ExplainConceptResult> = {
+    "emergency fund": {
+      explanation: "An emergency fund is money set aside to cover unexpected expenses or financial emergencies. It serves as a financial safety net that helps you avoid going into debt when unexpected costs arise. Most financial experts recommend having 3-6 months of essential expenses saved in an emergency fund.",
+      examples: [
+        "Sarah's car needed a $800 repair, but she was able to pay for it immediately from her emergency fund without using credit cards.",
+        "When John lost his job, his emergency fund covered his rent and food for three months while he searched for a new position."
+      ],
+      tips: [
+        "Start small with a goal of $1,000, then work toward 3-6 months of expenses",
+        "Keep your emergency fund in a separate, easily accessible account like a high-yield savings account",
+        "Only use your emergency fund for true emergencies, not planned expenses"
+      ],
+      furtherReading: [
+        "How to Build an Emergency Fund in Six Months",
+        "Where to Keep Your Emergency Fund",
+        "Emergency Fund vs. Regular Savings: What's the Difference?"
+      ]
+    },
+    "compound interest": {
+      explanation: "Compound interest is when you earn interest on both the money you've saved and on the interest you've earned. It's often called 'interest on interest' and is a powerful force in building wealth over time. The longer your money compounds, the faster it grows.",
+      examples: [
+        "If you invest $1,000 with 5% annual compound interest, you'll have $1,628 after 10 years, despite only adding $500 in simple interest.",
+        "A retirement account earning compound returns can grow from $10,000 to over $100,000 in 30 years even without additional contributions."
+      ],
+      tips: [
+        "Start investing as early as possible to maximize compound growth",
+        "Leave your earnings to reinvest rather than withdrawing them",
+        "Use a compound interest calculator to see the long-term impact of your investments"
+      ],
+      furtherReading: [
+        "The Power of Compound Interest Explained",
+        "How Compound Interest Works in Investments",
+        "Simple vs. Compound Interest: Understanding the Difference"
+      ]
+    },
+    "inflation": {
+      explanation: "Inflation is the rate at which prices for goods and services rise over time, resulting in a decrease in purchasing power. It's typically measured as an annual percentage increase in the cost of living. When inflation occurs, each dollar buys fewer goods and services than before.",
+      examples: [
+        "If inflation is 3% per year, something that costs $100 today will cost $103 next year, and approximately $134 in 10 years.",
+        "A retiree living on a fixed income of $3,000 per month will find their purchasing power significantly reduced over time if their income doesn't adjust for inflation."
+      ],
+      tips: [
+        "Consider investments that historically outpace inflation, such as stocks and real estate",
+        "Look for inflation-protected securities like TIPS (Treasury Inflation-Protected Securities)",
+        "When planning for long-term goals, always factor in the impact of inflation"
+      ],
+      furtherReading: [
+        "How Inflation Works and Its Impact on Your Finances",
+        "Investment Strategies to Hedge Against Inflation",
+        "Historical Inflation Rates and What They Mean for Your Future"
+      ]
+    },
+    "401k": {
+      explanation: "A 401(k) is a retirement savings plan sponsored by employers that allows workers to save and invest a portion of their paycheck before taxes are taken out. Many employers match a percentage of employee contributions, which is essentially free money for your retirement.",
+      examples: [
+        "Lisa contributes 6% of her salary to her 401(k), and her employer matches 50% of her contribution, giving her an additional 3% toward retirement.",
+        "By starting his 401(k) contributions at age 25 instead of 35, Mark accumulated an additional $300,000 for retirement."
+      ],
+      tips: [
+        "Contribute at least enough to get your full employer match",
+        "Increase your contribution percentage whenever you get a raise",
+        "Consider the tax advantages of traditional vs. Roth 401(k) options"
+      ],
+      furtherReading: [
+        "401(k) Plans: The Complete Guide",
+        "How to Maximize Your 401(k) Benefits",
+        "What Happens to Your 401(k) When You Change Jobs"
+      ]
+    },
+    "credit score": {
+      explanation: "A credit score is a number between 300-850 that represents your creditworthiness. It's based on your credit history and helps lenders decide whether to approve loans and what interest rates to offer you. Higher scores mean better terms and more financial opportunities.",
+      examples: [
+        "After improving her credit score from 650 to 750, Maria qualified for a mortgage with 1% lower interest, saving $40,000 over the life of her loan.",
+        "David's excellent credit score helped him get approved for a premium credit card with travel rewards and no annual fee."
+      ],
+      tips: [
+        "Pay all bills on time, as payment history is the biggest factor in your score",
+        "Keep credit card balances low relative to your credit limits",
+        "Check your credit report regularly for errors and dispute any inaccuracies"
+      ],
+      furtherReading: [
+        "What Makes Up Your Credit Score?",
+        "How to Improve Your Credit Score in 30 Days",
+        "Common Credit Score Myths Debunked"
+      ]
+    }
+  };
+  
+  // Normalize the concept for lookup
+  const normalizedConcept = concept.toLowerCase().trim();
+  
+  // Try to match with predefined responses
+  for (const [key, response] of Object.entries(responses)) {
+    if (normalizedConcept.includes(key)) {
+      return `${response.explanation}\n\nExamples:\n${response.examples.join('\n')}\n\nTips:\n${response.tips.join('\n')}\n\nFurther Reading:\n${response.furtherReading.join('\n')}`;
+    }
+  }
+  
+  // Generic fallback for concepts not in our predefined list
+  return `I'd be happy to explain ${concept} for you, but I'm currently experiencing some technical difficulties. 
+
+Here's a basic explanation:
+
+${concept.includes("emergency fund") ? "An emergency fund is money set aside for unexpected expenses like medical bills, car repairs, or job loss. Most experts recommend saving 3-6 months of essential expenses." :
+  concept.includes("budget") ? "A budget is a plan for your money that helps you track income and expenses. It gives you control over your finances and helps you achieve financial goals." :
+  concept.includes("invest") ? "Investing means putting money into assets like stocks, bonds, or real estate with the expectation of generating income or profit over time." :
+  concept.includes("debt") ? "Debt is money borrowed that must be repaid, usually with interest. Managing debt wisely is crucial for financial health." :
+  concept.includes("inflation") ? "Inflation is the rise in prices over time, which reduces your purchasing power. A dollar today will buy less in the future due to inflation." :
+  `This is a key financial concept that's important to understand for your financial well-being. Consider researching it further or asking a financial advisor.`}
+
+For more detailed information, consider exploring educational resources on savyfunds or consulting with a financial advisor.`;
+}

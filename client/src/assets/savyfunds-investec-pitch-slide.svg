@@ -1,0 +1,138 @@
+
+    <svg width="1200" height="1600" viewBox="0 0 1200 1600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          .header-text { font-family: Arial, sans-serif; font-weight: 600; fill: #2C6E49; }
+          .title-text { font-family: Arial, sans-serif; font-weight: bold; fill: #1a202c; }
+          .body-text { font-family: Arial, sans-serif; font-weight: 400; fill: #374151; }
+          .stat-text { font-family: Arial, sans-serif; font-weight: bold; fill: white; }
+          .benefit-title { font-family: Arial, sans-serif; font-weight: 600; fill: #1a202c; }
+          .benefit-desc { font-family: Arial, sans-serif; font-weight: 400; fill: #6b7280; }
+        </style>
+      </defs>
+      
+      <!-- Background -->
+      <rect width="1200" height="1600" fill="white"/>
+      
+      <!-- Header Section -->
+      <rect x="50" y="50" width="1100" height="120" fill="none" stroke="#2C6E49" stroke-width="3" rx="10"/>
+      <text x="600" y="85" class="header-text" font-size="36" text-anchor="middle">savyfunds™</text>
+      <text x="600" y="120" class="title-text" font-size="28" text-anchor="middle">Partnership Opportunity</text>
+      <text x="600" y="150" class="header-text" font-size="18" text-anchor="middle">Empowering Financial Literacy with Investec Bank</text>
+      
+      <!-- Introduction Section -->
+      <rect x="50" y="200" width="1100" height="80" fill="#f8fafc" rx="8"/>
+      <text x="70" y="225" class="body-text" font-size="16" font-weight="600">Introduction</text>
+      <text x="70" y="250" class="body-text" font-size="14">Savyfunds, a fintech startup, partners with community-focused banks to empower young adults</text>
+      <text x="70" y="270" class="body-text" font-size="14">with free financial education tools, aligning with Investec Bank's mission to support community growth.</text>
+      
+      <!-- Crisis Statistics -->
+      <text x="600" y="320" class="title-text" font-size="24" text-anchor="middle">The Financial Literacy Crisis</text>
+      
+      <!-- Stat Cards -->
+      <rect x="50" y="340" width="350" height="120" fill="#2C6E49" rx="10"/>
+      <text x="225" y="380" class="stat-text" font-size="48" text-anchor="middle">60%</text>
+      <text x="225" y="405" class="stat-text" font-size="14" text-anchor="middle">of young adults lack essential</text>
+      <text x="225" y="425" class="stat-text" font-size="14" text-anchor="middle">financial knowledge</text>
+      
+      <rect x="425" y="340" width="350" height="120" fill="#2C6E49" rx="10"/>
+      <text x="600" y="380" class="stat-text" font-size="48" text-anchor="middle">90%</text>
+      <text x="600" y="405" class="stat-text" font-size="14" text-anchor="middle">face financial anxiety</text>
+      <text x="600" y="425" class="stat-text" font-size="14" text-anchor="middle">daily</text>
+      
+      <rect x="800" y="340" width="350" height="120" fill="#2C6E49" rx="10"/>
+      <text x="975" y="380" class="stat-text" font-size="48" text-anchor="middle">£2.1B</text>
+      <text x="975" y="405" class="stat-text" font-size="14" text-anchor="middle">annual cost of financial</text>
+      <text x="975" y="425" class="stat-text" font-size="14" text-anchor="middle">illiteracy in UK</text>
+      
+      <!-- Benefits Section -->
+      <text x="600" y="510" class="title-text" font-size="24" text-anchor="middle">Benefits for Investec Bank</text>
+      
+      <!-- Benefit 1 -->
+      <rect x="50" y="530" width="550" height="80" fill="#f8fafc" stroke="#2C6E49" stroke-width="2" rx="8"/>
+      <text x="70" y="555" class="benefit-title" font-size="16">🏆 Brand Visibility</text>
+      <text x="70" y="575" class="benefit-desc" font-size="12">Feature prominently on a top-ranked financial literacy platform</text>
+      <text x="70" y="590" class="benefit-desc" font-size="12">reaching thousands of young adults daily</text>
+      
+      <!-- Benefit 2 -->
+      <rect x="600" y="530" width="550" height="80" fill="#f8fafc" stroke="#2C6E49" stroke-width="2" rx="8"/>
+      <text x="620" y="555" class="benefit-title" font-size="16">🌱 Community Growth</text>
+      <text x="620" y="575" class="benefit-desc" font-size="12">Support programs that highlight local impact and strengthen</text>
+      <text x="620" y="590" class="benefit-desc" font-size="12">community ties in London and beyond</text>
+      
+      <!-- Benefit 3 -->
+      <rect x="50" y="620" width="550" height="80" fill="#f8fafc" stroke="#2C6E49" stroke-width="2" rx="8"/>
+      <text x="70" y="645" class="benefit-title" font-size="16">👥 Customer Pipeline</text>
+      <text x="70" y="665" class="benefit-desc" font-size="12">Attract a steady flow of financially educated, community-focused</text>
+      <text x="70" y="680" class="benefit-desc" font-size="12">consumers who value responsible banking</text>
+      
+      <!-- Benefit 4 -->
+      <rect x="600" y="620" width="550" height="80" fill="#f8fafc" stroke="#2C6E49" stroke-width="2" rx="8"/>
+      <text x="620" y="645" class="benefit-title" font-size="16">📱 Digital Leadership</text>
+      <text x="620" y="665" class="benefit-desc" font-size="12">Showcase a dynamic CSR story that positions Investec Bank</text>
+      <text x="620" y="680" class="benefit-desc" font-size="12">as a forward-thinking, community-centered bank</text>
+      
+      <!-- London Community Section -->
+      <rect x="50" y="730" width="1100" height="150" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2" rx="10"/>
+      <text x="70" y="760" class="benefit-title" font-size="18">🏙️ Tailored for London Communities</text>
+      <text x="70" y="785" class="body-text" font-size="14">• Local School Partnerships: Direct engagement with London secondary schools and universities</text>
+      <text x="70" y="805" class="body-text" font-size="14">• Borough-Specific Programs: Customized content addressing unique financial challenges</text>
+      <text x="70" y="825" class="body-text" font-size="14">• Community Hub Integration: Workshops and seminars at local community centers</text>
+      <text x="70" y="845" class="body-text" font-size="14">• Multilingual Support: Content available in key London community languages</text>
+      <text x="70" y="865" class="body-text" font-size="14">• Real-Time Local Data: London housing costs, employment trends, and opportunities</text>
+      
+      <!-- AI Integration Section -->
+      <rect x="50" y="900" width="1100" height="170" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" rx="10"/>
+      <text x="70" y="930" class="benefit-title" font-size="18">🤖 Financial AI Integration for Global Innovation</text>
+      <text x="70" y="955" class="body-text" font-size="14">• 24/7 AI Financial Assistant: Instant responses to financial queries in multiple languages</text>
+      <text x="70" y="975" class="body-text" font-size="14">• Personalized Learning Paths: AI-driven recommendations based on individual financial goals</text>
+      <text x="70" y="995" class="body-text" font-size="14">• Risk Assessment Tools: AI-powered analysis of financial decisions and recommendations</text>
+      <text x="70" y="1015" class="body-text" font-size="14">• Behavioral Insights: Machine learning algorithms that track and improve financial habits</text>
+      <text x="70" y="1035" class="body-text" font-size="14">• Global Scalability: AI models trained for international markets and regulations</text>
+      <text x="70" y="1055" class="body-text" font-size="14">• White-Label Integration: Seamless incorporation into existing Investec digital platforms</text>
+      
+      <!-- Implementation Timeline -->
+      <text x="600" y="1110" class="title-text" font-size="20" text-anchor="middle">Implementation Roadmap</text>
+      
+      <rect x="50" y="1130" width="265" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+      <text x="70" y="1155" class="benefit-title" font-size="14">📅 Phase 1 (Months 1-2)</text>
+      <text x="70" y="1175" class="benefit-desc" font-size="11">Platform integration, content</text>
+      <text x="70" y="1190" class="benefit-desc" font-size="11">localization for London, and</text>
+      <text x="70" y="1205" class="benefit-desc" font-size="11">initial school partnerships</text>
+      
+      <rect x="335" y="1130" width="265" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+      <text x="355" y="1155" class="benefit-title" font-size="14">🚀 Phase 2 (Months 3-4)</text>
+      <text x="355" y="1175" class="benefit-desc" font-size="11">AI integration deployment,</text>
+      <text x="355" y="1190" class="benefit-desc" font-size="11">community outreach launch,</text>
+      <text x="355" y="1205" class="benefit-desc" font-size="11">and user onboarding</text>
+      
+      <rect x="620" y="1130" width="265" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+      <text x="640" y="1155" class="benefit-title" font-size="14">📈 Phase 3 (Months 5-6)</text>
+      <text x="640" y="1175" class="benefit-desc" font-size="11">Performance optimization,</text>
+      <text x="640" y="1190" class="benefit-desc" font-size="11">advanced features rollout,</text>
+      <text x="640" y="1205" class="benefit-desc" font-size="11">and impact measurement</text>
+      
+      <rect x="905" y="1130" width="265" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+      <text x="925" y="1155" class="benefit-title" font-size="14">🌟 Phase 4 (Months 7+)</text>
+      <text x="925" y="1175" class="benefit-desc" font-size="11">Global expansion planning,</text>
+      <text x="925" y="1190" class="benefit-desc" font-size="11">advanced AI features, and</text>
+      <text x="925" y="1205" class="benefit-desc" font-size="11">long-term partnership</text>
+      
+      <!-- Trusted Partners -->
+      <text x="600" y="1280" class="title-text" font-size="20" text-anchor="middle">Our Trusted Partners</text>
+      
+      <rect x="300" y="1300" width="150" height="50" fill="white" stroke="#e5e7eb" stroke-width="2" rx="8"/>
+      <text x="375" y="1330" class="benefit-title" font-size="16" text-anchor="middle">VISA</text>
+      
+      <rect x="475" y="1300" width="150" height="50" fill="white" stroke="#e5e7eb" stroke-width="2" rx="8"/>
+      <text x="550" y="1330" class="benefit-title" font-size="16" text-anchor="middle">American Express</text>
+      
+      <rect x="650" y="1300" width="150" height="50" fill="white" stroke="#e5e7eb" stroke-width="2" rx="8"/>
+      <text x="725" y="1330" class="benefit-title" font-size="16" text-anchor="middle">Mastercard</text>
+      
+      <!-- Footer -->
+      <rect x="50" y="1380" width="1100" height="100" fill="#1a202c" rx="10"/>
+      <text x="600" y="1415" class="stat-text" font-size="16" text-anchor="middle">Contact: Michael Momoh</text>
+      <text x="600" y="1440" class="stat-text" font-size="14" text-anchor="middle">partnerships@savyfunds.com | +1 (650) 207-1804</text>
+      <text x="600" y="1460" class="stat-text" font-size="12" text-anchor="middle">Together, we can empower the next generation with financial confidence!</text>
+    </svg>

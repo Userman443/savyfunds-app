@@ -1,0 +1,17 @@
+The attached Excel Test & Case Study Exercise are part of our hiring process, it allows abc to gauge your fundamental understanding of small business financials and Microsoft Excel.  Please review the directions below and use the attached documents to complete both exercises!  I appreciate your time and effort!
+ 
+It is a requirement that you are proficient in Excel, as well as being able to create a basic P&L and Cash Flow Forecast using Excel. 
+ 
+The 2 exercises are as follows:
+1.	Excel Assessment Test-(Attached). This should take 20 – 45-mintues depending on your level and knowledge of Excel. 
+2.	Basic Case Study (Attached) creating a simple P&L and Cash Flow. 
+Case Study Exercise – Create a P&L as well as Cash Flow Forecasting:
+ABC company is very representative of our typical client.  We are interested in how you solve a problem like the client in the exercise, as well as your financial knowledge.  Please create the P&L to show        operating income (EBIDTA) and use the direct method to create your cash flow forecasting.  You will need to make assumptions if they are backed by logic and strategy.  We need to know that you are comfortable putting together a basic P&L and Cash Flow. 
+ 
+These exercises are to determine your skills, so please adhere to the following:
+Please be sure to complete these on your own, without using templates, guides or help of any kind.  This will allow us to assess your level of business acumen and fundamental understanding of small businesses.  Due to the extensive use of Excel as a Senior Business Consultant with ISI, we need to be sure you have an above average ability to utilize it during an engagement with our clients.
+Excel Assessment Test Directions: 
+
+List of Excel skills and shortcuts you should know: formatting cells, saving documents, sheets (creating, naming and formatting), using the fill handle,, AutoSum shortcut, keyboard and mouse shortcuts, sorting data, copy, paste, paste value, absolute reference, creating boxes around data, functions (Average, Min, Max, Count, IF, and VLOOKUP), conditional format, filter data, creating headers, adding lines, page breaks, freeze panes, spellcheck, formatting to print, sharing data between 2 sheets, adding rows, creating tables and charts, and following directions.
+1.	Make sure you don’t read ahead. Take each instruction as it comes! 😊 
+2.	Feel free to use your notes or the internet during the test to look up functions or shortcuts. The last name is Momoh, first name is Michael.

@@ -1,0 +1,247 @@
+Add reCAPTCHA for Signup Authentication (Point 1)
+
+
+
+
+
+Register for Google reCAPTCHA v3, get site and secret keys.
+
+
+
+Add reCAPTCHA script and hidden input to signup form.
+
+
+
+Validate reCAPTCHA token on signup submission in backend.
+
+
+
+Test signup form blocks spam submissions.
+
+
+
+Why: Stops bots, builds trust. Insecure forms lose users.
+
+
+
+Cost: $0. Time: 1 hour. Redeploy: Yes.
+
+
+
+Verify HTTPS/SSL and Fix Mixed Content (Point 2)
+
+
+
+
+
+Run SSL Labs test on savyfunds.com, ensure A-grade SSL.
+
+
+
+Force HTTPS redirects in backend.
+
+
+
+Replace all HTTP assets (images, CSS, JS) with HTTPS or relative paths.
+
+
+
+Test site shows padlock, no mixed content warnings in browser DevTools.
+
+
+
+Why: Tester flagged SSL (April 23, 2025), despite GoDaddy certificate. Glitches kill trust.
+
+
+
+Cost: $0. Time: 2 hours. Redeploy: Yes.
+
+
+
+Add Location-Specific Signup Fields (Point 3)
+
+
+
+
+
+Add “Country” dropdown (200+ options) and optional “Income After Tax” numeric field to signup form.
+
+
+
+Save country and income data in backend database.
+
+
+
+Test form submission saves data correctly for US, Canada, Nigeria.
+
+
+
+Why: Localization (PwC tax data) makes platform relevant globally.
+
+
+
+Cost: $0. Time: 2 hours. Redeploy: Yes.
+
+
+
+Remove “Learn Why This Allocation Works” Link (Point 4)
+
+
+
+
+
+Find and delete “Learn why this allocation works” link from lesson or dashboard page.
+
+
+
+Ensure no broken references remain in frontend or backend.
+
+
+
+Test page loads without link or errors.
+
+
+
+Why: Broken link frustrates users, kills UX. Removing avoids confusion.
+
+
+
+Cost: $0. Time: 30 minutes. Redeploy: Yes.
+
+
+
+Update Disclaimer for Legal Compliance (Points 5, 7)
+
+
+
+
+
+Add detailed disclaimer to footer, signup, and lesson pages: “Savyfunds provides educational content only, not financial or legal advice. Consult professionals. We are not liable for decisions based on our content.”
+
+
+
+Test disclaimer is visible on all pages.
+
+
+
+Why: Weak disclaimer risks EU fines (Contextual Solutions link). Must protect now.
+
+
+
+Cost: $0. Time: 1 hour. Redeploy: Yes.
+
+
+
+Focus on Three Markets Initially (Point 6)
+
+
+
+
+
+Limit signup country dropdown to US, Canada, Nigeria.
+
+
+
+Update homepage to state focus on these markets, with “more coming soon.”
+
+
+
+Test dropdown and homepage reflect market focus.
+
+
+
+Why: Simplifies tax data (PwC link) and regulations, avoids EU traps.
+
+
+
+Cost: $0. Time: 30 minutes. Redeploy: Yes.
+
+
+
+Fix Location Detection for Users (Point 9)
+
+
+
+
+
+Replace faulty geolocation API with Cloudflare’s free geolocation or IPinfo API.
+
+
+
+Display user’s country on homepage based on IP.
+
+
+
+Test homepage shows correct country (e.g., US from Starkville).
+
+
+
+Why: Wrong location (Germany vs. Starkville) kills UX.
+
+
+
+Cost: $0. Time: 2 hours. Redeploy: Yes.
+
+
+
+Add Rich Financial and Legal Content (Point 10)
+
+
+
+
+
+Create lessons page with two embedded YouTube videos (Budgeting 101, Investing Basics).
+
+
+
+Add links to NerdWallet’s budgeting guide, Investopedia’s investing article, Contextual Solutions’ EU finfluencer rules, and Internet Legal Attorney’s disclaimer guide.
+
+
+
+Include one savings infographic (Canva, 800x600).
+
+
+
+Link lessons page from homepage.
+
+
+
+Test videos play, links work, infographic loads.
+
+
+
+Why: Thin content loses users. Rich media boosts engagement 20% (Gartner, 2023).
+
+
+
+Cost: $0. Time: 3 hours. Redeploy: Yes.
+
+
+
+Optimize Site Speed and Scalability (Point 10)
+
+
+
+
+
+Add Cloudflare CDN to cache content for global speed.
+
+
+
+Compress all images with TinyPNG.
+
+
+
+Minify CSS and JS files.
+
+
+
+Test site loads under 2 seconds via GTmetrix.
+
+
+
+Why: Slow sites lose users. Replit alone can’t handle global traffic.
+
+
+
+Cost: $0. Time: 2 hours. Redeploy: Yes.
