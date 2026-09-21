@@ -3,7 +3,7 @@
  *
  * Uses OpenRouter's free-tier models (no paid subscription required) for
  * intelligent financial responses. The AI provider branding is hidden -
- * responses appear as "SavyFunds AI".
+ * responses appear as "Savyfunds AI".
  *
  * Speed strategy: fast free models are tried in order with a per-attempt
  * timeout. The first one that answers wins, so the AI automatically uses
@@ -21,6 +21,80 @@ export interface SavyFundsAIResponse {
 
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
+// Live crypto prices via CoinGecko's free API (no key needed). When a user
+// asks the price of a supported coin, the real number is fetched and passed
+// to the model as context so answers quote live data, not guesses.
+const COINGECKO_IDS: Record<string, string> = {
+  bitcoin: "bitcoin",
+  btc: "bitcoin",
+  ethereum: "ethereum",
+  eth: "ethereum",
+  solana: "solana",
+  sol: "solana",
+  dogecoin: "dogecoin",
+  doge: "dogecoin",
+  xrp: "ripple",
+  cardano: "cardano",
+  ada: "cardano",
+  litecoin: "litecoin",
+  ltc: "litecoin",
+  "bitcoin cash": "bitcoin-cash",
+  bch: "bitcoin-cash",
+  chainlink: "chainlink",
+  link: "chainlink",
+  avalanche: "avalanche-2",
+  avax: "avalanche-2",
+  tron: "tron",
+  trx: "tron",
+  polkadot: "polkadot",
+  dot: "polkadot",
+};
+
+async function getLiveCryptoData(question: string): Promise<string | null> {
+  if (!/price|worth|cost|trading at|how much/i.test(question)) return null;
+  const ids = new Set<string>();
+  for (const [name, id] of Object.entries(COINGECKO_IDS)) {
+    if (new RegExp(`\\b${name}\\b`, "i").test(question)) ids.add(id);
+  }
+  if (ids.size === 0) return null;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=${Array.from(ids).join(",")}&vs_currencies=usd&include_24hr_change=true`,
+      { signal: controller.signal }
+    );
+    if (!res.ok) return null;
+    const data = (await res.json()) as Record<
+      string,
+      { usd?: number; usd_24h_change?: number }
+    >;
+    const displayName = (id: string) =>
+      Object.keys(COINGECKO_IDS).find((k) => COINGECKO_IDS[k] === id) ?? id;
+    const parts = Array.from(ids)
+      .map((id) => {
+        const p = data[id];
+        if (!p || typeof p.usd !== "number") return null;
+        const chg =
+          typeof p.usd_24h_change === "number"
+            ? ` (${p.usd_24h_change >= 0 ? "up" : "down"} ${Math.abs(p.usd_24h_change).toFixed(2)}% in the last 24h)`
+            : "";
+        return `${displayName(id)}: $${p.usd.toLocaleString("en-US")}${chg}`;
+      })
+      .filter((p): p is string => !!p);
+    if (parts.length === 0) return null;
+    const stamp = new Date().toLocaleString("en-US", {
+      timeZone: "America/Chicago",
+    });
+    return `Live market data as of ${stamp} CT: ${parts.join("; ")}.`;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 // Fast free models, tried in order. Verified present on OpenRouter 2026-09-20.
 const FAST_FREE_MODELS = [
   "google/gemma-4-26b-a4b-it:free", // MoE: fast with strong quality
@@ -33,10 +107,10 @@ const ROUTER_MODEL = "openrouter/free";
 // How long to wait for one model before trying the next one.
 const ATTEMPT_TIMEOUT_MS = 25000;
 
-const SYSTEM_PROMPT = `You are SavyFunds AI, a friendly and knowledgeable financial literacy assistant. Your role is to help young adults (18-35) understand personal finance in simple, practical terms.
+const SYSTEM_PROMPT = `You are Savyfunds AI, a friendly and knowledgeable financial literacy assistant. Your role is to help young adults (18-35) understand personal finance in simple, practical terms.
 
 IMPORTANT GUIDELINES:
-- You are SavyFunds AI, a financial education assistant
+- You are Savyfunds AI, a financial education assistant
 - NEVER mention OpenRouter, Qwen, Google, Gemini, OpenAI, GPT, ChatGPT, or any AI company names
 - NEVER say "As an AI" - instead say "As your financial assistant"
 - Explain concepts clearly without jargon
@@ -45,6 +119,8 @@ IMPORTANT GUIDELINES:
 - Be encouraging and supportive
 - Keep responses concise but complete (150-300 words ideal)
 - Focus on building good financial habits
+- If live market data is provided in the context, quote the exact numbers when
+  answering price questions and note they are current as of the given time
 
 When answering:
 1. Directly address the user's question
@@ -150,6 +226,13 @@ export async function askSavyFundsAI(
     ? `Context: ${context}\n\nQuestion: ${question}`
     : question;
 
+  // Live price lookup: enrich the context so the model quotes real numbers.
+  const liveData = await getLiveCryptoData(question);
+  const enrichedContext = [liveData, context].filter(Boolean).join("\n\n");
+  const enrichedMessage = enrichedContext
+    ? `Context: ${enrichedContext}\n\nQuestion: ${question}`
+    : question;
+
   // Fast models first, then the configured router model as fallback.
   const configured = process.env.OPENROUTER_MODEL || ROUTER_MODEL;
   const models = [...FAST_FREE_MODELS, configured].filter(
@@ -159,7 +242,7 @@ export async function askSavyFundsAI(
   let lastError: unknown = null;
   for (const model of models) {
     try {
-      const result = await tryModel(apiKey, model, userMessage);
+      const result = await tryModel(apiKey, model, enrichedMessage);
       if (model !== models[0]) {
         console.log(`SavyFunds AI answered via fallback model: ${model}`);
       }
