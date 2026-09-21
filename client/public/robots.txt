@@ -179,4 +179,4 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 
-Sitemap: https://savyfunds.com/sitemap.xml
+Sitemap: https://www.savyfunds.com/sitemap.xml
