@@ -4,6 +4,12 @@
  * Uses OpenRouter's free-tier models (no paid subscription required) for
  * intelligent financial responses. The AI provider branding is hidden -
  * responses appear as "SavyFunds AI".
+ *
+ * Speed strategy: fast free models are tried in order with a per-attempt
+ * timeout. The first one that answers wins, so the AI automatically uses
+ * whichever fast model is actually responding quickly right now, instead of
+ * waiting in a congested queue. The openrouter/free router is the last
+ * resort before the built-in database fallback.
  */
 
 export interface SavyFundsAIResponse {
@@ -15,9 +21,17 @@ export interface SavyFundsAIResponse {
 
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-// Free OpenRouter model (no billing required). Verified live 2026-09-20.
-// Override with the OPENROUTER_MODEL environment variable if needed.
-const DEFAULT_MODEL = "qwen/qwen3.8-27b:free";
+// Fast free models, tried in order. Verified present on OpenRouter 2026-09-20.
+const FAST_FREE_MODELS = [
+  "google/gemma-4-26b-a4b-it:free", // MoE: fast with strong quality
+  "nvidia/nemotron-3.5-lightning:free", // latency-optimized
+  "liquid/lfm-2.5-2.6b:free", // tiny: fastest, used as last fast resort
+];
+
+const ROUTER_MODEL = "openrouter/free";
+
+// How long to wait for one model before trying the next one.
+const ATTEMPT_TIMEOUT_MS = 25000;
 
 const SYSTEM_PROMPT = `You are SavyFunds AI, a friendly and knowledgeable financial literacy assistant. Your role is to help young adults (18-35) understand personal finance in simple, practical terms.
 
@@ -58,23 +72,17 @@ function extractJson(text: string): string {
   return text.trim();
 }
 
-export async function askSavyFundsAI(
-  question: string,
-  context?: string
+async function tryModel(
+  apiKey: string,
+  model: string,
+  userMessage: string
 ): Promise<SavyFundsAIResponse> {
-  const apiKey = process.env.OPENROUTER_API_KEY || "";
-  if (!apiKey) {
-    throw new Error("OpenRouter API key not configured");
-  }
-  const model = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
-
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), ATTEMPT_TIMEOUT_MS);
   try {
-    const userMessage = context
-      ? `Context: ${context}\n\nQuestion: ${question}`
-      : question;
-
     const res = await fetch(OPENROUTER_API_URL, {
       method: "POST",
+      signal: controller.signal,
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
@@ -124,10 +132,48 @@ export async function askSavyFundsAI(
         relatedTopics: [],
       };
     }
-  } catch (error) {
-    console.error("SavyFunds AI error:", error);
-    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
+}
+
+export async function askSavyFundsAI(
+  question: string,
+  context?: string
+): Promise<SavyFundsAIResponse> {
+  const apiKey = process.env.OPENROUTER_API_KEY || "";
+  if (!apiKey) {
+    throw new Error("OpenRouter API key not configured");
+  }
+
+  const userMessage = context
+    ? `Context: ${context}\n\nQuestion: ${question}`
+    : question;
+
+  // Fast models first, then the configured router model as fallback.
+  const configured = process.env.OPENROUTER_MODEL || ROUTER_MODEL;
+  const models = [...FAST_FREE_MODELS, configured].filter(
+    (m, i, arr) => arr.indexOf(m) === i
+  );
+
+  let lastError: unknown = null;
+  for (const model of models) {
+    try {
+      const result = await tryModel(apiKey, model, userMessage);
+      if (model !== models[0]) {
+        console.log(`SavyFunds AI answered via fallback model: ${model}`);
+      }
+      return result;
+    } catch (error) {
+      lastError = error;
+      console.warn(`SavyFunds AI model ${model} failed, trying next:`, error);
+    }
+  }
+
+  console.error("SavyFunds AI error: all models failed:", lastError);
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("All AI models failed");
 }
 
 export function isSavyFundsAIAvailable(): boolean {
