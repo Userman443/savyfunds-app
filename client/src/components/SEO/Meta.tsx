@@ -17,7 +17,7 @@ interface MetaProps {
 export const Meta: React.FC<MetaProps> = ({
   title = 'savyfunds - Financial Education Platform',
   description = 'Your personalized financial education platform to build better money habits and improve financial literacy',
-  canonicalUrl = 'https://savyfunds.com',
+  canonicalUrl = 'https://www.savyfunds.com',
   imageUrl = '/social-preview.png',
   type = 'website',
   keywords = ['financial education', 'money management', 'budgeting', 'financial literacy', 'personal finance']
