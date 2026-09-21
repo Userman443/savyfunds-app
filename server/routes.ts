@@ -150,6 +150,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.setHeader('Content-Type', 'text/plain');
     res.sendFile(robotsPath);
   });
+
+  // Social crawler previews for news articles.
+  // Facebook, X, LinkedIn, WhatsApp, etc. do not run JavaScript, so their
+  // crawlers only see the static HTML shell (generic site title). When one
+  // of their bots requests an article URL, serve a minimal static page with
+  // the correct title, description, and image tags. Human visitors fall
+  // through to the SPA. This does not inflate view counts.
+  const CRAWLER_UA = /facebookexternalhit|facebot|twitterbot|linkedinbot|slackbot|discordbot|telegrambot|whatsapp|pinterestbot|applebot|embedly|quora|outbrain|vkshare|skypeuripreview/i;
+  const escapeHtml = (s: string) => s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+  app.get('/news/:slug', async (req, res, next) => {
+    const ua = req.get('user-agent') || '';
+    if (!CRAWLER_UA.test(ua)) return next();
+    try {
+      const article = await storage.getNewsArticleBySlug(req.params.slug);
+      if (!article) return next();
+      const canonicalUrl = `https://www.savyfunds.com/news/${article.slug}`;
+      const description = ((article.excerpt || '').trim() || 'Read the latest news from savyfunds.').slice(0, 300);
+      const rawImage = article.imageUrl || '/social-preview.png';
+      const imageUrl = rawImage.startsWith('http')
+        ? rawImage
+        : `https://www.savyfunds.com${rawImage}`;
+      const title = escapeHtml(article.title);
+      const desc = escapeHtml(description);
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>${title} | savyfunds</title>
+<meta name="description" content="${desc}" />
+<link rel="canonical" href="${canonicalUrl}" />
+<meta property="og:title" content="${title} | savyfunds" />
+<meta property="og:description" content="${desc}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="${canonicalUrl}" />
+<meta property="og:image" content="${imageUrl}" />
+<meta property="og:site_name" content="savyfunds" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${title} | savyfunds" />
+<meta name="twitter:description" content="${desc}" />
+<meta name="twitter:image" content="${imageUrl}" />
+</head>
+<body>
+<h1>${title}</h1>
+<p>${desc}</p>
+<p><a href="${canonicalUrl}">Read the full article on savyfunds</a></p>
+<script>window.location.replace("${canonicalUrl}");</script>
+</body>
+</html>`;
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.send(html);
+    } catch (e) {
+      console.error('Crawler preview failed:', e);
+      next();
+    }
+  });
   // Set up session middleware
   app.use(session(sessionConfig));
   
