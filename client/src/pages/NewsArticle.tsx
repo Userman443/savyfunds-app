@@ -119,7 +119,7 @@ export default function NewsArticlePage() {
   const rawImageUrl = article.imageUrl || '/social-preview.png';
   const absoluteImageUrl = rawImageUrl.startsWith('http')
     ? rawImageUrl
-    : `https://savyfunds.com${rawImageUrl}`;
+    : `https://www.savyfunds.com${rawImageUrl}`;
   const datePublished = article.publishedAt
     ? new Date(article.publishedAt).toISOString()
     : new Date().toISOString();
@@ -134,12 +134,12 @@ export default function NewsArticlePage() {
     author: {
       '@type': 'Organization',
       name: 'savyfunds',
-      url: 'https://savyfunds.com',
+      url: 'https://www.savyfunds.com',
     },
     publisher: {
       '@type': 'Organization',
       name: 'savyfunds',
-      url: 'https://savyfunds.com',
+      url: 'https://www.savyfunds.com',
     },
     image: absoluteImageUrl,
     mainEntityOfPage: {
