@@ -127,9 +127,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             : new Date().toISOString().split('T')[0];
           return `  <url>\n    <loc>https://www.savyfunds.com/news/${a.slug}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
         }).join('\n');
-        const newsIndex = `  <url>\n    <loc>https://www.savyfunds.com/news</loc>\n    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>`;
         if (newsUrls) {
-          xml = xml.replace('</urlset>', `${newsIndex}\n${newsUrls}\n</urlset>`);
+          xml = xml.replace('</urlset>', `${newsUrls}\n</urlset>`);
         }
       } catch (e) {
         console.error('Failed to inject news URLs into sitemap:', e);
