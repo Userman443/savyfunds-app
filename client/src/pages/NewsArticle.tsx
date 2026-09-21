@@ -149,7 +149,11 @@ export default function NewsArticlePage() {
   };
 
   const handleShare = async () => {
-    const shareData = { title: article.title, text: description, url: canonicalUrl };
+    // Share only the title and the canonical article URL. The article
+    // description is deliberately excluded: it can mention savyfunds.com
+    // in plain text, which apps like X auto-link into a homepage link
+    // sitting next to the real article URL.
+    const shareData = { title: article.title, url: canonicalUrl };
     try {
       const nav = navigator as Navigator & { share?: (data: ShareData) => Promise<void> };
       if (nav.share) {
