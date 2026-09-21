@@ -91,7 +91,7 @@ const HelpButton = () => {
               <Bot className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <p className="font-semibold text-sm leading-tight">SavyFunds AI</p>
+              <p className="font-semibold text-sm leading-tight">Savyfunds AI</p>
               <p className="text-xs text-white/80 leading-tight">You can ask me anything about money</p>
             </div>
             <button
@@ -159,7 +159,7 @@ const HelpButton = () => {
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
               className="flex-1"
-              aria-label="Ask SavyFunds AI"
+              aria-label="Ask Savyfunds AI"
             />
             <Button type="submit" disabled={isLoading || !input.trim()} size="icon" aria-label="Send">
               {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
