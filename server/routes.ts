@@ -123,7 +123,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const lastmod = a.publishedAt
             ? new Date(a.publishedAt).toISOString().split('T')[0]
             : new Date().toISOString().split('T')[0];
-          return `  <url>\n    <loc>https://savyfunds.com/news/${a.slug}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
+          return `  <url>\n    <loc>https://www.savyfunds.com/news/${a.slug}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
         }).join('\n');
         if (newsUrls) {
           xml = xml.replace('</urlset>', `${newsUrls}\n</urlset>`);
