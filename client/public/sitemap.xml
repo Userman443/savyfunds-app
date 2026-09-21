@@ -101,4 +101,36 @@
     <priority>0.4</priority>
   </url>
 
+  <!-- News section -->
+  <url>
+    <loc>https://www.savyfunds.com/news</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.savyfunds.com/news/savyfunds-launches-standalone-financial-literacy-platform</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.savyfunds.com/news/fed-raises-interest-rates-for-the-first-time-since-2023-what-it-means-for-your-m</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.savyfunds.com/news/markets-close-a-wild-week-s-p-500-holds-steady-as-bond-yields-hit-5</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.savyfunds.com/news/savings-accounts-pay-up-to-4-50-apy-right-now-the-average-account-pays-0-38</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
