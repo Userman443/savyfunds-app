@@ -119,7 +119,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Inject news article URLs so new press releases and news stay indexed
       try {
         // Drop any stale hardcoded /news/ entries first so each article appears once
-        xml = xml.replace(/\s*<url>\s*<loc>https:\/\/[^<]*\/news(\/[^<]*)?<\/loc>[\s\S]*?<\/url>/g, '');
+        xml = xml.replace(/\s*<url>\s*<loc>https:\/\/[^<]*\/news\/[^<]*<\/loc>[\s\S]*?<\/url>/g, '');
         const articles = await storage.getNewsArticles();
         const newsUrls = articles.map((a) => {
           const lastmod = a.publishedAt
