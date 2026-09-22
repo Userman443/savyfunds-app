@@ -20,13 +20,13 @@ export function updateMetaTags(route: string, isAuthenticated: boolean) {
   // Update canonical URL — handled in main.tsx already via the id="canonical-link" element
   const canonicalLink = document.querySelector('#canonical-link') as HTMLLinkElement;
   if (canonicalLink && !canonicalLink.href.includes(route)) {
-    canonicalLink.href = `https://savyfunds.com${route}`;
+    canonicalLink.href = `https://www.savyfunds.com${route}`;
   }
 
   // Update OpenGraph URL
   const ogUrl = document.querySelector('#og-url') as HTMLMetaElement;
   if (ogUrl) {
-    ogUrl.content = `https://savyfunds.com${route}`;
+    ogUrl.content = `https://www.savyfunds.com${route}`;
   }
 }
 

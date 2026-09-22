@@ -41,7 +41,7 @@ document.title = `savyfunds™ - Financial Education`;
 function updateSEOMetadata() {
   try {
     // Base domain
-    const domain = 'https://savyfunds.com';
+    const domain = 'https://www.savyfunds.com';
     
     // Get current path (clean any cache busting or tracking parameters)
     const path = window.location.pathname;
