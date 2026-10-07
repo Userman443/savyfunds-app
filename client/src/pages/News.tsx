@@ -43,7 +43,7 @@ export default function News() {
       <Meta
         title="News | savyfunds"
         description="The latest press releases, company updates, and financial news from savyfunds."
-        canonicalUrl="https://savyfunds.com/news"
+        canonicalUrl="https://www.savyfunds.com/news"
         type="website"
       />
 
