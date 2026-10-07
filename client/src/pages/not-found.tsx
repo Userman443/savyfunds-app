@@ -37,7 +37,7 @@ export default function NotFound() {
     // Update canonical link to point to homepage to avoid indexing 404 pages
     const canonicalLink = document.getElementById('canonical-link') as HTMLLinkElement;
     if (canonicalLink) {
-      canonicalLink.href = 'https://savyfunds.com/';
+      canonicalLink.href = 'https://www.savyfunds.com/';
     }
     
     // Return cleanup function
