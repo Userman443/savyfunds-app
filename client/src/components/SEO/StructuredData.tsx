@@ -28,8 +28,8 @@ export const StructuredData: React.FC<StructuredDataProps> = ({ type, data }) =>
 export const createOrganizationStructuredData = () => {
   return {
     name: 'savyfunds',
-    url: 'https://savyfunds.com',
-    logo: 'https://savyfunds.com/logo.png',
+    url: 'https://www.savyfunds.com',
+    logo: 'https://www.savyfunds.com/logo.png',
     founder: {
       '@type': 'Person',
       name: 'Osagie Michael Momoh',
@@ -39,7 +39,7 @@ export const createOrganizationStructuredData = () => {
         name: 'MBA Program'
       },
       description: 'Entrepreneur and financial literacy advocate with MBA and extensive consulting experience across automotive, steel, food, and logistics industries. Founded Savyfunds after researching the widespread lack of financial literacy and identifying the need to close this critical gap. Also founder of Nuvyrix, an AI infrastructure company.',
-      url: 'https://savyfunds.com/about',
+      url: 'https://www.savyfunds.com/about',
       sameAs: [
         'https://nuvyrix.com'
       ],
@@ -47,7 +47,7 @@ export const createOrganizationStructuredData = () => {
         {
           '@type': 'Organization',
           name: 'savyfunds',
-          url: 'https://savyfunds.com'
+          url: 'https://www.savyfunds.com'
         },
         {
           '@type': 'Organization',
@@ -71,10 +71,10 @@ export const createOrganizationStructuredData = () => {
 export const createWebsiteStructuredData = () => {
   return {
     name: 'savyfunds - Financial Education Platform',
-    url: 'https://savyfunds.com',
+    url: 'https://www.savyfunds.com',
     potentialAction: {
       '@type': 'SearchAction',
-      'target': 'https://savyfunds.com/search?q={search_term_string}',
+      'target': 'https://www.savyfunds.com/search?q={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   };
